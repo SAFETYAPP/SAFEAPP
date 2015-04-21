@@ -15,23 +15,26 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
+import com.viewnine.safeapp.manager.VideoQueueManager;
+import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.LogUtils;
 import com.viewnine.safeapp.ulti.Ulti;
 
 import java.util.Calendar;
 
-public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Callback{
-    private static final String TAG = BackgroundVideoRecorder.class.getName();
-	private WindowManager windowManager;
+public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Callback {
+    public static final String TAG = BackgroundVideoRecorder.class.getName();
+    private WindowManager windowManager;
     private SurfaceView surfaceView;
-    private Camera camera = null; 
+    private Camera camera = null;
     private MediaRecorder mediaRecorder = null;
+    private String fileName = Constants.EMPTY_STRING;
+    private VideoObject videoObject;
 
- 
-    @Override 
-    public void onCreate() { 
- 
+    @Override
+    public void onCreate() {
+
         // Start foreground service to avoid unexpected kill 
 //        Notification notification = new Notification.Builder(this)
 //            .setContentTitle("Background Video Recorder")
@@ -39,89 +42,131 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 //            .setSmallIcon(R.drawable.lockicon)
 //            .build();
 //        startForeground(1234, notification);
+        super.onCreate();
+    }
 
 
- 
-        // Create new SurfaceView, set its size to 1x1, move it to the top left corner and set this service as a callback 
+
+    private void initSurface(){
+        // Create new SurfaceView, set its size to 1x1, move it to the top left corner and set this service as a callback
         windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         surfaceView = new SurfaceView(this);
         LayoutParams layoutParams = new LayoutParams(
-            1, 1, 
-            LayoutParams.TYPE_SYSTEM_OVERLAY,
-            LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
-            PixelFormat.TRANSLUCENT
-        ); 
+                1, 1,
+                LayoutParams.TYPE_SYSTEM_OVERLAY,
+                LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                PixelFormat.TRANSLUCENT
+        );
         layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
         windowManager.addView(surfaceView, layoutParams);
         surfaceView.getHolder().addCallback(this);
- 
-    } 
- 
-    // Method called right after Surface created (initializing and starting MediaRecorder) 
-    @Override 
+    }
+
+    int startId;
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+
+        this.startId = startId;
+        initSurface();
+
+        return START_STICKY;
+    }
+
+    // Method called right after Surface created (initializing and starting MediaRecorder)
+    @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-
-
-            try {
-                camera = Camera.open();
-                mediaRecorder = new MediaRecorder();
-                camera.unlock();
-
-                mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
-                mediaRecorder.setCamera(camera);
-                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
-                mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-                mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW));
-
-                Ulti.createFolder(Constants.VIDEO_FOLDER);
-                String fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + Calendar.getInstance().getTimeInMillis() + Constants.VIDEO_TYPE;
-
-                LogUtils.logD(TAG, "File name: " + fileName);
-                mediaRecorder.setOutputFile(fileName);
-
-                try { mediaRecorder.prepare(); } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                mediaRecorder.start();
-
-                Toast.makeText(getBaseContext(), "Recording Started", Toast.LENGTH_SHORT).show();
-
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-
-    } 
- 
-    // Stop recording and remove SurfaceView 
-    @Override 
-    public void onDestroy() { 
-
+        Ulti.createFolder(Constants.VIDEO_FOLDER);
+        long time = Calendar.getInstance().getTimeInMillis();
+        fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
         try {
-            mediaRecorder.stop();
-            mediaRecorder.reset();
-            mediaRecorder.release();
 
-            camera.lock();
-            camera.release();
+            camera = Camera.open();
+            mediaRecorder = new MediaRecorder();
+            camera.unlock();
 
-            windowManager.removeView(surfaceView);
+            mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
+            mediaRecorder.setCamera(camera);
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+            mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+            mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW));
 
-            Toast.makeText(getBaseContext(), "Recording Stopped", Toast.LENGTH_SHORT).show();
+            LogUtils.logD(TAG, "File name: " + fileName);
+            mediaRecorder.setOutputFile(fileName);
 
+            mediaRecorder.prepare();
 
-        }catch (Exception e){
+            mediaRecorder.start();
+
+            Toast.makeText(getBaseContext(), "Recording Started", Toast.LENGTH_SHORT).show();
+
+            videoObject = new VideoObject();
+            videoObject.setId("Video_" + time);
+            videoObject.setVideoUrl(fileName);
+            videoObject.setTime(time);
+
+        } catch (Exception e) {
+            videoObject = null;
             e.printStackTrace();
+            Ulti.deleteFile(fileName);
+            stopSelf(startId);
         }
 
-    } 
- 
-    @Override 
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {}
- 
-    @Override 
-    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {}
- 
-    @Override 
-    public IBinder onBind(Intent intent) { return null; }
+
+    }
+
+    // Stop recording and remove SurfaceView 
+    @Override
+    public void onDestroy() {
+
+        try {
+            if (camera != null && mediaRecorder != null) {
+                mediaRecorder.stop();
+                mediaRecorder.reset();
+                mediaRecorder.release();
+
+                camera.lock();
+                camera.release();
+
+                windowManager.removeView(surfaceView);
+
+                Toast.makeText(getBaseContext(), "Recording Stopped", Toast.LENGTH_SHORT).show();
+            }
+//            stopSelf(startId);
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Ulti.deleteFile(fileName);
+            stopSelf(startId);
+        }
+
+        if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
+            LogUtils.logD(TAG, "Save video starting...");
+            VideoQueueManager.getInstance(getBaseContext()).addVideoInQueue(videoObject, true);
+        }else {
+            LogUtils.logD(TAG, "Fail to save video");
+        }
+
+        super.onDestroy();
+
+
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+
+
 }

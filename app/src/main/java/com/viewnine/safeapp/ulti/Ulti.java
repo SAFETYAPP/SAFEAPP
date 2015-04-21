@@ -73,4 +73,11 @@ public class Ulti {
             mkDir.mkdirs();
         }
     }
+
+    public static void deleteFile(String fileStr){
+        File file = new File(fileStr);
+        if(file.exists()){
+            file.delete();
+        }
+    }
 }

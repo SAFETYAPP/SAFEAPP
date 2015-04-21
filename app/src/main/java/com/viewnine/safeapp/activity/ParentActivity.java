@@ -13,10 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.service.BackgroundVideoRecorder;
 import com.viewnine.safeapp.ulti.Constants;
 
-import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -36,6 +36,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     private FrameLayout frParent;
     private LinearLayout lnVideoNumber;
     private String TAG = ParentActivity.class.getName();
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,20 +140,18 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
 
 
     protected void startRecording(){
-        Intent intent = new Intent(ParentActivity.this, BackgroundVideoRecorder.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
         startService(intent);
+
     }
 
     protected void stopRecording(){
-        stopService(new Intent(ParentActivity.this, BackgroundVideoRecorder.class));
+        Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
+        stopService(intent);
     }
 
-    Handler handler = new Handler();
-    Timer timer;
     protected void handleRecording() {
-//    	stopRecording();
-        timer = new Timer();
+
         TimerTask timerTask = new TimerTask() {
 
             @Override
@@ -168,28 +167,37 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
                         }
                         Log.d(TAG, "Start recording");
                         startRecording();
+
+//                        Log.d(TAG, "Start timer");
                     }
                 });
 
             }
         };
 
-        timer.schedule(timerTask, Constants.TIME_DELAY, Constants.TIME_TO_RECORDING);
+        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, Constants.TIME_TO_RECORDING);
+
 
     }
 
     protected void stopTimerTask(){
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-    }
 
+        SafeAppApplication.stopTimer();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         stopTimerTask();
         stopRecording();
     }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+    }
+
+
 }

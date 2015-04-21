@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.viewnine.safeapp.glowpad.GlowPadView;
 import com.viewnine.safeapp.lockPattern.LockPatternViewEx;
-import com.viewnine.safeapp.manager.SwitchViewManager;
 import com.viewnine.safeapp.service.LockScreenService;
 import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.DateHelper;
@@ -342,8 +341,8 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
     private void handleVideoSelected() {
 //        Toast.makeText(LockScreenAppActivity.this, "Start record video", Toast.LENGTH_SHORT).show();
         handleRecording();
-        SwitchViewManager.getInstance().sendAppToBackground(this);
-
+//        SwitchViewManager.getInstance().sendAppToBackground(this);
+        finish();
     }
 
 
