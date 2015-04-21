@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:glowpad="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/black"
+    tools:context=".LockScreenAppActivity">
+
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:text="00:00"
+        android:textColor="#ffffff"
+        android:textSize="54sp" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:text="0-0-0000"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        android:textStyle="normal" />
+
+    <com.viewnine.safeapp.glowpad.GlowPadView
+        android:id="@+id/glow_pad_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/glowpadview_margin_bottom"
+        android:focusable="true"
+        android:gravity="center"
+        glowpad:directionDescriptions="@array/snooze_dismiss_direction_descriptions"
+        glowpad:feedbackCount="1"
+        glowpad:glowRadius="@dimen/glowpadview_glow_radius"
+        glowpad:handleDrawable="@drawable/ic_alarm_alert_touch_handle"
+        glowpad:innerRadius="@dimen/glowpadview_inner_radius"
+        glowpad:outerRadius="@dimen/glowpadview_target_placement_radius"
+        glowpad:outerRingDrawable="@drawable/ic_alarm_alert_outerring"
+        glowpad:pointDrawable="@drawable/ic_lockscreen_glowdot"
+        glowpad:snapMargin="@dimen/glowpadview_snap_margin"
+        glowpad:targetDescriptions="@array/snooze_dismiss_descriptions"
+        glowpad:targetDrawables="@array/snooze_dismiss_drawables"
+        glowpad:vibrationDuration="20" />
+
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_pattern"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/textview_wrong_pattern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/lockpatternview_pattern"
+            android:layout_centerHorizontal="true"
+            android:text="@string/wrong_pattern" />
+
+        <com.viewnine.safeapp.lockPattern.LockPatternViewEx
+            android:id="@+id/lockpatternview_pattern"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_cancel_pattern"
+             />
+
+        <Button
+            android:id="@+id/button_cancel_pattern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/cancel" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    tools:context=".ParentActivity">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:id="@+id/relativelayout_header"
+        android:layout_width="fill_parent"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:background="@color/safeapp_color"
+        android:padding="@dimen/default_padding">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_video_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textview_videos_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/set_up"
+                android:textColor="@color/White"
+                android:textSize="@dimen/title_safeapp_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/videos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/videos"
+                android:textColor="@color/White"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/set_up"
+            android:textColor="@color/White"
+            android:textSize="@dimen/title_safeapp_text_size"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_setting"
+            android:text="settings"
+            android:visibility="gone"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_back"
+            android:visibility="gone"
+            android:text="back"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_goto_share"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:text="goto share"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_share"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:text="share"/>
+    </RelativeLayout>
+
+    <!-- Body -->
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:id="@+id/framelayout_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/relativelayout_header"></FrameLayout>
+
+
+</RelativeLayout>

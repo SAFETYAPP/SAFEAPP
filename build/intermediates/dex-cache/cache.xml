@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d1bf02de1c56d942e7a9d093b8610ba1ef4128e3">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-4c01094f26942d52b818dbfaac95b1f823366351.jar" />
+    </item>
+    <item
+        jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7ae2d38807a43b2f2185ff4089a92c790b579e54">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/pre-dexed/debug/classes-e904322e7d9594cd051c5b7ea53fe7087c82c24d.jar" />
+    </item>
+    <item
+        jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d1bf02de1c56d942e7a9d093b8610ba1ef4128e3">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/pre-dexed/debug/classes-045f7a9e0f4060a3ac9bb06125ab93cabe32ccf4.jar" />
+    </item>
+    <item
+        jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/exploded-aar/SafeApp/ffmpeg4android_lib/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7aa2e7297d7fb6a4ec499bcb6666257357314b5a">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-c9dd5218fdc24138a7163022b1b6e80bf5197a11.jar" />
+    </item>
+    <item
+        jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="962e8b12569c56dbdcf8367eb4eac8bb129cd18f">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-81dd55ac2c0b289b675b06f32e001422b38e9e31.jar" />
+    </item>
+    <item
+        jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="962e8b12569c56dbdcf8367eb4eac8bb129cd18f">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-59c072e52b69d8350595420d5c8d049b834adb20.jar" />
+    </item>
+    <item
+        jar="/Users/user/Documents/Moving data/Software/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.2/support-annotations-21.0.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="99373741f99a0556ee293c41e8faa1ca3ae8a4e6">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-f74c43596c3a17ecd735f4404d51084cc198be8b.jar" />
+    </item>
+    <item
+        jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7ae2d38807a43b2f2185ff4089a92c790b579e54">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-56ff89b927000b69aeefd43c9d78f96ea06a8837.jar" />
+    </item>
+
+</items>

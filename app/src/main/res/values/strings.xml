@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">SafeApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="set_up">Set Up</string>
+    <string name="next">Next</string>
+    <string name="please_enter_and_email_setup_screen">Please enter an email address to allow Safe App to send you a copy of each of the videos you record via an email link.\n\nA secondary email may be used for an additional benefit of securing your videos.</string>
+    <string name="primary_email">Primary Email</string>
+    <string name="secondary_email">Secondary Email</string>
+    <string name="please_enter_primary_email">Please enter primary email</string>
+    <string name="please_enter_secondary_email">Please enter secondary email</string>
+    <string name="OK">ok</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="videos">VIDEOS</string>
+    <string name="video">VIDEO</string>
+
+    <!-- Text for lock pattern -->
+    <!-- Accessibility description sent when user starts drawing a lock pattern. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_start">Pattern started</string>
+    <!-- Accessibility description sent when the pattern times out and is cleared. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_cleared">Pattern cleared</string>
+    <!-- Accessibility description sent when user adds a cell to the pattern. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_cell_added">Cell added</string>
+    <!-- Accessibility description sent when user completes drawing a pattern. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_detected">Pattern completed</string>
+    <string name="wrong_pattern">Wrong pattern</string>
+    <string name="cancel">Cancel</string>
+    <!-- END -->
+</resources>

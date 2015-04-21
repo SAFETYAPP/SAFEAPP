@@ -1,0 +1,36 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Style for Lock pattern -->
+
+    <style name="AppBaseTheme.Light" parent="@android:style/Theme.Light"></style>
+
+    <style name="AppTheme.Light" parent="@style/AppBaseTheme.Light">
+        <item name="color_lock_pattern_view_regular">@color/lock_pattern_view_regular_dark</item>
+        <item name="color_lock_pattern_view_success">@color/lock_pattern_view_success_dark</item>
+        <item name="color_lock_pattern_view_error">@color/lock_pattern_view_error_dark</item>
+    </style>
+
+    <declare-styleable name="LockPatternViewEx">
+
+        <!--
+             Aspect to use when drawing LockPatternView. Choices are "square"(default), "lock_width"
+             or "lock_height"
+        -->
+        <attr name="aspect" format="string" />
+        <!-- Color to use when drawing LockPatternView paths. -->
+        <attr name="pathColor" format="color|reference" />
+        <!-- The regular pattern color -->
+        <attr name="regularColor" format="color|reference" />
+        <!-- The error color -->
+        <attr name="errorColor" format="color|reference" />
+        <!-- The success color -->
+        <attr name="successColor" format="color|reference" />
+    </declare-styleable>
+    <!-- END -->
+
+</resources>
