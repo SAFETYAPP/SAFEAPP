@@ -42,6 +42,7 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
     private TextView txtWrongPattern;
     private Button btnCancelPattern;
     private String TAG = LockScreenAppActivity.class.getName();
+    private TextView lblTimeAMPM;
 
 
     @Override
@@ -166,6 +167,9 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
         String time = sdf.format(calendar.getTime());
         lblTime.setText(time);
 
+        sdf = new SimpleDateFormat(DateHelper.RFC_USA_12);
+        lblTimeAMPM.setText(sdf.format(calendar.getTime()));
+
         lblDate.setText(DateHelper.getDateMessageFullMonth(calendar));
     }
 
@@ -183,6 +187,7 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
 
     private void initDateTime() {
         lblTime = (TextView) findViewById(R.id.time);
+        lblTimeAMPM = (TextView) findViewById(R.id.time2);
         lblDate = (TextView) findViewById(R.id.date);
 
         setCurrentDateTime();

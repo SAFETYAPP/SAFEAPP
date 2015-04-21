@@ -14,15 +14,27 @@
   </component>
   <component name="AndroidLayouts">
     <shared>
-      <config />
+      <config>
+        <devices>
+          <device id="Nexus 5" />
+          <device id="Nexus 7 2013" />
+        </devices>
+      </config>
     </shared>
+    <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/lockscreen_view.xml">
+        <config>
+          <theme>@android:style/Theme.NoTitleBar.Fullscreen</theme>
+        </config>
+      </layout>
+    </layouts>
   </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_LOG_LEVEL" value="DEBUG" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/LockScreenAppActivity.java" line="342" />
+    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/LockScreenAppActivity.java" line="347" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6948b7d-0633-42aa-83d1-dcf29c44f47b" name="Default" comment="" />
@@ -45,11 +57,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="BackgroundVideoRecorder.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/service/BackgroundVideoRecorder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="SplashScreenActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/SplashScreenActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="35" column="57" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="75" />
+              <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -65,6 +87,47 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="LockScreenAppActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/LockScreenAppActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="170" column="57" selection-start-line="170" selection-start-column="57" selection-end-line="170" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="lockscreen_view.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/lockscreen_view.xml">
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="36" column="42" selection-start-line="36" selection-start-column="42" selection-end-line="36" selection-end-column="42" />
+              <folding>
+                <element signature="e#2385#2419#0" expanded="true" />
+                <element signature="e#2632#2664#0" expanded="true" />
+                <element signature="e#2764#2797#0" expanded="true" />
+                <element signature="e#2826#2870#0" expanded="true" />
+                <element signature="e#3033#3065#0" expanded="true" />
+                <element signature="e#3797#3820#0" expanded="true" />
+                <element signature="e#4394#4410#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DateHelper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/ulti/DateHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="45" column="41" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="SwitchViewManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/manager/SwitchViewManager.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -75,10 +138,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RecordForegroundVideoActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RecordForegroundVideoActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/RecordForegroundVideoActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6659919">
+            <state vertical-scroll-proportion="0.0">
               <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -1466,7 +1529,6 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/manager/SwitchViewManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/ulti/Ulti.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/LockScreenAppActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/ulti/Constants.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/database/BaseAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/database/DatabaseHelper.java" />
@@ -1476,9 +1538,12 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/model/VideoObject.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/service/BackgroundVideoRecorder.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/manager/VideoQueueManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/SplashScreenActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/RecordForegroundVideoActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/application/SafeAppApplication.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/SplashScreenActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/ulti/DateHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/LockScreenAppActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/lockscreen_view.xml" />
       </list>
     </option>
   </component>
@@ -1901,6 +1966,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3275862" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1913,14 +1979,13 @@
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -1974,7 +2039,15 @@
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#2385#2419#0" expanded="true" />
+            <element signature="e#2632#2664#0" expanded="true" />
+            <element signature="e#2764#2797#0" expanded="true" />
+            <element signature="e#2826#2870#0" expanded="true" />
+            <element signature="e#3033#3065#0" expanded="true" />
+            <element signature="e#3797#3820#0" expanded="true" />
+            <element signature="e#4394#4410#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2045,7 +2118,15 @@
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#2385#2419#0" expanded="true" />
+            <element signature="e#2632#2664#0" expanded="true" />
+            <element signature="e#2764#2797#0" expanded="true" />
+            <element signature="e#2826#2870#0" expanded="true" />
+            <element signature="e#3033#3065#0" expanded="true" />
+            <element signature="e#3797#3820#0" expanded="true" />
+            <element signature="e#4394#4410#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2107,17 +2188,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/lockscreen_view.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/ulti/Ulti.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2135,14 +2205,6 @@
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/LockScreenAppActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="271" column="19" selection-start-line="271" selection-start-column="19" selection-end-line="271" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2220,33 +2282,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/service/BackgroundVideoRecorder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4655582">
-          <caret line="146" column="58" selection-start-line="146" selection-start-column="58" selection-end-line="146" selection-end-column="58" />
-          <folding>
-            <element signature="e#5376#5377#0" expanded="true" />
-            <element signature="e#5403#5404#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/manager/SwitchViewManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="51" selection-start-line="31" selection-start-column="51" selection-end-line="31" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/SplashScreenActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="57" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="75" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/manager/SharePreferenceManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2277,10 +2312,69 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/RecordForegroundVideoActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6659919">
+        <state vertical-scroll-proportion="0.0">
           <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/manager/SwitchViewManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="31" column="51" selection-start-line="31" selection-start-column="51" selection-end-line="31" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/service/BackgroundVideoRecorder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/SplashScreenActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/ulti/DateHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="45" column="41" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/viewnine/safeapp/activity/LockScreenAppActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="170" column="57" selection-start-line="170" selection-start-column="57" selection-end-line="170" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/lockscreen_view.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="42" selection-start-line="36" selection-start-column="42" selection-end-line="36" selection-end-column="42" />
+          <folding>
+            <element signature="e#2385#2419#0" expanded="true" />
+            <element signature="e#2632#2664#0" expanded="true" />
+            <element signature="e#2764#2797#0" expanded="true" />
+            <element signature="e#2826#2870#0" expanded="true" />
+            <element signature="e#3033#3065#0" expanded="true" />
+            <element signature="e#3797#3820#0" expanded="true" />
+            <element signature="e#4394#4410#0" expanded="true" />
           </folding>
         </state>
       </provider>

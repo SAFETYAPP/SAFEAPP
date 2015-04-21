@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.viewnine.safeapp.manager.SwitchViewManager;
-import com.viewnine.safeapp.ulti.ValidationHelper;
 
 /**
  * Created by user on 4/18/15.
@@ -29,15 +28,15 @@ public class SplashScreenActivity extends Activity {
     private void handleFirstTimeRunning(){
 
 
-        if(!ValidationHelper.getInstance().alreadySetupEmail()){
-            setContentView(R.layout.splashscreen_view);
-            handler.sendEmptyMessageDelayed(key_exit, 1000);
-        }else {
-            SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
-        }
+//        if(!ValidationHelper.getInstance().alreadySetupEmail()){
+//            setContentView(R.layout.splashscreen_view);
+//            handler.sendEmptyMessageDelayed(key_exit, 1000);
+//        }else {
+//            SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
+//        }
 
         
-//        SwitchViewManager.getInstance().gotoLockScreen(this);
+        SwitchViewManager.getInstance().gotoLockScreen(this);
     }
 
     Handler handler = new Handler(new Handler.Callback() {

@@ -8,22 +8,45 @@
     tools:context=".LockScreenAppActivity">
 
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-thin"
+    <RelativeLayout
+        android:id="@+id/relativelayout_time"
+        android:layout_width="fill_parent"
         android:gravity="center"
-        android:text="00:00"
-        android:textColor="#ffffff"
-        android:textSize="54sp" />
+        android:layout_marginTop="20dp"
+        android:layout_height="80dp">
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="sans-serif-thin"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="00:00"
+            android:textColor="#ffffff"
+            android:textSize="54sp" />
+
+        <TextView
+            android:id="@+id/time2"
+            android:layout_toRightOf="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="6dp"
+            android:layout_alignParentBottom="true"
+            android:text="AM"
+            android:textColor="#ffffff"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/time"
+        android:layout_below="@+id/relativelayout_time"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-thin"
@@ -61,8 +84,8 @@
         android:id="@+id/relativelayout_pattern"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/textview_wrong_pattern"
@@ -76,8 +99,7 @@
             android:id="@+id/lockpatternview_pattern"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button_cancel_pattern"
-             />
+            android:layout_above="@+id/button_cancel_pattern" />
 
         <Button
             android:id="@+id/button_cancel_pattern"

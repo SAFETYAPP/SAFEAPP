@@ -34,7 +34,7 @@ public class DateHelper {
 	public static final String RFC_USA_8 = "yyyy-MM-dd hh:mm";// 2012-06-13
 																// 20:35
 
-	public static final String RFC_USA_9 = "hh:mm a";// 14:17 pm
+	public static final String RFC_USA_9 = "hh:mm";// 14:17
 	
 	public static final String RFC_USA_10 = "yyyy-MM-dd HH:mm:ss";// 2012-06-13 20:35:15
 	
@@ -42,6 +42,8 @@ public class DateHelper {
 	
 	public static final String XMPP_UTC_1 = "yyyyMMdd'T'HH:mm:ss";
 	public static final String XMPP_UTC_2 = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
+	public static final String RFC_USA_12 = "aa"; //AM, PM
 
 	public static final String RFC_NOTIFICATION = "MM/dd/yy";// 09/13/12
 	public static final String RFC_GAME_RESULT = "MM/dd/yyyy";// 09/13/2012
