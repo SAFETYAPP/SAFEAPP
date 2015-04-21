@@ -51,13 +51,6 @@
         <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-81dd55ac2c0b289b675b06f32e001422b38e9e31.jar" />
     </item>
     <item
-        jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="962e8b12569c56dbdcf8367eb4eac8bb129cd18f">
-        <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-f4f5f7f547ca91b14d8d188103b66b866106bbb7.jar" />
-    </item>
-    <item
         jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -65,11 +58,11 @@
         <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-7b05cefc13c59587b6676564b295581c732aebee.jar" />
     </item>
     <item
-        jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/SafeApp/ffmpeg4android_lib/unspecified/classes.jar"
+        jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="d41ff4832227ad98efae3ab5581ec71d6b0cce70">
-        <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-5c37582bfbbb519c81cd4fddd2f29415c1b81b57.jar" />
+        sha1="962e8b12569c56dbdcf8367eb4eac8bb129cd18f">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-f4f5f7f547ca91b14d8d188103b66b866106bbb7.jar" />
     </item>
     <item
         jar="/Users/user/Documents/Moving data/Software/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.2/support-annotations-21.0.2.jar"
@@ -77,6 +70,13 @@
         revision="21.1.2"
         sha1="99373741f99a0556ee293c41e8faa1ca3ae8a4e6">
         <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-f74c43596c3a17ecd735f4404d51084cc198be8b.jar" />
+    </item>
+    <item
+        jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/SafeApp/ffmpeg4android_lib/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="68be61fd067e0e0f465b4dc217e5af716e114b11">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-5c37582bfbbb519c81cd4fddd2f29415c1b81b57.jar" />
     </item>
     <item
         jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/classes.jar"

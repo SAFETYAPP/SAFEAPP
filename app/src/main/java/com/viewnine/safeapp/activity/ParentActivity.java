@@ -1,7 +1,10 @@
 package com.viewnine.safeapp.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.viewnine.safeapp.service.BackgroundVideoRecorder;
 import com.viewnine.safeapp.ulti.Constants;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by user on 4/19/15.
@@ -28,6 +35,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     private Button btnBack;
     private FrameLayout frParent;
     private LinearLayout lnVideoNumber;
+    private String TAG = ParentActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,5 +138,58 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     }
 
 
+    protected void startRecording(){
+        Intent intent = new Intent(ParentActivity.this, BackgroundVideoRecorder.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(intent);
+    }
 
+    protected void stopRecording(){
+        stopService(new Intent(ParentActivity.this, BackgroundVideoRecorder.class));
+    }
+
+    Handler handler = new Handler();
+    Timer timer;
+    protected void handleRecording() {
+//    	stopRecording();
+        timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "Stop recording");
+                        stopRecording();
+                        for (int i = 0; i < 100000; i++) {
+
+                        }
+                        Log.d(TAG, "Start recording");
+                        startRecording();
+                    }
+                });
+
+            }
+        };
+
+        timer.schedule(timerTask, Constants.TIME_DELAY, Constants.TIME_TO_RECORDING);
+
+    }
+
+    protected void stopTimerTask(){
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        stopTimerTask();
+        stopRecording();
+    }
 }

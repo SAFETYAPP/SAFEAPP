@@ -39,4 +39,11 @@ public class SwitchViewManager {
         ((Activity)context).startActivity(intent);
         ((Activity)context).finish();
     }
+
+    public void sendAppToBackground(Context context){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        ((Activity)context).startActivity(intent);
+    }
 }

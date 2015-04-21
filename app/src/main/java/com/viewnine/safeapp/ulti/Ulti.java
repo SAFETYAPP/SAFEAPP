@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -64,5 +65,12 @@ public class Ulti {
             return false;
         }
 
+    }
+
+    public static void createFolder(String folderName){
+        File mkDir = new File(folderName);
+        if(!mkDir.exists()){
+            mkDir.mkdirs();
+        }
     }
 }

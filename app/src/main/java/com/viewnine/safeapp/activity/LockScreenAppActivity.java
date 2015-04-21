@@ -1,6 +1,5 @@
 package com.viewnine.safeapp.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +18,8 @@ import android.widget.Toast;
 
 import com.viewnine.safeapp.glowpad.GlowPadView;
 import com.viewnine.safeapp.lockPattern.LockPatternViewEx;
-import com.viewnine.safeapp.service.MyService;
+import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.service.LockScreenService;
 import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.DateHelper;
 import com.viewnine.safeapp.ulti.ViewUlti;
@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class LockScreenAppActivity extends Activity implements View.OnClickListener{
+public class LockScreenAppActivity extends ParentActivity implements View.OnClickListener{
 
     private static final int HOME_TYPE = 0;
     private static final int VIDEO_TYPE = 1;
@@ -42,6 +42,8 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
     private LockPatternViewEx lockPatternView;
     private TextView txtWrongPattern;
     private Button btnCancelPattern;
+    private String TAG = LockScreenAppActivity.class.getName();
+
 
     @Override
     public void onAttachedToWindow() {
@@ -61,13 +63,19 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
 
-        setContentView(R.layout.lockscreen_view);
+        setupViews();
+
+    }
+
+    private void setupViews(){
+        addChidlView(R.layout.lockscreen_view);
+        showHideHeader(false);
+//        setContentView(R.layout.lockscreen_view);
 
         initLockScreen();
         initGlowPad();
         initDateTime();
         initLockPattern();
-
     }
 
     private String previousString = Constants.EMPTY_STRING;
@@ -223,10 +231,7 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
             // initialize receiver
 
 
-            startService(new Intent(this, MyService.class));
-
-
-
+            startService(new Intent(this, LockScreenService.class));
 
   /*      KeyguardManager km =(KeyguardManager)getSystemService(KEYGUARD_SERVICE);
         k1 = km.newKeyguardLock("IN");
@@ -264,6 +269,11 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
 
     ;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -330,12 +340,16 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
     }
 
     private void handleVideoSelected() {
-        Toast.makeText(LockScreenAppActivity.this, "Start record video", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(LockScreenAppActivity.this, "Start record video", Toast.LENGTH_SHORT).show();
+        handleRecording();
+        SwitchViewManager.getInstance().sendAppToBackground(this);
     }
 
     private void handlePatternSelected() {
         rlLockPattern.setVisibility(View.VISIBLE);
         glowPadView.setVisibility(View.GONE);
     }
+
+
 
 }

@@ -12,7 +12,7 @@ public class RecordForegroundVideoActivity extends ParentActivity {
         super.onCreate(savedInstanceState);
         setupViews();
 
-//        startService(new Intent(this, MyService.class));
+//        startService(new Intent(this, LockScreenService.class));
     }
 
     private void setupViews() {
