@@ -14,9 +14,9 @@ public class Constants {
     public static final String EMPTY_STRING = "";
     public static final int ZERO_NUMBER = 0;
 
-    public final static File SDROOT = Environment.getExternalStorageDirectory();
-    public final static String SAFEAPP_FOLDER = "/SafeApp";
-    public final static String VIDEO_FOLDER = SDROOT + SAFEAPP_FOLDER + "/Videos/";
+    public final static File SDROOT = Environment.getExternalStorageDirectory().getAbsoluteFile();
+    public final static String SAFEAPP_FOLDER = File.separator + "SafeApp";
+    public final static String VIDEO_FOLDER = SDROOT + SAFEAPP_FOLDER + File.separator + "Videos" + File.separator;
     public final static String PREFIX_VIDEO_NAME = "SafeApp_";
     public final static String VIDEO_TYPE = ".mp4";
 
