@@ -136,11 +136,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
             mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
             mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
 
-            mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+//            if(mCameraId == DEFAULT_CAMERA){
+//                mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH_SPEED_480P));
+//            }else {
+//                mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_480P));
+//            }
+            mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_480P));
+
             mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
-            mediaRecorder.setOutputFile("/sdcard/safeapp/abc.mp4");
+            mediaRecorder.setOutputFile(fileName);
 
             mediaRecorder.prepare();
             mediaRecorder.start();

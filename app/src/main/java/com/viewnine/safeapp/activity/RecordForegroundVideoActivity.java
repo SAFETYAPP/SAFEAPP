@@ -60,13 +60,18 @@ public class RecordForegroundVideoActivity extends ParentActivity {
 
         super.onPause();
 
+        recording = false;
+        stopTimerTask();
+        mPreviewTakePicture.releaseMediaRecorder();
+        releaseCameraView();
+
     }
 
     @Override
     protected void onDestroy() {
 
         super.onDestroy();
-        releaseCameraView();
+
     }
 
     private void setupViews() {
@@ -215,6 +220,9 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     private void handleClickSwitchCameraButton(){
         if(mPreviewTakePicture != null){
             mCurrentCameraID = mPreviewTakePicture.toggleSwitchCamera();
+            recording = false;
+            stopTimerTask();
+            mPreviewTakePicture.releaseMediaRecorder();
             releaseCameraView();
             initCameraView();
             showHideFlashButton();
