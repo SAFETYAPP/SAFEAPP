@@ -345,7 +345,7 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
 
     private void handleVideoSelected() {
 //        Toast.makeText(LockScreenAppActivity.this, "Start record video", Toast.LENGTH_SHORT).show();
-        handleRecording();
+        handleRecordingInBackgroundThread();
 //        SwitchViewManager.getInstance().sendAppToBackground(this);
         finish();
     }

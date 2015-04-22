@@ -101,7 +101,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             Toast.makeText(getBaseContext(), "Recording Started", Toast.LENGTH_SHORT).show();
 
             videoObject = new VideoObject();
-            videoObject.setId("Video_" + time);
+            videoObject.setId(Constants.PREFIX_VIDEO_ID + time);
             videoObject.setVideoUrl(fileName);
             videoObject.setTime(time);
 

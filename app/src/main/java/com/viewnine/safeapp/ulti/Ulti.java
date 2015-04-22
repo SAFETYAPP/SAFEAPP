@@ -1,9 +1,16 @@
 package com.viewnine.safeapp.ulti;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
+import android.graphics.Point;
+import android.os.Build;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
+import android.view.WindowManager;
 
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
 
@@ -80,4 +87,58 @@ public class Ulti {
             file.delete();
         }
     }
+
+    public static int[] getScreenSize(Context context){
+        int[] sizeOfScreen = new int[2];
+        Point size = new Point();
+        WindowManager w = ((Activity)context).getWindowManager();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)    {
+            w.getDefaultDisplay().getSize(size);
+            sizeOfScreen[0] = size.x;
+            sizeOfScreen[1] = size.y;
+        }else{
+            Display d = w.getDefaultDisplay();
+            sizeOfScreen[0] = d.getWidth();
+            sizeOfScreen[1] = d.getHeight();
+        }
+
+        return sizeOfScreen;
+    }
+
+    public static int getDimenValueFromDimenXML(Context context, int dimenId){
+        return (int) (context.getResources().getDimension(dimenId) / context.getResources().getDisplayMetrics().density);
+    }
+    // dip to px
+    public static int convertDensityToPixel(Context context, int dip) {
+//		return (int) (dip * context.getResources().getDisplayMetrics().density);
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        int px = Math.round(dip * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
+    }
+
+    // px to dip
+    public static int convertPixelToDensity(Context context, int pixel) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                pixel, context.getResources().getDisplayMetrics());
+    }
+
+    public static int convertPixelsToDIP(Context context, int pixels) {
+        // Resources resources = context.getResources();
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        float dp = pixels / (metrics.densityDpi / 160f);
+        return (int) dp;
+        // DisplayMetrics displayMetrics =
+        // context.getResources().getDisplayMetrics();
+        // return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,
+        // pixels, displayMetrics);
+
+    }
+
+    // px to dp
+    public static int convertPixelToDp(Context context, int pixel) {
+        DisplayMetrics displayMetrics = context.getResources()
+                .getDisplayMetrics();
+        return (int) ((pixel / displayMetrics.density) + 0.5);
+    }
+
 }

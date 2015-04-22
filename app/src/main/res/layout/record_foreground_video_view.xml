@@ -12,5 +12,58 @@
         android:text="FOREGROUND VIDEO RECORDING"/>
 
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/relativelayout_camera"></RelativeLayout>
+
+    <!-- Top bar -->
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_top_bar_camera"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:padding="10dp" >
+
+        <Button
+            android:id="@+id/button_flash_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/button_switch_camera"
+            android:text="Flash" />
+
+        <Button
+            android:id="@+id/button_switch_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="Switch" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/button_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="History" />
+
+        <Button
+            android:id="@+id/button_take_record_camera"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Capture" />
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

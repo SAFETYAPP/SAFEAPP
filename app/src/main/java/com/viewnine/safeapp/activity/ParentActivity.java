@@ -139,18 +139,18 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     }
 
 
-    protected void startRecording(){
+    protected void startRecordingInBackgroundThread(){
         Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
         startService(intent);
 
     }
 
-    protected void stopRecording(){
+    protected void stopRecordingInBackgroundThread(){
         Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
         stopService(intent);
     }
 
-    protected void handleRecording() {
+    protected void handleRecordingInBackgroundThread() {
 
         TimerTask timerTask = new TimerTask() {
 
@@ -161,12 +161,12 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
                     @Override
                     public void run() {
                         Log.d(TAG, "Stop recording");
-                        stopRecording();
+                        stopRecordingInBackgroundThread();
                         for (int i = 0; i < 100000; i++) {
 
                         }
                         Log.d(TAG, "Start recording");
-                        startRecording();
+                        startRecordingInBackgroundThread();
 
 //                        Log.d(TAG, "Start timer");
                     }
@@ -190,7 +190,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
         super.onResume();
 
         stopTimerTask();
-        stopRecording();
+        stopRecordingInBackgroundThread();
     }
 
     @Override
