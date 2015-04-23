@@ -121,12 +121,15 @@ public class RecordForegroundVideoActivity extends ParentActivity {
             switch (mCurrentFlashMode) {
                 case CameraPreview.FLASH_AUTO:
 //                    btnFlashMode.setBackgroundResource(R.drawable.flash_auto_white);
+                    btnFlashMode.setText("AUTO");
                     break;
                 case CameraPreview.FLASH_ON:
 //                    btnFlashMode.setBackgroundResource(R.drawable.flash_on_white);
+                    btnFlashMode.setText("ON");
                     break;
                 case CameraPreview.FLASH_OFF:
 //                    btnFlashMode.setBackgroundResource(R.drawable.flash_off_white);
+                    btnFlashMode.setText("OFF");
                     break;
 
                 default:

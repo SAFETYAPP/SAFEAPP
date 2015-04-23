@@ -228,7 +228,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     flashModeStr = Parameters.FLASH_MODE_AUTO;
                     break;
                 case FLASH_ON:
-                    flashModeStr = Parameters.FLASH_MODE_ON;
+                    flashModeStr = Parameters.FLASH_MODE_TORCH;
                     break;
                 case FLASH_OFF:
                     flashModeStr = Parameters.FLASH_MODE_OFF;
@@ -238,6 +238,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     mCurrentFlashMode = FLASH_AUTO;
                     break;
             }
+
 
             parameters.setFlashMode(flashModeStr);
             camera.setParameters(parameters);
