@@ -64,8 +64,8 @@ public class VideoDBAdapter extends BaseAdapter{
         return result;
     }
 
-    public List<VideoObject> getAllVideos() {
-        List<VideoObject> msgs = new ArrayList<VideoObject>();
+    public ArrayList<VideoObject> getAllVideos() {
+        ArrayList<VideoObject> msgs = new ArrayList<VideoObject>();
         // Open database
         openDatabase();
         Cursor results = null;

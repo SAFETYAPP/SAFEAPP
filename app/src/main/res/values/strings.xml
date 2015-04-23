@@ -26,5 +26,8 @@
     <string name="lockscreen_access_pattern_detected">Pattern completed</string>
     <string name="wrong_pattern">Wrong pattern</string>
     <string name="cancel">Cancel</string>
+    <string name="text_loading">loading...</string>
+    <string name="error">error</string>
+    <string name="load_more">Load more...</string>
     <!-- END -->
 </resources>

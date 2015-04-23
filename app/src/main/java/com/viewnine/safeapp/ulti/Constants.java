@@ -17,10 +17,14 @@ public class Constants {
     public final static File SDROOT = Environment.getExternalStorageDirectory().getAbsoluteFile();
     public final static String SAFEAPP_FOLDER = SDROOT + File.separator + "SafeApp";
     public final static String VIDEO_FOLDER = SAFEAPP_FOLDER + File.separator + "Videos" + File.separator;
+    public final static String IMAGE_FOLDER = SAFEAPP_FOLDER + File.separator + "Images" + File.separator;
     public final static String PREFIX_VIDEO_NAME = "SafeApp_";
     public final static String VIDEO_TYPE = ".mp4";
     public final static String PREFIX_VIDEO_ID = "Video_";
+    public final static String PREFIX_LOCAL_FILE_URL = "file://";
 
     public static final int TIME_TO_RECORDING = 10000;
     public static final int TIME_DELAY = 500;
+    public static final int OK = 0;
+    public static final int ERROR = 1;
 }

@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.viewnine.safeapp.application.SafeAppApplication;
+import com.viewnine.safeapp.manager.SwitchViewManager;
 import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.LogUtils;
 import com.viewnine.safeapp.ulti.Ulti;
@@ -177,7 +178,7 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     }
 
     private void handleGalleryButton() {
-
+        SwitchViewManager.getInstance().gotoHistoryScreen(this);
     }
 
     private void handleClickFlashModeButton() {

@@ -5,7 +5,10 @@ import android.app.ActivityManager;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Point;
+import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -15,6 +18,9 @@ import android.view.WindowManager;
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -151,5 +157,78 @@ public class Ulti {
 
         return false;
     }
+
+    public static boolean saveBitmapToSDCard(Bitmap bitmap, String filePath){
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filePath);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 70, out); // bmp is your Bitmap instance
+            // PNG is a lossless format, the compression factor (100) is ignored
+        } catch (Exception e) {
+            e.printStackTrace();
+            releaseBitmap(bitmap);
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                    releaseBitmap(bitmap);
+                    return true;
+                }
+            } catch (IOException e) {
+                releaseBitmap(bitmap);
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+    }
+
+    public static void releaseBitmap(Bitmap bitmap){
+        try{
+            if(bitmap != null && !bitmap.isRecycled()){
+                bitmap.recycle();
+                bitmap = null;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+    }
+
+    public static String extractImageFromVideo(String videoFile){
+        LogUtils.logI(TAG, "Image extracting...");
+        Ulti.createFolder(Constants.IMAGE_FOLDER);
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        String picturePath = Constants.EMPTY_STRING;
+        try {
+            retriever.setDataSource(videoFile);
+            Bitmap bitmap = RotateBitmap(retriever.getFrameAtTime(-1), 90);
+            String fileTmp = Constants.IMAGE_FOLDER + Calendar.getInstance().getTimeInMillis() + ".png";
+            boolean isSaveSuccessfull = saveBitmapToSDCard(bitmap, fileTmp);
+            if(isSaveSuccessfull){
+                picturePath = fileTmp;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                retriever.release();
+                return picturePath;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return picturePath;
+    }
+
+    public static Bitmap RotateBitmap(Bitmap source, float angle)
+    {
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
+
+
 
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.viewnine.safeapp.activity.HistoryActivity;
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
 import com.viewnine.safeapp.activity.RecordForegroundVideoActivity;
 import com.viewnine.safeapp.activity.SetupActivity;
@@ -45,5 +46,11 @@ public class SwitchViewManager {
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         ((Activity)context).startActivity(intent);
+    }
+
+    public void gotoHistoryScreen(Context context){
+        Intent intent = new Intent(context, HistoryActivity.class);
+        ((Activity)context).startActivity(intent);
+        ((Activity)context).finish();
     }
 }

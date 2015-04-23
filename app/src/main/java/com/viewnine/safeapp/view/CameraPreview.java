@@ -2,12 +2,14 @@ package com.viewnine.safeapp.view;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.media.CamcorderProfile;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.util.Log;
@@ -179,11 +181,24 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
 
         if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
+
             LogUtils.logD(TAG, "Save video starting...");
-            VideoQueueManager.getInstance(mActivity).addVideoInQueue(videoObject, true);
+            String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
+            VideoObject videoObjectDB = new VideoObject();
+            videoObjectDB.setId(videoObject.getId());
+            videoObjectDB.setImageLink(imageLink);
+            videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
+            videoObjectDB.setTime(videoObject.getTime());
+            videoObject = null;
+            VideoQueueManager.getInstance(mActivity).addVideoInQueue(videoObjectDB, true);
+
+
         }else {
             LogUtils.logD(TAG, "Fail to save video");
         }
+
+
+
     }
 
 

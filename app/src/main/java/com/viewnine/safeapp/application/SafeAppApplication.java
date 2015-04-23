@@ -3,6 +3,13 @@ package com.viewnine.safeapp.application;
 import android.app.Application;
 import android.content.Context;
 
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.viewnine.safeapp.activity.R;
+
 import java.util.Timer;
 
 /**
@@ -18,6 +25,8 @@ public class SafeAppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        initImageLoader(getApplicationContext());
     }
 
     public static Context getInstance(){
@@ -46,5 +55,42 @@ public class SafeAppApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
         stopTimer();
+    }
+
+    public static void initImageLoader(Context context) {
+        // This configuration tuning is custom. You can tune every option, you may tune some of them,
+        // or you can create default configuration by
+        //  ImageLoaderConfiguration.createDefault(this);
+        // method.
+
+
+//        DisplayImageOptions options = new DisplayImageOptions.Builder()
+//                .displayer(new CircleBitmapDisplayer(0xFF70C7BE, 2))
+//                .showImageOnLoading(R.drawable.avatar)
+//                .showImageOnFail(R.drawable.avatar)
+//                .showImageForEmptyUri(R.drawable.avatar)
+//                .cacheOnDisk(true)
+//                .cacheInMemory(false)
+//                .imageScaleType(ImageScaleType.EXACTLY)
+//                .bitmapConfig(Bitmap.Config.RGB_565)
+//                .build();
+
+        DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
+                                                    .showImageOnLoading(R.drawable.loading_wheel_freely)
+                                                    .showImageOnFail(R.drawable.lockicon)
+                                                    .build();
+
+        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
+        config.threadPriority(Thread.NORM_PRIORITY - 2);
+        config.denyCacheImageMultipleSizesInMemory();
+        config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
+        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
+        config.tasksProcessingOrder(QueueProcessingType.LIFO);
+        config.defaultDisplayImageOptions(displayImageOptions);
+        config.writeDebugLogs(); // Remove for release app
+
+
+        // Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(config.build());
     }
 }

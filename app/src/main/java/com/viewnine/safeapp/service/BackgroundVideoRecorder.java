@@ -144,6 +144,13 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
         if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
             LogUtils.logD(TAG, "Save video starting...");
+            String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
+            VideoObject videoObjectDB = new VideoObject();
+            videoObjectDB.setId(videoObject.getId());
+            videoObjectDB.setImageLink(imageLink);
+            videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
+            videoObjectDB.setTime(videoObject.getTime());
+            videoObject = null;
             VideoQueueManager.getInstance(getBaseContext()).addVideoInQueue(videoObject, true);
         }else {
             LogUtils.logD(TAG, "Fail to save video");
