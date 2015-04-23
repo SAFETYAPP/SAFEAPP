@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,9 @@ import android.widget.TextView;
 
 import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.service.BackgroundVideoRecorder;
+import com.viewnine.safeapp.service.LockScreenService;
 import com.viewnine.safeapp.ulti.Constants;
+import com.viewnine.safeapp.ulti.Ulti;
 
 import java.util.TimerTask;
 
@@ -41,7 +45,56 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkToStartLockScreenService();
         setupParentViews();
+
+
+    }
+
+    private void checkToStartLockScreenService(){
+        String splashScreenClass = SplashScreenActivity.class.getName();
+        String setupClass = SetupActivity.class.getName();
+        String currentClass = ParentActivity.class.getName();
+        boolean isServiceRunning = Ulti.isServiceRunning(this, LockScreenService.class);
+        if(!currentClass.equalsIgnoreCase(splashScreenClass) && !currentClass.equalsIgnoreCase(setupClass) && !isServiceRunning){
+            try {
+                // initialize receiver
+
+
+                startService(new Intent(this, LockScreenService.class));
+
+  /*      KeyguardManager km =(KeyguardManager)getSystemService(KEYGUARD_SERVICE);
+        k1 = km.newKeyguardLock("IN");
+        k1.disableKeyguard();*/
+                StateListener phoneStateListener = new StateListener();
+                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+                telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        }
+    }
+
+    class StateListener extends PhoneStateListener {
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+
+            super.onCallStateChanged(state, incomingNumber);
+            switch (state) {
+                case TelephonyManager.CALL_STATE_RINGING:
+                    break;
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    System.out.println("call Activity off hook");
+                    finish();
+
+
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+                    break;
+            }
+        }
     }
 
     private void setupParentViews() {

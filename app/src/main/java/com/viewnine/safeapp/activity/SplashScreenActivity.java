@@ -1,6 +1,5 @@
 package com.viewnine.safeapp.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +11,7 @@ import com.viewnine.safeapp.ulti.ValidationHelper;
 /**
  * Created by user on 4/18/15.
  */
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends ParentActivity {
     Context mContext;
     static int key_exit = 1;
     private String TAG = SplashScreenActivity.class.getName();
@@ -21,8 +20,6 @@ public class SplashScreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = SplashScreenActivity.this;
-
-        handleFirstTimeRunning();
     }
 
 
@@ -30,7 +27,9 @@ public class SplashScreenActivity extends Activity {
 
 
         if(!ValidationHelper.getInstance().alreadySetupEmail()){
-            setContentView(R.layout.splashscreen_view);
+//            setContentView(R.layout.splashscreen_view);
+            addChidlView(R.layout.splashscreen_view);
+            showHideHeader(false);
             handler.sendEmptyMessageDelayed(key_exit, 1000);
         }else {
             SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
@@ -59,5 +58,9 @@ public class SplashScreenActivity extends Activity {
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handleFirstTimeRunning();
+    }
 }

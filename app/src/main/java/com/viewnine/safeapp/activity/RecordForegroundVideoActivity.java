@@ -7,14 +7,11 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.viewnine.safeapp.application.SafeAppApplication;
-import com.viewnine.safeapp.database.VideoDBAdapter;
-import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.LogUtils;
 import com.viewnine.safeapp.ulti.Ulti;
 import com.viewnine.safeapp.view.CameraPreview;
 
-import java.util.List;
 import java.util.TimerTask;
 
 /**
@@ -77,8 +74,8 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     private void setupViews() {
         addChidlView(R.layout.record_foreground_video_view);
 
-        VideoDBAdapter videoDBAdapter = new VideoDBAdapter(this);
-        List<VideoObject> listVideos = videoDBAdapter.getAllVideos();
+//        VideoDBAdapter videoDBAdapter = new VideoDBAdapter(this);
+//        List<VideoObject> listVideos = videoDBAdapter.getAllVideos();
 
         showHideHeader(false);
 
