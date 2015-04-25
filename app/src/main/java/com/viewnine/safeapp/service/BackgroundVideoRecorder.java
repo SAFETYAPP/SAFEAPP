@@ -151,7 +151,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
             videoObjectDB.setTime(videoObject.getTime());
             videoObject = null;
-            VideoQueueManager.getInstance(getBaseContext()).addVideoInQueue(videoObject, true);
+            VideoQueueManager.getInstance(getBaseContext()).addVideoInQueue(videoObjectDB, true);
         }else {
             LogUtils.logD(TAG, "Fail to save video");
         }

@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.viewnine.safeapp.application.SafeAppApplication;
+import com.viewnine.safeapp.manager.SwitchViewManager;
 import com.viewnine.safeapp.service.BackgroundVideoRecorder;
 import com.viewnine.safeapp.service.LockScreenService;
 import com.viewnine.safeapp.ulti.Constants;
@@ -174,10 +175,10 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_setting:
-
+                SwitchViewManager.getInstance().gotoSettingsScreen(this);
                 break;
             case R.id.button_back:
-
+                finish();
                 break;
             case R.id.button_goto_share:
 

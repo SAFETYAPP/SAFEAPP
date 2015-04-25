@@ -325,6 +325,20 @@ public class LockPatternViewEx extends View {
         }// if
     }
 
+    public void setColor(int regularColor, int errorColor, int successColor){
+        mRegularColor = regularColor;
+//        mErrorColor = a.getColor(R.styleable.LockPatternViewEx_errorColor,
+//                mErrorColor);
+        mErrorColor = regularColor;
+//        mSuccessColor = a.getColor(R.styleable.LockPatternViewEx_successColor,
+//                mSuccessColor);
+        mSuccessColor = errorColor;
+
+        int pathColor = successColor;
+
+        mPathPaint.setColor(pathColor);
+    }
+
     public CellState[][] getCellStates() {
         return mCellStates;
     }

@@ -33,5 +33,6 @@
     <dimen name="loading_wheel_bg">120dp</dimen>
     <dimen name="loading_wheel_icon">100dp</dimen>
     <dimen name="freely_icon_loading_circle">35dp</dimen>
+    <dimen name="hight_size_setting_item">60dp</dimen>
 
 </resources>

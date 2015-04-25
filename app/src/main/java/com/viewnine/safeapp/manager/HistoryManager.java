@@ -27,19 +27,21 @@ public class HistoryManager {
         public void error(int errorCode);
     }
 
-    public void getListVideos(Context context, String lastVideoId, IGetVideoListener iGetVideoListener){
-        new GetVideoAsync(context, lastVideoId, iGetVideoListener).execute();
+    public void getListVideos(Context context, long latestVideoTime, boolean isShowLoadingPopup, IGetVideoListener iGetVideoListener){
+        new GetVideoAsync(context, latestVideoTime, isShowLoadingPopup, iGetVideoListener).execute();
     }
 
     private class GetVideoAsync extends BaseAsyncTaskV2{
         Context context;
-        String lastVideoId;
+        long latestVideoTime;
         IGetVideoListener iGetVideoListener;
         ArrayList<VideoObject> listVideos;
-        public GetVideoAsync(Context context, String lastVideoId, IGetVideoListener iGetVideoListener){
+        int totalVideo;
+        public GetVideoAsync(Context context, long latestVideoTime, boolean isShowLoadingPopup, IGetVideoListener iGetVideoListener){
             super(context);
+            needToShowDialog(isShowLoadingPopup);
             this.context = context;
-            this.lastVideoId = lastVideoId;
+            this.latestVideoTime = latestVideoTime;
             this.iGetVideoListener = iGetVideoListener;
         }
         private GetVideoAsync(Context context){
@@ -51,7 +53,8 @@ public class HistoryManager {
         protected Integer doInBackground(Void... params) {
 
             VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
-            listVideos = videoDBAdapter.getAllVideos();
+            listVideos = videoDBAdapter.getListVideosBaseOnTime(latestVideoTime);
+            totalVideo = videoDBAdapter.getTotalVideos();
             videoDBAdapter = null;
             if(listVideos != null){
                 return Constants.OK;
@@ -64,7 +67,7 @@ public class HistoryManager {
             super.onPostExecute(result);
             switch (result){
                 case Constants.OK:
-                    iGetVideoListener.listVideos(listVideos, listVideos.size());
+                    iGetVideoListener.listVideos(listVideos, totalVideo);
                     break;
                 case Constants.ERROR:
                 default:

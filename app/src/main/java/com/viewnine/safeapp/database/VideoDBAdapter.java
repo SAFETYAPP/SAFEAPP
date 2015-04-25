@@ -92,6 +92,28 @@ public class VideoDBAdapter extends BaseAdapter{
         return msgs;
     }
 
+    public int getTotalVideos(){
+        openDatabase();
+        Cursor results = null;
+        try {
+            // Query
+            results = mDb.rawQuery("SELECT " + DbDefines.Video_URL + " FROM " + DbDefines.TABLE_VIDEOS, null);
+            if (results != null ) {
+                return results.getCount();
+            }
+        } catch (SQLiteException e) {
+            LogUtils.logI(TAG, e.toString());
+        } finally {
+            if (results != null) {
+                results.close();
+            }
+            // close the cursor and the database
+            this.close();
+        }
+        // value return
+        return Constants.ZERO_NUMBER;
+    }
+
     public List<VideoObject> getListActivitiesLocalBaseOnListId(List<VideoObject> listNewsObject){
         List<VideoObject> msgs = new ArrayList<VideoObject>();
         String whereClause = Constants.EMPTY_STRING;
@@ -135,6 +157,33 @@ public class VideoDBAdapter extends BaseAdapter{
         }
         // value return
         return msgs;
+    }
+
+    public ArrayList<VideoObject> getListVideosBaseOnTime(long time){
+        ArrayList<VideoObject> listVideos = new ArrayList<VideoObject>();
+        String query = "SELECT * FROM " + DbDefines.TABLE_VIDEOS + " WHERE " + DbDefines.Time + " < " + time + " ORDER BY " + DbDefines.Time + " DESC LIMIT " + Constants.NUMBER_LOAD_VIDEO;
+
+        Cursor results = null;
+        openDatabase();
+        try{
+            results = mDb.rawQuery(query, null);
+            if(results != null && results.getCount() > 0){
+                for (int i = 0; i < results.getCount(); i++) {
+                    results.moveToPosition(i);
+                    VideoObject videoObject = mapMessageData(results);
+                    listVideos.add(videoObject);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if(results != null){
+                results.close();
+            }
+            this.close();
+        }
+
+        return listVideos;
     }
 
     private ContentValues mapContentValues(VideoObject videoObject) {

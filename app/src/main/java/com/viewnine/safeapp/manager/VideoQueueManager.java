@@ -45,14 +45,18 @@ public class VideoQueueManager {
 
 
         LogUtils.logI(TAG, "Thread is running: " + insertMsgThreadIsRunning);
-        if (!insertMsgThreadIsRunning) {
-            listVideoNeedInsertToDB.add(videoObject);
 
-            new Thread(insertVideoRunnable).start();
-        } else {
-            listVideoNeedInsertToDB.add(videoObject);
+        if(videoObject != null){
+            if (!insertMsgThreadIsRunning) {
+                listVideoNeedInsertToDB.add(videoObject);
 
+                new Thread(insertVideoRunnable).start();
+            } else {
+                listVideoNeedInsertToDB.add(videoObject);
+
+            }
         }
+
     }
 
     // Insert video into DB and notify update UI, send message notifiy that

@@ -82,32 +82,38 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public CameraPreview(Activity activity, int cameraId, LayoutMode mode, int currentFlashMode) {
         super(activity); // Always necessary
-        mActivity = activity;
-        mLayoutMode = mode;
-        surfaceHolder = getHolder();
-        surfaceHolder.addCallback(this);
-        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        mCurrentFlashMode = currentFlashMode;
-        camera = null;
+        try {
+            mActivity = activity;
+            mLayoutMode = mode;
+            surfaceHolder = getHolder();
+            surfaceHolder.addCallback(this);
+            surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+            mCurrentFlashMode = currentFlashMode;
+            camera = null;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-            if (Camera.getNumberOfCameras() > cameraId) {
-                mCameraId = cameraId;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                if (Camera.getNumberOfCameras() > cameraId) {
+                    mCameraId = cameraId;
+                } else {
+                    mCameraId = DEFAULT_CAMERA;
+                }
             } else {
                 mCameraId = DEFAULT_CAMERA;
             }
-        } else {
-            mCameraId = DEFAULT_CAMERA;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                camera = Camera.open(mCameraId);
+            } else {
+                camera = Camera.open();
+            }
+            Camera.Parameters cameraParams = camera.getParameters();
+            mPreviewSizeList = cameraParams.getSupportedPreviewSizes();
+            mPictureSizeList = cameraParams.getSupportedPictureSizes();
+        }catch (Exception e){
+            e.printStackTrace();
+            activity.finish();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-            camera = Camera.open(mCameraId);
-        } else {
-            camera = Camera.open();
-        }
-        Camera.Parameters cameraParams = camera.getParameters();
-        mPreviewSizeList = cameraParams.getSupportedPreviewSizes();
-        mPictureSizeList = cameraParams.getSupportedPictureSizes();
     }
 
     public void takePicture(PictureCallback pictureCallback){

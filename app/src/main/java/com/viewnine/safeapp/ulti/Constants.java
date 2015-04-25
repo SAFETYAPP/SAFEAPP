@@ -27,4 +27,7 @@ public class Constants {
     public static final int TIME_DELAY = 500;
     public static final int OK = 0;
     public static final int ERROR = 1;
+    public static final int NUMBER_LOAD_VIDEO = 15;
+    public static final String VIDEO_LINK = "VIDEO_LINK";
+    public static final int MIN_NODE_OF_PATTER = 3;
 }

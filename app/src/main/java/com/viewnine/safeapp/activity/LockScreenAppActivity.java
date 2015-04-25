@@ -14,12 +14,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.viewnine.safeapp.glowpad.GlowPadView;
 import com.viewnine.safeapp.lockPattern.LockPatternViewEx;
+import com.viewnine.safeapp.manager.SharePreferenceManager;
+import com.viewnine.safeapp.manager.SwitchViewManager;
 import com.viewnine.safeapp.service.LockScreenService;
-import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.DateHelper;
 import com.viewnine.safeapp.ulti.ViewUlti;
 
@@ -43,6 +43,7 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
     private Button btnCancelPattern;
     private String TAG = LockScreenAppActivity.class.getName();
     private TextView lblTimeAMPM;
+    private String patternStringSetting;
 
 
     @Override
@@ -78,13 +79,14 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
         initLockPattern();
     }
 
-    private String previousString = Constants.EMPTY_STRING;
+
     private void initLockPattern() {
         rlLockPattern = (RelativeLayout) findViewById(R.id.relativelayout_pattern);
         lockPatternView = (LockPatternViewEx) findViewById(R.id.lockpatternview_pattern);
         txtWrongPattern = (TextView) findViewById(R.id.textview_wrong_pattern);
         btnCancelPattern = (Button) findViewById(R.id.button_cancel_pattern);
         btnCancelPattern.setOnClickListener(this);
+        patternStringSetting = SharePreferenceManager.getInstance().getUnlockPattern();
 
         lockPatternView.setOnPatternListener(new LockPatternViewEx.OnPatternListener() {
             @Override
@@ -104,14 +106,23 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
 
             @Override
             public void onPatternDetected(List<LockPatternViewEx.Cell> pattern) {
-                String patternString = pattern.toString();
-                if(!previousString.equalsIgnoreCase(patternString)){
-                    previousString = patternString;
-                }
-                lockPatternView.clearPattern();
-                Toast.makeText(LockScreenAppActivity.this, "Selected", Toast.LENGTH_SHORT).show();
+                handleDrawPatternString(pattern.toString());
             }
         });
+    }
+
+    /**
+     * if current pattern is equal with setting's pattern -> Goto History screen
+     * else clear pattern and notify user: wrong pattern
+     * @param patternStringSelected
+     */
+    private void handleDrawPatternString(String patternStringSelected){
+        if(!patternStringSetting.equalsIgnoreCase(patternStringSelected)){
+            lockPatternView.clearPattern();
+            txtWrongPattern.setVisibility(View.VISIBLE);
+        }else {
+            SwitchViewManager.getInstance().gotoHistoryScreen(this);
+        }
     }
 
     private void initGlowPad() {
@@ -352,8 +363,13 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
 
 
     private void handlePatternSelected() {
-        rlLockPattern.setVisibility(View.VISIBLE);
-        glowPadView.setVisibility(View.GONE);
+        if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty()){
+            SwitchViewManager.getInstance().gotoHistoryScreen(this);
+        }else {
+            txtWrongPattern.setVisibility(View.GONE);
+            rlLockPattern.setVisibility(View.VISIBLE);
+            glowPadView.setVisibility(View.GONE);
+        }
     }
 
 

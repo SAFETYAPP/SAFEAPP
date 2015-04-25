@@ -62,6 +62,7 @@ public class RecordForegroundVideoActivity extends ParentActivity {
         stopTimerTask();
         mPreviewTakePicture.releaseMediaRecorder();
         releaseCameraView();
+        finish();
 
     }
 

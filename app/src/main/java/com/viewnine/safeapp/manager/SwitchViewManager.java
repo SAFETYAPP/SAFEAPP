@@ -6,8 +6,14 @@ import android.content.Intent;
 
 import com.viewnine.safeapp.activity.HistoryActivity;
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
+import com.viewnine.safeapp.activity.PlayVideoActivity;
+import com.viewnine.safeapp.activity.R;
 import com.viewnine.safeapp.activity.RecordForegroundVideoActivity;
+import com.viewnine.safeapp.activity.ScreenUnlockActivity;
+import com.viewnine.safeapp.activity.SecurityActivity;
+import com.viewnine.safeapp.activity.SettingsActivity;
 import com.viewnine.safeapp.activity.SetupActivity;
+import com.viewnine.safeapp.ulti.Constants;
 
 /**
  * Created by user on 4/19/15.
@@ -52,5 +58,34 @@ public class SwitchViewManager {
         Intent intent = new Intent(context, HistoryActivity.class);
         ((Activity)context).startActivity(intent);
         ((Activity)context).finish();
+    }
+
+    public void gotoVideoScreen(Context context, String videoUrl){
+        Intent intent = new Intent(context, PlayVideoActivity.class);
+        intent.putExtra(Constants.VIDEO_LINK, videoUrl);
+        ((Activity)context).startActivity(intent);
+        startPushScreenIn(context);
+    }
+
+    public void gotoSettingsScreen(Context context){
+        Intent intent = new Intent(context, SettingsActivity.class);
+        ((Activity)context).startActivity(intent);
+        startPushScreenIn(context);
+    }
+
+    public void gotoSecurityScreen(Context context){
+        Intent intent = new Intent(context, SecurityActivity.class);
+        ((Activity)context).startActivity(intent);
+        startPushScreenIn(context);
+    }
+
+    public void gotoScreenUnlockScreen(Context context){
+        Intent intent = new Intent(context, ScreenUnlockActivity.class);
+        ((Activity)context).startActivity(intent);
+        startPushScreenIn(context);
+    }
+
+    private void startPushScreenIn(Context context){
+        ((Activity) context).overridePendingTransition(R.anim.push_up_in, R.anim.stay);
     }
 }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/hight_size_setting_item"
+                android:id="@+id/button_backup"
+                android:background="@color/transparent"
+                android:text="@string/back_up"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/light_gray"/>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/hight_size_setting_item"
+                android:id="@+id/button_notification"
+                android:background="@color/transparent"
+                android:text="@string/notifications"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/light_gray"/>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/hight_size_setting_item"
+                android:id="@+id/button_security"
+                android:background="@color/transparent"
+                android:text="@string/security"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/light_gray"/>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/hight_size_setting_item"
+                android:id="@+id/button_contact_us"
+                android:background="@color/transparent"
+                android:text="@string/contact_us"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/light_gray"/>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/hight_size_setting_item"
+                android:id="@+id/button_primacy_policy"
+                android:background="@color/transparent"
+                android:text="@string/primacy_policy"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/light_gray"/>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/hight_size_setting_item"
+                android:id="@+id/button_term_condition"
+                android:background="@color/transparent"
+                android:text="@string/term_condition"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/light_gray"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

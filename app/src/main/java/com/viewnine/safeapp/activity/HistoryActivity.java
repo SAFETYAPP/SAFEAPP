@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.viewnine.safeapp.Adapter.VideoAdapter;
 import com.viewnine.safeapp.manager.HistoryManager;
@@ -16,13 +18,14 @@ import com.viewnine.safeapp.ulti.AlertHelper;
 import com.viewnine.safeapp.ulti.Constants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 /**
  * Created by user on 4/24/15.
  */
-public class HistoryActivity extends ParentActivity {
+public class HistoryActivity extends ParentActivity implements AbsListView.OnScrollListener{
     ArrayList<VideoObject> listVideos;
     String lastVideoId = Constants.EMPTY_STRING;
     VideoAdapter videoAdapter;
@@ -35,8 +38,10 @@ public class HistoryActivity extends ParentActivity {
     private static final int GRID_TAB = 0;
     private static final int LIST_TAB = 1;
     private int currentTab = GRID_TAB;
-    private ViewGroup mFooterView;
+    private ViewGroup mFooterListView;
     private ViewGroup mFooterViewGridView;
+    private boolean needToShowLoadMore = true;
+    private TextView txtLoadMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,8 @@ public class HistoryActivity extends ParentActivity {
 
         gridviewVideos = (GridViewWithHeaderAndFooter) findViewById(R.id.griview_history);
         listviewVideos = (ListView) findViewById(R.id.listview_history);
+        gridviewVideos.setOnScrollListener(this);
+        listviewVideos.setOnScrollListener(this);
         addFooterView();
         lnTabBar = (LinearLayout) findViewById(R.id.linearlayout_tabbar);
         btnGrid = (Button) findViewById(R.id.button_grid);
@@ -71,13 +78,13 @@ public class HistoryActivity extends ParentActivity {
         videoAdapter = new VideoAdapter(this);
         gridviewVideos.setAdapter(videoAdapter);
         listviewVideos.setAdapter(videoAdapter);
-        getListVideo();
+        getListVideo(Calendar.getInstance().getTimeInMillis(), true);
 
     }
 
-    private void getListVideo(){
+    private void getListVideo(long time, boolean isShowLoadingPopup){
 
-        HistoryManager.getInstance().getListVideos(this, lastVideoId, new HistoryManager.IGetVideoListener() {
+        HistoryManager.getInstance().getListVideos(this, time, isShowLoadingPopup, new HistoryManager.IGetVideoListener() {
             @Override
             public void listVideos(ArrayList<VideoObject> listVideo, int totalVideos) {
 
@@ -93,7 +100,6 @@ public class HistoryActivity extends ParentActivity {
 
     private void handleDataAfterGetListVideo(ArrayList<VideoObject> listVideosTmp, int totalVideos){
         if (listVideosTmp != null && listVideosTmp.size() > 0) {
-            lastVideoId = listVideosTmp.get(listVideosTmp.size() - 1).getId();
             if(videoAdapter.isEmpty()){
                 listVideos.clear();
             }
@@ -101,6 +107,15 @@ public class HistoryActivity extends ParentActivity {
             videoAdapter.setListVideos(listVideos);
         }
         addVideoNumber(totalVideos);
+        if(listVideos.size() == totalVideos){
+            needToShowLoadMore = false;
+            mFooterListView.setVisibility(View.INVISIBLE);
+            mFooterViewGridView.setVisibility(View.INVISIBLE);
+        }else {
+            needToShowLoadMore = true;
+            mFooterListView.setVisibility(View.VISIBLE);
+            mFooterViewGridView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -148,9 +163,9 @@ public class HistoryActivity extends ParentActivity {
 
     private void addFooterView() {
         final LayoutInflater layoutInflater = LayoutInflater.from(this);
-        mFooterView = (ViewGroup) layoutInflater.inflate(
+        mFooterListView = (ViewGroup) layoutInflater.inflate(
                 R.layout.footer_loadmore, null);
-        listviewVideos.addFooterView(mFooterView);
+        listviewVideos.addFooterView(mFooterListView);
 
 
         mFooterViewGridView = (ViewGroup) layoutInflater.inflate(
@@ -159,4 +174,21 @@ public class HistoryActivity extends ParentActivity {
     }
 
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+        int lastVisiblePositionItemOfListView = listviewVideos.getLastVisiblePosition();
+        int lastVisiablePositionItemOfGridView = gridviewVideos.getLastVisiblePosition();
+        boolean needToGetVideos = needToShowLoadMore && listVideos != null && listVideos.size() > 0 && ((lastVisiblePositionItemOfListView == totalItemCount - 1) || (lastVisiablePositionItemOfGridView == totalItemCount - 1));
+        if(needToGetVideos){
+            long time = listVideos.get(listVideos.size() - 1).getTime();
+            getListVideo(time, false);
+        }
+
+    }
 }
