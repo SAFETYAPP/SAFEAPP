@@ -329,14 +329,14 @@ public class LockPatternViewEx extends View {
         mRegularColor = regularColor;
 //        mErrorColor = a.getColor(R.styleable.LockPatternViewEx_errorColor,
 //                mErrorColor);
-        mErrorColor = regularColor;
+        mErrorColor = errorColor;
 //        mSuccessColor = a.getColor(R.styleable.LockPatternViewEx_successColor,
 //                mSuccessColor);
-        mSuccessColor = errorColor;
+        mSuccessColor = successColor;
 
-        int pathColor = successColor;
 
-        mPathPaint.setColor(pathColor);
+
+        mPathPaint.setColor(mRegularColor);
     }
 
     public CellState[][] getCellStates() {
@@ -1020,7 +1020,7 @@ public class LockPatternViewEx extends View {
 
         if (drawPath) {
             mPathPaint.setColor(getCurrentColor(true /* partOfPattern */));
-
+//            mPathPaint.setColor(getResources().getColor(R.color.safeapp_color));fsd
             boolean anyCircles = false;
             float lastX = 0f;
             float lastY = 0f;

@@ -2,9 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
+    android:layout_height="match_parent">
 
 
     <TextView
@@ -13,14 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/lockpatternview_pattern"
         android:layout_centerHorizontal="true"
-        android:textSize="@dimen/safeapp_text_size"
+        android:text="@string/wrong_pattern"
         android:textColor="@color/Gray"
-        android:text="@string/wrong_pattern" />
+        android:textSize="@dimen/safeapp_text_size" />
 
     <com.viewnine.safeapp.lockPattern.LockPatternViewEx
         android:id="@+id/lockpatternview_pattern"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_above="@+id/button_cancel_pattern" />
+        android:layout_above="@+id/button_cancel_pattern"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

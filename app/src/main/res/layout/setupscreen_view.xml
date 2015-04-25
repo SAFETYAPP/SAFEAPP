@@ -7,12 +7,10 @@
     tools:context=".SetupActivity">
 
 
-
-
     <ScrollView
+        android:id="@+id/scrollview_setup"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/scrollview_setup"
 
         android:layout_above="@+id/next">
 
@@ -22,9 +20,9 @@
             android:orientation="vertical">
 
             <TextView
-                android:padding="@dimen/default_padding"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/default_padding"
                 android:text="@string/please_enter_and_email_setup_screen"
                 android:textColor="@color/black"
                 android:textSize="@dimen/safeapp_text_size" />
@@ -38,25 +36,25 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/primary_email"
                 android:padding="@dimen/default_padding"
-                android:textSize="@dimen/safeapp_text_size"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:singleLine="true"
-                android:textColorHint="@color/Gray"
+                android:text="@string/primary_email"
                 android:textColor="@color/black"
                 android:textSize="@dimen/safeapp_text_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/primary_email"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="@dimen/default_padding"
                 android:layout_marginLeft="@dimen/default_padding"
                 android:layout_marginRight="@dimen/default_padding"
-                android:layout_marginBottom="@dimen/default_padding"
-                android:hint="@string/please_enter_primary_email"
                 android:background="@color/transparent"
-                android:id="@+id/primary_email" />
+                android:hint="@string/please_enter_primary_email"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/Gray"
+                android:textSize="@dimen/safeapp_text_size" />
 
 
             <View
@@ -67,25 +65,25 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/secondary_email"
                 android:padding="@dimen/default_padding"
-                android:textSize="@dimen/safeapp_text_size"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:singleLine="true"
-                android:textColorHint="@color/Gray"
+                android:text="@string/secondary_email"
                 android:textColor="@color/black"
                 android:textSize="@dimen/safeapp_text_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/secondary_email"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="@dimen/default_padding"
                 android:layout_marginLeft="@dimen/default_padding"
                 android:layout_marginRight="@dimen/default_padding"
-                android:layout_marginBottom="@dimen/default_padding"
                 android:background="@color/transparent"
                 android:hint="@string/please_enter_secondary_email"
-                android:id="@+id/secondary_email" />
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/Gray"
+                android:textSize="@dimen/safeapp_text_size" />
 
             <View
                 android:layout_width="fill_parent"
@@ -98,14 +96,14 @@
 
 
     <Button
+        android:id="@+id/next"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_safeapp_height"
         android:layout_alignParentBottom="true"
+        android:background="@color/Gray"
         android:text="@string/next"
         android:textColor="@color/White"
-        android:textStyle="bold"
         android:textSize="@dimen/title_safeapp_text_size"
-        android:background="@color/Gray"
-        android:id="@+id/next" />
+        android:textStyle="bold" />
 
 </RelativeLayout>

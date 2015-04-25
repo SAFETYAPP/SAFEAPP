@@ -7,7 +7,6 @@
     <com.viewnine.safeapp.customView.SquareImageView
         android:id="@+id/image_video"
         android:layout_width="fill_parent"
-        android:scaleType="centerCrop"
         android:layout_height="fill_parent"
-        />
+        android:scaleType="centerCrop" />
 </RelativeLayout>

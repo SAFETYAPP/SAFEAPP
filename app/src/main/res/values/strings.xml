@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SafeApp</string>
+    <string name="app_name">Safe App</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -39,6 +39,8 @@
     <string name="screen_unlock">Screen Unlock</string>
     <string name="choose_a_pattern">Choose a pattern</string>
     <string name="successful">Successful</string>
-    <string name="confirm_pattern">Confirm Pattern</string>
+    <string name="confirm_pattern">Re-enter pattern</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
     <!-- END -->
 </resources>

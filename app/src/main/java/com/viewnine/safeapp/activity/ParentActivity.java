@@ -229,7 +229,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
             }
         };
 
-        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, Constants.TIME_TO_RECORDING);
+        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, Constants.TIME_TO_PENDING);
 
 
     }

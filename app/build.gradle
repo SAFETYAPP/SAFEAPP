@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.viewnine.safeapp"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -24,5 +24,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.2'
     compile project(':ffmpeg4android_lib')
     compile project(':ImageLoader')
-    compile 'in.srain.cube:grid-view-with-header-footer:1.0.11'  //https://github.com/liaohuqiu/android-GridViewWithHeaderAndFooter
+    compile 'in.srain.cube:grid-view-with-header-footer:1.0.11'
+    //https://github.com/liaohuqiu/android-GridViewWithHeaderAndFooter
 }

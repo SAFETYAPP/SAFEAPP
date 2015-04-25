@@ -2,14 +2,12 @@ package com.viewnine.safeapp.view;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.media.CamcorderProfile;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.util.Log;
@@ -107,6 +105,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 camera = Camera.open();
             }
             Camera.Parameters cameraParams = camera.getParameters();
+
             mPreviewSizeList = cameraParams.getSupportedPreviewSizes();
             mPictureSizeList = cameraParams.getSupportedPictureSizes();
         }catch (Exception e){
@@ -129,7 +128,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     /////////////////////////////////////////////////////////
 
-    public void startRecording()
+    public void startRecording(int maxTime, boolean enableRecordAudio)
     {
 
         try {
@@ -139,19 +138,35 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
             mediaRecorder = new MediaRecorder();  // Works well
             camera.unlock();
+            camera.enableShutterSound(false);
 
             mediaRecorder.setCamera(camera);
 
             mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
             mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+            if(enableRecordAudio){
+                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+            }
+
+            int rotateVideo = Constants.POSITIVE_90_DEGREE;
+            if(mCameraId != DEFAULT_CAMERA){
+                rotateVideo = Constants.DEGREE_270;
+            }
+            mediaRecorder.setOrientationHint(rotateVideo);
 
 //            if(mCameraId == DEFAULT_CAMERA){
 //                mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH_SPEED_480P));
 //            }else {
 //                mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_480P));
 //            }
-            mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_480P));
+
+            try {
+                mediaRecorder.setProfile(CamcorderProfile.get(Constants.CAMERA_QUALITY));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            mediaRecorder.setMaxDuration(maxTime);
 
             mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
             mediaRecorder.setOutputFile(fileName);
@@ -309,59 +324,65 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void doSurfaceChanged(int width, int height) {
-        camera.stopPreview();
+        try {
+            camera.stopPreview();
 
-        Camera.Parameters cameraParams = camera.getParameters();
-        boolean portrait = isPortrait();
+            Camera.Parameters cameraParams = camera.getParameters();
+            boolean portrait = isPortrait();
 
-        // The code in this if-statement is prevented from executed again when surfaceChanged is
-        // called again due to the change of the layout size in this if-statement.
-        if (!mSurfaceConfiguring) {
-            Camera.Size previewSize = determinePreviewSize(portrait, width, height);
-            Camera.Size pictureSize = determinePictureSize(previewSize);
+            // The code in this if-statement is prevented from executed again when surfaceChanged is
+            // called again due to the change of the layout size in this if-statement.
+            if (!mSurfaceConfiguring) {
+                Camera.Size previewSize = determinePreviewSize(portrait, width, height);
+                Camera.Size pictureSize = determinePictureSize(previewSize);
 //            previewSize.width = 352;
 //            previewSize.height = 288;
 //            pictureSize.width = 352;
 //            pictureSize.height = 288;
-            if (DEBUGGING) { Log.v(LOG_TAG, "Desired Preview Size - w: " + width + ", h: " + height); }
-            mPreviewSize = previewSize;
-            mPictureSize = pictureSize;
-            mSurfaceConfiguring = adjustSurfaceLayoutSize(previewSize, portrait, width, height);
-            // Continue executing this method if this method is called recursively.
-            // Recursive call of surfaceChanged is very special case, which is a path from
-            // the catch clause at the end of this method.
-            // The later part of this method should be executed as well in the recursive
-            // invocation of this method, because the layout change made in this recursive
-            // call will not trigger another invocation of this method.
-            if (mSurfaceConfiguring && (mSurfaceChangedCallDepth <= 1)) {
-                return;
+                if (DEBUGGING) { Log.v(LOG_TAG, "Desired Preview Size - w: " + width + ", h: " + height); }
+                mPreviewSize = previewSize;
+                mPictureSize = pictureSize;
+                mSurfaceConfiguring = adjustSurfaceLayoutSize(previewSize, portrait, width, height);
+                // Continue executing this method if this method is called recursively.
+                // Recursive call of surfaceChanged is very special case, which is a path from
+                // the catch clause at the end of this method.
+                // The later part of this method should be executed as well in the recursive
+                // invocation of this method, because the layout change made in this recursive
+                // call will not trigger another invocation of this method.
+                if (mSurfaceConfiguring && (mSurfaceChangedCallDepth <= 1)) {
+                    return;
+                }
             }
-        }
 
-        configureCameraParameters(cameraParams, portrait);
-        mSurfaceConfiguring = false;
+            configureCameraParameters(cameraParams, portrait);
+            mSurfaceConfiguring = false;
 
-        try {
-            camera.startPreview();
-        } catch (Exception e) {
-            Log.w(LOG_TAG, "Failed to start preview: " + e.getMessage());
+            try {
+                camera.startPreview();
+            } catch (Exception e) {
+                Log.w(LOG_TAG, "Failed to start preview: " + e.getMessage());
 
-            // Remove failed size
-            mPreviewSizeList.remove(mPreviewSize);
-            mPreviewSize = null;
+                // Remove failed size
+                mPreviewSizeList.remove(mPreviewSize);
+                mPreviewSize = null;
 
-            // Reconfigure
-            if (mPreviewSizeList.size() > 0) { // prevent infinite loop
-                surfaceChanged(null, 0, width, height);
-            } else {
-                Toast.makeText(mActivity, "Can't start preview", Toast.LENGTH_LONG).show();
-                Log.w(LOG_TAG, "Gave up starting preview");
+                // Reconfigure
+                if (mPreviewSizeList.size() > 0) { // prevent infinite loop
+                    surfaceChanged(null, 0, width, height);
+                } else {
+                    Toast.makeText(mActivity, "Can't start preview", Toast.LENGTH_LONG).show();
+                    Log.w(LOG_TAG, "Gave up starting preview");
+                }
             }
+
+            if (null != mPreviewReadyCallback) {
+                mPreviewReadyCallback.onPreviewReady();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            LogUtils.logE(TAG, "Error in doSurfaceChanged(): " + e.toString());
         }
 
-        if (null != mPreviewReadyCallback) {
-            mPreviewReadyCallback.onPreviewReady();
-        }
     }
 
     /**
@@ -532,7 +553,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
             Log.v(LOG_TAG, "angle: " + angle);
             camera.setDisplayOrientation(angle);
+
         }
+
 
         setCameraSizeAndPictureSize(cameraParams);
 

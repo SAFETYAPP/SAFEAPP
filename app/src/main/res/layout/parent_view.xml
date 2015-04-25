@@ -10,9 +10,9 @@
     <RelativeLayout
         android:id="@+id/relativelayout_header"
         android:layout_width="fill_parent"
-        android:gravity="center_vertical"
         android:layout_height="wrap_content"
         android:background="@color/safeapp_color"
+        android:gravity="center_vertical"
         android:padding="@dimen/default_padding">
 
         <LinearLayout
@@ -56,44 +56,44 @@
             android:textColor="@color/White"
             android:textSize="@dimen/title_safeapp_text_size"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/button_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="settings"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/button_back"
-            android:visibility="gone"
-            android:text="back"/>
-
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="back"
+            android:visibility="gone" />
+
+        <Button
             android:id="@+id/button_goto_share"
-            android:layout_alignParentRight="true"
-            android:visibility="gone"
-            android:text="goto share"/>
-
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_share"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
-            android:text="share"/>
+            android:text="goto share"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/button_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="share"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <!-- Body -->
 
     <FrameLayout
-        android:layout_width="fill_parent"
         android:id="@+id/framelayout_parent"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/relativelayout_header"></FrameLayout>
 

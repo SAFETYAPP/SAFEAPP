@@ -29,6 +29,8 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     private Button btnFlashMode;
     private Button btnSwitchCamera;
     private Button btnTakeOrRecordCamera;
+    private Button btnAudio;
+    private boolean enableRecordAudio = true;
     private View btnGallery;
 
 
@@ -91,6 +93,9 @@ public class RecordForegroundVideoActivity extends ParentActivity {
         btnTakeOrRecordCamera.setOnClickListener(this);
         btnGallery = (Button) findViewById(R.id.button_gallery);
         btnGallery.setOnClickListener(this);
+
+        btnAudio = (Button) findViewById(R.id.button_audio_mode);
+        btnAudio.setOnClickListener(this);
 
 
 
@@ -160,7 +165,7 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_take_record_camera:
-                takePicture();
+                handleRecordVideo();
                 break;
 
             case R.id.button_flash_mode:
@@ -172,10 +177,23 @@ public class RecordForegroundVideoActivity extends ParentActivity {
             case R.id.button_gallery:
                 handleGalleryButton();
                 break;
+            case R.id.button_audio_mode:
+                handleClickOnAudioButton();
+                break;
             default:
                 break;
         }
 
+    }
+
+    private void handleClickOnAudioButton() {
+        if(enableRecordAudio){
+            enableRecordAudio = false;
+            btnAudio.setText("Audio_Off");
+        }else {
+            btnAudio.setText("Audio_On");
+            enableRecordAudio = true;
+        }
     }
 
     private void handleGalleryButton() {
@@ -191,24 +209,21 @@ public class RecordForegroundVideoActivity extends ParentActivity {
 
 
     boolean recording = false;
-    private void takePicture() {
-//        if(mPreviewTakePicture != null){
-//            mPreviewTakePicture.takePicture(null);
-//        }
-
+    private void handleRecordVideo() {
         try {
             if(mPreviewTakePicture != null){
                 if(recording){
+                    btnTakeOrRecordCamera.setText(getString(R.string.start));
                     recording = false;
                     LogUtils.logI(TAG, "Stop Recording");
-//                    stopTimerTask();
-                   mPreviewTakePicture.releaseMediaRecorder();
+                    mPreviewTakePicture.releaseMediaRecorder();
 
                 }else {
+                    btnTakeOrRecordCamera.setText(getString(R.string.stop));
                     recording = true;
-
-                    mPreviewTakePicture.startRecording();
-//                    handleRecordingInForeground();
+                    LogUtils.logI(TAG, "Start Recording");
+//                    mPreviewTakePicture.startRecording(enableRecordAudio);
+                    handleRecordingInForeground();
                 }
             }
 
@@ -249,18 +264,16 @@ public class RecordForegroundVideoActivity extends ParentActivity {
 
                             }
                             Log.d(TAG, "Start recording");
-                            mPreviewTakePicture.startRecording();
+                            mPreviewTakePicture.startRecording(Constants.TIME_TO_RECORDING, enableRecordAudio);
 
                         }
-
-//                        Log.d(TAG, "Start timer");
                     }
                 });
 
             }
         };
 
-        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, Constants.TIME_TO_RECORDING);
+        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, Constants.TIME_TO_PENDING);
 
 
     }

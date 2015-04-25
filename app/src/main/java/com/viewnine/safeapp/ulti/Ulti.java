@@ -202,7 +202,8 @@ public class Ulti {
         String picturePath = Constants.EMPTY_STRING;
         try {
             retriever.setDataSource(videoFile);
-            Bitmap bitmap = RotateBitmap(retriever.getFrameAtTime(-1), 90);
+//            Bitmap bitmap = RotateBitmap(retriever.getFrameAtTime(-1), rotateAngle);
+            Bitmap bitmap = retriever.getFrameAtTime(-1);
             String fileTmp = Constants.IMAGE_FOLDER + Calendar.getInstance().getTimeInMillis() + ".png";
             boolean isSaveSuccessfull = saveBitmapToSDCard(bitmap, fileTmp);
             if(isSaveSuccessfull){

@@ -84,13 +84,19 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             camera = Camera.open();
             mediaRecorder = new MediaRecorder();
             camera.unlock();
-
+            camera.enableShutterSound(false);
             mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
             mediaRecorder.setCamera(camera);
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
             mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-            mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW));
+            try {
+                mediaRecorder.setProfile(CamcorderProfile.get(Constants.CAMERA_QUALITY));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            mediaRecorder.setOrientationHint(Constants.POSITIVE_90_DEGREE);
 
+            mediaRecorder.setMaxDuration(Constants.TIME_TO_RECORDING);
             LogUtils.logD(TAG, "File name: " + fileName);
             mediaRecorder.setOutputFile(fileName);
 

@@ -2,16 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent"
-    >
-
-
+    android:background="@color/transparent">
 
 
     <RelativeLayout
+        android:id="@+id/relativelayout_camera"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/relativelayout_camera"></RelativeLayout>
+        android:layout_height="fill_parent"></RelativeLayout>
 
     <!-- Top bar -->
 
@@ -20,15 +17,24 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
-        android:padding="10dp" >
+        android:padding="10dp">
 
         <Button
             android:id="@+id/button_flash_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/button_switch_camera"
+
             android:text="Flash" />
+
+        <Button
+            android:id="@+id/button_audio_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/button_flash_mode"
+            android:text="Audio" />
 
         <Button
             android:id="@+id/button_switch_camera"
@@ -54,12 +60,11 @@
 
         <Button
             android:id="@+id/button_take_record_camera"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Capture" />
+            android:layout_centerHorizontal="true"
+            android:text="Start" />
     </RelativeLayout>
-
 
 
 </RelativeLayout>
