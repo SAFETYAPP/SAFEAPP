@@ -169,7 +169,9 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
             }
 
         }else {
-            lnVideoNumber.setVisibility(View.GONE);
+            lnVideoNumber.setVisibility(View.VISIBLE);
+            txtVideoNumber.setText(String.valueOf(videoNumbers));
+            txtVideos.setText(getString(R.string.video));
         }
     }
 

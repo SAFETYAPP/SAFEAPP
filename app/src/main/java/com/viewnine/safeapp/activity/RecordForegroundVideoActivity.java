@@ -214,17 +214,21 @@ public class RecordForegroundVideoActivity extends ParentActivity {
         try {
             if(mPreviewTakePicture != null){
                 if(recording){
-                    btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_normal_state);
-                    recording = false;
+
                     LogUtils.logI(TAG, "Stop Recording");
                     mPreviewTakePicture.releaseMediaRecorder();
+                    btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_normal_state);
+                    btnGallery.setVisibility(View.VISIBLE);
+                    recording = false;
 
                 }else {
-                    btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_active_state);
-                    recording = true;
+
                     LogUtils.logI(TAG, "Start Recording");
 //                    mPreviewTakePicture.startRecording(enableRecordAudio);
                     handleRecordingInForeground();
+                    btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_active_state);
+                    recording = true;
+                    btnGallery.setVisibility(View.GONE);
                 }
             }
 

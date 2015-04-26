@@ -25,19 +25,12 @@ public class SplashScreenActivity extends ParentActivity {
 
     private void handleFirstTimeRunning(){
 
-
-        if(!ValidationHelper.getInstance().alreadySetupEmail()){
-//            setContentView(R.layout.splashscreen_view);
-            addChidlView(R.layout.splashscreen_view);
-            showHideHeader(false);
-            handler.sendEmptyMessageDelayed(key_exit, 1000);
-        }else {
-            SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
-        }
+        addChidlView(R.layout.splashscreen_view);
+        showHideHeader(false);
+        handler.sendEmptyMessageDelayed(key_exit, 1000);
 
 
 
-//        SwitchViewManager.getInstance().gotoLockScreen(this);
     }
 
     Handler handler = new Handler(new Handler.Callback() {
@@ -55,7 +48,12 @@ public class SplashScreenActivity extends ParentActivity {
 
     private void handleGotoNextScreen() {
 
-       SwitchViewManager.getInstance().gotoRecordSetupScreen(this);
+        if(!ValidationHelper.getInstance().alreadySetupEmail()){
+            SwitchViewManager.getInstance().gotoRecordSetupScreen(this);
+        }else {
+            SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
+        }
+
 
     }
 

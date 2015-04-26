@@ -42,7 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="edit" />
+            android:layout_margin="10dp"
+            android:background="@drawable/edit_button" />
     </RelativeLayout>
 
     <View
@@ -87,7 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="edit" />
+            android:layout_margin="10dp"
+            android:background="@drawable/edit_button" />
     </RelativeLayout>
 
     <View
