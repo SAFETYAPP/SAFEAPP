@@ -76,15 +76,15 @@ public class SafeAppApplication extends Application {
 //                .build();
 
         DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
-                                                    .showImageOnLoading(R.drawable.loading_wheel_freely)
-                                                    .showImageOnFail(R.drawable.lockicon)
+//                                                    .showImageOnLoading(R.drawable.loading_wheel_freely)
+                                                    .showImageOnFail(R.drawable.safeapp_system_tray_icon_gray)
                                                     .build();
 
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
         config.threadPriority(Thread.NORM_PRIORITY - 2);
         config.denyCacheImageMultipleSizesInMemory();
         config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
-        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
+        config.diskCacheSize(100 * 1024 * 1024); // 100 MiB
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
         config.defaultDisplayImageOptions(displayImageOptions);
         config.writeDebugLogs(); // Remove for release app

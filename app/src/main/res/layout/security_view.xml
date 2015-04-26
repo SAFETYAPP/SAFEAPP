@@ -19,6 +19,8 @@
                 android:id="@+id/button_screen_unlock"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/hight_size_setting_item"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/padding_setting"
                 android:textSize="@dimen/safeapp_text_size"
                 android:background="@color/transparent"
                 android:text="@string/screen_unlock" />

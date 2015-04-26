@@ -15,6 +15,7 @@ public class SharePreferenceManager {
     private static final String SECONDARY_EMAIL = "SECONDARY_EMAIL";
     private static final String UNLOCK_PATTERN = "UNLOCK_PATTERN";
     private static final String ENTRY_DURATION_TIME_DEFAULT = "ENTRY_DURATION_TIME_DEFAULT";
+    private static final String ENABLE_NOTIFICATION_FOR_EACH_BACKUP = "ENABLE_NOTIFICATION_FOR_EACH_BACKUP";
 
     private static SharePreferenceManager instance;
     private static SharedPreferences preferences;
@@ -71,4 +72,16 @@ public class SharePreferenceManager {
     public int getIndexDurationTime(){
        return preferences.getInt(ENTRY_DURATION_TIME_DEFAULT, 0);
     }
+
+    public void setEnableNotificationForEachBackup(boolean enable){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(ENABLE_NOTIFICATION_FOR_EACH_BACKUP, enable);
+        editor.commit();
+    }
+
+    public boolean isEnableNotificationForEachBackup(){
+        return preferences.getBoolean(ENABLE_NOTIFICATION_FOR_EACH_BACKUP, true);
+    }
+
+
 }

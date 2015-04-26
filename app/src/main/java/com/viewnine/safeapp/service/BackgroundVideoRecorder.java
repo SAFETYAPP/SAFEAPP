@@ -1,5 +1,8 @@
 package com.viewnine.safeapp.service;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +11,7 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,6 +19,8 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
+import com.viewnine.safeapp.activity.HistoryActivity;
+import com.viewnine.safeapp.activity.R;
 import com.viewnine.safeapp.manager.VideoQueueManager;
 import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.Constants;
@@ -42,9 +48,26 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 //            .setSmallIcon(R.drawable.lockicon)
 //            .build();
 //        startForeground(1234, notification);
+        initNotificaiton();
         super.onCreate();
     }
 
+    private void initNotificaiton(){
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.safeapp_system_tray_icon)
+                .setContentTitle(getResources().getString(R.string.app_name))
+                .setContentText(getResources().getString(R.string.tap_to_end_current_recording))
+                .setAutoCancel(true);
+
+
+        Intent resultIntent = new Intent(this, HistoryActivity.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
+
+        int mNotificationID = 001;
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotificationManager.notify(mNotificationID, mBuilder.build());
+    }
 
 
     private void initSurface(){
@@ -84,7 +107,13 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             camera = Camera.open();
             mediaRecorder = new MediaRecorder();
             camera.unlock();
-            camera.enableShutterSound(false);
+            try {
+                camera.enableShutterSound(false);
+
+            }catch (Exception e){
+                e.printStackTrace();
+                LogUtils.logE(TAG, "Fail to enable shutter sound: " + e.toString());
+            }
             mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
             mediaRecorder.setCamera(camera);
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
@@ -137,6 +166,34 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                 windowManager.removeView(surfaceView);
 
                 Toast.makeText(getBaseContext(), "Recording Stopped", Toast.LENGTH_SHORT).show();
+
+                if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
+                    LogUtils.logD(TAG, "Save video starting...");
+                    String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
+                    VideoObject videoObjectDB = new VideoObject();
+                    videoObjectDB.setId(videoObject.getId());
+                    videoObjectDB.setImageLink(imageLink);
+                    videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
+                    videoObjectDB.setTime(videoObject.getTime());
+                    videoObject = null;
+                    VideoQueueManager.getInstance(getBaseContext()).addVideoInQueue(videoObjectDB, true, new VideoQueueManager.ISavingVideoListener() {
+                        @Override
+                        public void successful(VideoObject videoObject) {
+                            Intent intent = new Intent();
+                            intent.setAction(Constants.ACTION_BROADCAST_RECIVER_VIDEO);
+                            sendBroadcast(intent);
+
+                            Ulti.showNotificationForEachBackup(getBaseContext());
+                        }
+
+                        @Override
+                        public void fail() {
+
+                        }
+                    });
+                }else {
+                    LogUtils.logD(TAG, "Fail to save video");
+                }
             }
 //            stopSelf(startId);
 
@@ -148,19 +205,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             stopSelf(startId);
         }
 
-        if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
-            LogUtils.logD(TAG, "Save video starting...");
-            String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
-            VideoObject videoObjectDB = new VideoObject();
-            videoObjectDB.setId(videoObject.getId());
-            videoObjectDB.setImageLink(imageLink);
-            videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
-            videoObjectDB.setTime(videoObject.getTime());
-            videoObject = null;
-            VideoQueueManager.getInstance(getBaseContext()).addVideoInQueue(videoObjectDB, true);
-        }else {
-            LogUtils.logD(TAG, "Fail to save video");
-        }
+
 
         super.onDestroy();
 

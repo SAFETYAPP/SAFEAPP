@@ -1,6 +1,11 @@
 package com.viewnine.safeapp.view;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
@@ -10,6 +15,7 @@ import android.hardware.Camera.Size;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -18,6 +24,9 @@ import android.view.SurfaceView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.viewnine.safeapp.activity.HistoryActivity;
+import com.viewnine.safeapp.activity.R;
+import com.viewnine.safeapp.manager.SharePreferenceManager;
 import com.viewnine.safeapp.manager.VideoQueueManager;
 import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.Constants;
@@ -27,6 +36,7 @@ import com.viewnine.safeapp.ulti.Ulti;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class assumes the parent layout is RelativeLayout.LayoutParams.
@@ -205,26 +215,53 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mediaRecorder.release(); // release the recorder object
             mediaRecorder = null;
             camera.lock();           // lock camera for later use
+
+            if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
+
+                LogUtils.logD(TAG, "Save video starting...");
+                String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
+                VideoObject videoObjectDB = new VideoObject();
+                videoObjectDB.setId(videoObject.getId());
+                videoObjectDB.setImageLink(imageLink);
+                videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
+                videoObjectDB.setTime(videoObject.getTime());
+                videoObject = null;
+                VideoQueueManager.getInstance(mActivity).addVideoInQueue(videoObjectDB, true, new VideoQueueManager.ISavingVideoListener() {
+                    @Override
+                    public void successful(VideoObject videoObject) {
+                        Ulti.showNotificationForEachBackup(getContext());
+                    }
+
+                    @Override
+                    public void fail() {
+
+                    }
+                });
+
+
+            }else {
+                LogUtils.logD(TAG, "Fail to save video");
+            }
         }
+    }
 
-        if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
-
-            LogUtils.logD(TAG, "Save video starting...");
-            String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
-            VideoObject videoObjectDB = new VideoObject();
-            videoObjectDB.setId(videoObject.getId());
-            videoObjectDB.setImageLink(imageLink);
-            videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
-            videoObjectDB.setTime(videoObject.getTime());
-            videoObject = null;
-            VideoQueueManager.getInstance(mActivity).addVideoInQueue(videoObjectDB, true);
+    private void initNotificaiton(){
+        if(SharePreferenceManager.getInstance().isEnableNotificationForEachBackup()){
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext()).setSmallIcon(R.drawable.safeapp_system_tray_icon)
+                    .setContentTitle(getResources().getString(R.string.app_name))
+                    .setContentText(getResources().getString(R.string.back_up))
+                    .setAutoCancel(true);
 
 
-        }else {
-            LogUtils.logD(TAG, "Fail to save video");
+            Intent resultIntent = new Intent(getContext(), HistoryActivity.class);
+            PendingIntent resultPendingIntent = PendingIntent.getActivity(getContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.setContentIntent(resultPendingIntent);
+            mBuilder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
+
+            Random randomNotification = new Random();
+            NotificationManager mNotificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(randomNotification.nextInt(), mBuilder.build());
         }
-
-
 
     }
 
@@ -392,7 +429,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     /**
-     * @param cameraParams
      * @param portrait
      * @param reqWidth must be the value of the parameter passed in surfaceChanged
      * @param reqHeight must be the value of the parameter passed in surfaceChanged

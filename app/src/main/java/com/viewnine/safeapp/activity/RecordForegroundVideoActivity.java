@@ -128,16 +128,16 @@ public class RecordForegroundVideoActivity extends ParentActivity {
             mCurrentFlashMode = mPreviewTakePicture.getCurrentFlashMode();
             switch (mCurrentFlashMode) {
                 case CameraPreview.FLASH_AUTO:
-//                    btnFlashMode.setBackgroundResource(R.drawable.flash_auto_white);
-                    btnFlashMode.setText("AUTO");
+                    btnFlashMode.setBackgroundResource(R.drawable.flash_button_auto);
+
                     break;
                 case CameraPreview.FLASH_ON:
-//                    btnFlashMode.setBackgroundResource(R.drawable.flash_on_white);
-                    btnFlashMode.setText("ON");
+                    btnFlashMode.setBackgroundResource(R.drawable.flash_button_on);
+
                     break;
                 case CameraPreview.FLASH_OFF:
-//                    btnFlashMode.setBackgroundResource(R.drawable.flash_off_white);
-                    btnFlashMode.setText("OFF");
+                    btnFlashMode.setBackgroundResource(R.drawable.flash_button_off);
+
                     break;
 
                 default:
@@ -190,10 +190,10 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     private void handleClickOnAudioButton() {
         if(enableRecordAudio){
             enableRecordAudio = false;
-            btnAudio.setText("Audio_Off");
+            btnAudio.setBackgroundResource(R.drawable.audio_button_off);
         }else {
-            btnAudio.setText("Audio_On");
             enableRecordAudio = true;
+            btnAudio.setBackgroundResource(R.drawable.audio_button_on);
         }
     }
 
@@ -214,13 +214,13 @@ public class RecordForegroundVideoActivity extends ParentActivity {
         try {
             if(mPreviewTakePicture != null){
                 if(recording){
-                    btnTakeOrRecordCamera.setText(getString(R.string.start));
+                    btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_normal_state);
                     recording = false;
                     LogUtils.logI(TAG, "Stop Recording");
                     mPreviewTakePicture.releaseMediaRecorder();
 
                 }else {
-                    btnTakeOrRecordCamera.setText(getString(R.string.stop));
+                    btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_active_state);
                     recording = true;
                     LogUtils.logI(TAG, "Start Recording");
 //                    mPreviewTakePicture.startRecording(enableRecordAudio);

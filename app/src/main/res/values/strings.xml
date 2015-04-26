@@ -45,5 +45,8 @@
     <string name="set_duration">Set duration</string>
     <string name="auto_upload">Auto Upload</string>
     <string name="auto_upload_description">Videos are automatically uploaded in the background once the set duration has been reached.</string>
+    <string name="tap_to_end_current_recording">Tap to end current recording</string>
+    <string name="notify_me_after_each_back_up">Notify me after each back up</string>
+    <string name="back">Back</string>
     <!-- END -->
 </resources>

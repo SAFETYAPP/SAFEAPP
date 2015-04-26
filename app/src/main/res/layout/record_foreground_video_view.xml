@@ -21,50 +21,72 @@
 
         <Button
             android:id="@+id/button_flash_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/size_of_icons"
+            android:layout_height="@dimen/size_of_icons"
             android:layout_centerVertical="true"
-
-            android:text="Flash" />
+            android:background="@drawable/flash_button_on" />
 
         <Button
             android:id="@+id/button_audio_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/size_of_icons"
+            android:layout_height="@dimen/size_of_icons"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/button_flash_mode"
-            android:text="Audio" />
+            android:background="@drawable/audio_button_on" />
 
         <Button
             android:id="@+id/button_switch_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/size_of_icons"
+            android:layout_height="@dimen/size_of_icons"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:text="Switch" />
+            android:background="@drawable/switch_camera_button" />
     </RelativeLayout>
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
 
-        <Button
-            android:id="@+id/button_gallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="History" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/button_take_record_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Start" />
-    </RelativeLayout>
+            <Button
+                android:id="@+id/button_gallery"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/profile_button" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/button_take_record_camera"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/record_button_normal_state" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            />
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

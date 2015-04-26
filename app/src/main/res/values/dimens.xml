@@ -21,7 +21,7 @@
     <dimen name="title_safeapp_height">70dp</dimen>
     <dimen name="title_safeapp_text_size">25sp</dimen>
     <dimen name="safeapp_text_size">18sp</dimen>
-    <dimen name="default_padding">20dp</dimen>
+    <dimen name="default_padding">15dp</dimen>
 
     <!-- Value for lock pattern -->
     <dimen name="lock_pattern_dot_line_width">3dp</dimen>
@@ -34,5 +34,9 @@
     <dimen name="loading_wheel_icon">100dp</dimen>
     <dimen name="freely_icon_loading_circle">35dp</dimen>
     <dimen name="hight_size_setting_item">60dp</dimen>
+    <dimen name="size_of_icons">60dp</dimen>
+    <dimen name="icon_header_size">30dp</dimen>
+    <dimen name="icon_share_size">25dp</dimen>
+    <dimen name="padding_setting">20dp</dimen>
 
 </resources>

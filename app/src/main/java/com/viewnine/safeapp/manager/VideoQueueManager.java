@@ -22,6 +22,11 @@ public class VideoQueueManager {
 
     private static VideoQueueManager ourInstance = new VideoQueueManager();
     private static Context context;
+    public interface ISavingVideoListener{
+        public void successful(VideoObject videoObject);
+        public void fail();
+    }
+    private ISavingVideoListener savingVideoListener;
     public static VideoQueueManager getInstance(Context context) {
         if(ourInstance == null){
             ourInstance = new VideoQueueManager();
@@ -36,8 +41,9 @@ public class VideoQueueManager {
     // Add message in queue to insert into DB, if thread is running -> just add
     // video in queue else start new thread to insert DB
     public void addVideoInQueue(VideoObject videoObject,
-                                  boolean doNotification) {
+                                  boolean doNotification, ISavingVideoListener savingVideoListener) {
 
+        this.savingVideoListener = savingVideoListener;
         Log.d(TAG, "Do notification: " + doNotification);
 
         if (listVideoNeedInsertToDB == null)
@@ -83,10 +89,10 @@ public class VideoQueueManager {
                                 retryNumber++;
                             }
                             if (results) {
-//                                notifySignalUpdateUI(videoObject);
+                                notifySignalUpdateUI(videoObject);
                             }
                         } else {
-//                            notifySignalUpdateUI(videoObject);
+                            notifySignalUpdateUI(videoObject);
                         }
 
                         LogUtils.logD(TAG, "Insert Video successfull ? " + results + " : "+ videoObject.getVideoUrl());
@@ -102,6 +108,12 @@ public class VideoQueueManager {
             insertMsgThreadIsRunning = false;
         }
     };
+
+    private void notifySignalUpdateUI(VideoObject videoObject) {
+        if(savingVideoListener != null){
+            savingVideoListener.successful(videoObject);
+        }
+    }
 
     public boolean insertVideoIntoDB(VideoObject videoObject){
         VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);

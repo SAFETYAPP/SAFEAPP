@@ -52,7 +52,7 @@ public class SettingsActivity extends ParentActivity implements View.OnClickList
                 SwitchViewManager.getInstance().gotoBackupScreen(this);
                 break;
             case R.id.button_notification:
-
+                SwitchViewManager.getInstance().gotoNotificationsScreen(this);
                 break;
             case R.id.button_security:
                 SwitchViewManager.getInstance().gotoSecurityScreen(this);

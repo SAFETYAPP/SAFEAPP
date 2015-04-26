@@ -33,7 +33,7 @@
         jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/SafeApp/ImageLoader/unspecified/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="87bcd0846545713f0b35482314e791a93dcae50f">
+        sha1="e1f2bb2fad2f9f4e243b060eaaa1f046a43b95bf">
         <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-8d5dbf955abe26926864cc0810c0d064d4ec827a.jar" />
     </item>
     <item
@@ -61,15 +61,8 @@
         jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/SafeApp/ffmpeg4android_lib/unspecified/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="8102d0ffe57a3ff4b49491cf8a915239b401652b">
+        sha1="3518fad542f14c17cc80dc92ee10c36cab01dcba">
         <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-5c37582bfbbb519c81cd4fddd2f29415c1b81b57.jar" />
-    </item>
-    <item
-        jar="/Users/user/Documents/Moving data/Software/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.2/support-annotations-21.0.2.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="99373741f99a0556ee293c41e8faa1ca3ae8a4e6">
-        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-f74c43596c3a17ecd735f4404d51084cc198be8b.jar" />
     </item>
     <item
         jar="/Users/user/.gradle/caches/modules-2/files-2.1/in.srain.cube/grid-view-with-header-footer/1.0.11/e4579a07c99cd8b7afc80caa5b61f600e9393f9c/grid-view-with-header-footer-1.0.11.jar"
@@ -77,6 +70,13 @@
         revision="21.1.2"
         sha1="e4579a07c99cd8b7afc80caa5b61f600e9393f9c">
         <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/grid-view-with-header-footer-1.0.11-c30d0b5793a283e5232e19b3fd27bfae0c73d3f8.jar" />
+    </item>
+    <item
+        jar="/Users/user/Documents/Moving data/Software/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.2/support-annotations-21.0.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="99373741f99a0556ee293c41e8faa1ca3ae8a4e6">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-f74c43596c3a17ecd735f4404d51084cc198be8b.jar" />
     </item>
     <item
         jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"

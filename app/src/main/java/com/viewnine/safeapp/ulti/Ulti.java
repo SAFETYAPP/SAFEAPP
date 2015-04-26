@@ -2,20 +2,28 @@ package com.viewnine.safeapp.ulti;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.viewnine.safeapp.activity.HistoryActivity;
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
+import com.viewnine.safeapp.activity.R;
+import com.viewnine.safeapp.manager.SharePreferenceManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,6 +33,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by user on 4/19/15.
@@ -261,6 +270,26 @@ public class Ulti {
             n ++;
         }
         return Constants.DEFAULT_TIME_TO_RECORDING;
+    }
+
+    public static void showNotificationForEachBackup(Context context){
+        if(SharePreferenceManager.getInstance().isEnableNotificationForEachBackup()){
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(R.drawable.safeapp_system_tray_icon)
+                    .setContentTitle(context.getResources().getString(R.string.app_name))
+                    .setContentText(context.getResources().getString(R.string.back_up))
+                    .setAutoCancel(true);
+
+
+            Intent resultIntent = new Intent(context, HistoryActivity.class);
+            PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.setContentIntent(resultPendingIntent);
+            mBuilder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
+
+            Random randomNotification = new Random();
+            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(randomNotification.nextInt(), mBuilder.build());
+        }
+
     }
 
 

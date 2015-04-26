@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/White"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textview_notify_me"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/hight_size_setting_item"
+        android:background="@color/transparent"
+        android:gravity="left|center_vertical"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="@dimen/padding_setting"
+        android:text="@string/notify_me_after_each_back_up"
+        android:layout_toLeftOf="@+id/button_notification"
+        android:textColor="@color/Black"
+        android:textSize="@dimen/safeapp_text_size" />
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/button_notification"
+        android:layout_alignParentRight="true"
+
+        android:layout_margin="20dp"
+        android:background="@drawable/orange_selected"/>
+
+    <View
+        android:layout_below="@+id/button_notification"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/light_gray" />
+</RelativeLayout>

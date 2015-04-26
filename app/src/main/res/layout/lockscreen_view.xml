@@ -107,7 +107,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/cancel" />
+            android:layout_marginBottom="10dp"
+            android:background="@color/transparent"
+            android:textSize="@dimen/safeapp_text_size"
+            android:text="@string/back"
+            android:textColor="@color/White"/>
     </RelativeLayout>
 
 </RelativeLayout>

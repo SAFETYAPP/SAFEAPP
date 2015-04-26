@@ -37,7 +37,7 @@ public class Constants {
     public static final int DEGREE_270 = 270;
     public static final int CAMERA_QUALITY = CamcorderProfile.QUALITY_480P;
     public static final String SLASH_CHARACTER = "/";
-
+    public static final String ACTION_BROADCAST_RECIVER_VIDEO = "ACTION_BROADCAST_RECIVER_VIDEO";
     public static final LinkedHashMap<String, Integer> TIME_INTERVAL_LIST = new LinkedHashMap<String, Integer>() {{put("1 min", DEFAULT_TIME_TO_RECORDING);
                                                                                                         put("45 sec", 45 * 1000);
                                                                                                         put("30 sec", 30 * 1000);}};

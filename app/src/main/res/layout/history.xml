@@ -7,23 +7,64 @@
     <LinearLayout
         android:id="@+id/linearlayout_tabbar"
         android:layout_width="fill_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:background="@color/safeapp_color"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button_grid"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="Grid" />
 
-        <Button
-            android:id="@+id/button_list"
+        <RelativeLayout
+            android:id="@+id/relativelayout_grid"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="List" />
+
+            >
+
+            <Button
+                android:id="@+id/button_grid"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+
+                android:background="@drawable/grid_button" />
+
+            <ImageView
+                android:id="@+id/imageview_grid"
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/White" />
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+
+            >
+
+            <Button
+                android:id="@+id/button_list"
+                android:layout_width="35dp"
+                android:layout_height="28dp"
+                android:layout_centerInParent="true"
+
+                android:background="@drawable/list_button" />
+
+            <ImageView
+                android:id="@+id/imageview_list"
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/White" />
+        </RelativeLayout>
+
+
+
+
     </LinearLayout>
 
     <in.srain.cube.views.GridViewWithHeaderAndFooter
@@ -48,12 +89,12 @@
 
     <Button
         android:id="@+id/button_start_record_foreground_video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
-        android:text="Start record" />
+        android:background="@drawable/video_button" />
 
 
 </RelativeLayout>
