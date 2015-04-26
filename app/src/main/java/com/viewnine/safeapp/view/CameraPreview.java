@@ -138,7 +138,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
             mediaRecorder = new MediaRecorder();  // Works well
             camera.unlock();
-            camera.enableShutterSound(false);
+            try {
+                camera.enableShutterSound(false);
+
+            }catch (Exception e){
+                e.printStackTrace();
+                LogUtils.logE(TAG, "Fail to enable shutter sound: " + e.toString());
+            }
 
             mediaRecorder.setCamera(camera);
 

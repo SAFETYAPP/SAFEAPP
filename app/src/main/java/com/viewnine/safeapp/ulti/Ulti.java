@@ -21,7 +21,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by user on 4/19/15.
@@ -230,6 +233,35 @@ public class Ulti {
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
+
+    public static Map.Entry getEntryOfHashMap(int index, LinkedHashMap<?, ?> hashMap){
+
+        Iterator iterator = hashMap.entrySet().iterator();
+        int n = 0;
+        while (iterator.hasNext()){
+            Map.Entry entry = (Map.Entry) iterator.next();
+            if(n == index){
+                return entry;
+            }
+            n ++;
+        }
+        return null;
+    }
+
+    public static int getDurationVideoTime(int index, LinkedHashMap<?, ?> hashMap){
+
+        Iterator iterator = hashMap.entrySet().iterator();
+        int n = 0;
+        while (iterator.hasNext()){
+            Map.Entry entry = (Map.Entry) iterator.next();
+            if(n == index){
+                return (int)entry.getValue();
+
+            }
+            n ++;
+        }
+        return Constants.DEFAULT_TIME_TO_RECORDING;
+    }
 
 
 }

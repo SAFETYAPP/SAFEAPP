@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.viewnine.safeapp.application.SafeAppApplication;
+import com.viewnine.safeapp.manager.SharePreferenceManager;
 import com.viewnine.safeapp.manager.SwitchViewManager;
 import com.viewnine.safeapp.service.BackgroundVideoRecorder;
 import com.viewnine.safeapp.service.LockScreenService;
@@ -42,14 +43,20 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     private LinearLayout lnVideoNumber;
     private String TAG = ParentActivity.class.getName();
     Handler handler = new Handler();
+    protected int timeToRecord = Constants.DEFAULT_TIME_TO_RECORDING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkToStartLockScreenService();
+        getTimeToRecord();
         setupParentViews();
 
 
+    }
+
+    private void getTimeToRecord(){
+        timeToRecord = Ulti.getDurationVideoTime(SharePreferenceManager.getInstance().getIndexDurationTime(), Constants.TIME_INTERVAL_LIST);
     }
 
     private void checkToStartLockScreenService(){
@@ -229,7 +236,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
             }
         };
 
-        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, Constants.TIME_TO_PENDING);
+        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, timeToRecord + Constants.TIME_TO_PENDING);
 
 
     }

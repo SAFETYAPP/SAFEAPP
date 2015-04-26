@@ -96,7 +96,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             }
             mediaRecorder.setOrientationHint(Constants.POSITIVE_90_DEGREE);
 
-            mediaRecorder.setMaxDuration(Constants.TIME_TO_RECORDING);
+            mediaRecorder.setMaxDuration(Constants.DEFAULT_TIME_TO_RECORDING);
             LogUtils.logD(TAG, "File name: " + fileName);
             mediaRecorder.setOutputFile(fileName);
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.viewnine.safeapp.activity.BackupActivity;
 import com.viewnine.safeapp.activity.HistoryActivity;
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
 import com.viewnine.safeapp.activity.PlayVideoActivity;
@@ -75,6 +76,12 @@ public class SwitchViewManager {
 
     public void gotoSecurityScreen(Context context){
         Intent intent = new Intent(context, SecurityActivity.class);
+        ((Activity)context).startActivity(intent);
+        startPushScreenIn(context);
+    }
+
+    public void gotoBackupScreen(Context context){
+        Intent intent = new Intent(context, BackupActivity.class);
         ((Activity)context).startActivity(intent);
         startPushScreenIn(context);
     }

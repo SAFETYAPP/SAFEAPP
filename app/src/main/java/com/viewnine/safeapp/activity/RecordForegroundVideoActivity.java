@@ -34,6 +34,7 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     private View btnGallery;
 
 
+
     private static final String TAG = RecordForegroundVideoActivity.class.getName();
 
     @Override
@@ -263,8 +264,8 @@ public class RecordForegroundVideoActivity extends ParentActivity {
                             for (int i = 0; i < 100000; i++) {
 
                             }
-                            Log.d(TAG, "Start recording");
-                            mPreviewTakePicture.startRecording(Constants.TIME_TO_RECORDING, enableRecordAudio);
+                            Log.d(TAG, "Start recording + " + timeToRecord);
+                            mPreviewTakePicture.startRecording(timeToRecord, enableRecordAudio);
 
                         }
                     }
@@ -273,7 +274,7 @@ public class RecordForegroundVideoActivity extends ParentActivity {
             }
         };
 
-        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, Constants.TIME_TO_PENDING);
+        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, timeToRecord + Constants.TIME_TO_PENDING);
 
 
     }

@@ -14,6 +14,7 @@ public class SharePreferenceManager {
     private static final String PRIMARY_EMAIL = "PRIMARY_EMAIL";
     private static final String SECONDARY_EMAIL = "SECONDARY_EMAIL";
     private static final String UNLOCK_PATTERN = "UNLOCK_PATTERN";
+    private static final String ENTRY_DURATION_TIME_DEFAULT = "ENTRY_DURATION_TIME_DEFAULT";
 
     private static SharePreferenceManager instance;
     private static SharedPreferences preferences;
@@ -59,5 +60,15 @@ public class SharePreferenceManager {
 
     public String getUnlockPattern(){
         return preferences.getString(UNLOCK_PATTERN, Constants.EMPTY_STRING);
+    }
+
+    public void setIndexDurationTime(int index){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(ENTRY_DURATION_TIME_DEFAULT, index);
+        editor.commit();
+    }
+
+    public int getIndexDurationTime(){
+       return preferences.getInt(ENTRY_DURATION_TIME_DEFAULT, 0);
     }
 }

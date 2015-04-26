@@ -301,4 +301,6 @@
     <color name="lock_pattern_view_error_dark">#fff4511e</color>
     <!-- END -->
 
+    <color name="color_set_duration">#e6e6e6</color>
+
 </resources>

@@ -64,4 +64,6 @@ public class SplashScreenActivity extends ParentActivity {
         super.onResume();
         handleFirstTimeRunning();
     }
+
+
 }

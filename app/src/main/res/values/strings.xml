@@ -10,7 +10,7 @@
     <string name="secondary_email">Secondary Email</string>
     <string name="please_enter_primary_email">Please enter primary email</string>
     <string name="please_enter_secondary_email">Please enter secondary email</string>
-    <string name="OK">ok</string>
+    <string name="OK">Ok</string>
     <string name="invalid_email">Invalid email</string>
     <string name="videos">VIDEOS</string>
     <string name="video">VIDEO</string>
@@ -42,5 +42,8 @@
     <string name="confirm_pattern">Re-enter pattern</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="set_duration">Set duration</string>
+    <string name="auto_upload">Auto Upload</string>
+    <string name="auto_upload_description">Videos are automatically uploaded in the background once the set duration has been reached.</string>
     <!-- END -->
 </resources>

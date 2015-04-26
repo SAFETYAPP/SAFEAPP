@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.viewnine.safeapp.manager.SwitchViewManager;
-import com.viewnine.safeapp.ulti.DialogUlti;
 
 /**
  * Created by user on 4/25/15.
@@ -50,7 +49,7 @@ public class SettingsActivity extends ParentActivity implements View.OnClickList
         super.onClick(v);
         switch (v.getId()){
             case R.id.button_backup:
-                DialogUlti.getInstance().showDurationVideoTimeDialog(this);
+                SwitchViewManager.getInstance().gotoBackupScreen(this);
                 break;
             case R.id.button_notification:
 

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textview_primary_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/button_edit_primary_email"
+            android:padding="@dimen/default_padding"
+            android:text="@string/primary_email"
+            android:textColor="@color/black"
+            android:textSize="@dimen/safeapp_text_size"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/primary_email"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/textview_primary_email"
+            android:layout_marginBottom="@dimen/default_padding"
+            android:layout_marginLeft="@dimen/default_padding"
+            android:layout_marginRight="@dimen/default_padding"
+            android:layout_toLeftOf="@+id/button_edit_primary_email"
+            android:background="@color/transparent"
+            android:hint="@string/please_enter_primary_email"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/Gray"
+            android:textSize="@dimen/safeapp_text_size" />
+
+        <Button
+            android:id="@+id/button_edit_primary_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="edit" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/Gray" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textview_secondary_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/button_edit_secondary_email"
+            android:padding="@dimen/default_padding"
+            android:text="@string/secondary_email"
+            android:textColor="@color/black"
+            android:textSize="@dimen/safeapp_text_size"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/secondary_email"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/textview_secondary_email"
+            android:layout_marginBottom="@dimen/default_padding"
+            android:layout_marginLeft="@dimen/default_padding"
+            android:layout_marginRight="@dimen/default_padding"
+            android:layout_toLeftOf="@+id/button_edit_secondary_email"
+            android:background="@color/transparent"
+            android:hint="@string/please_enter_secondary_email"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/Gray"
+            android:textSize="@dimen/safeapp_text_size" />
+
+        <Button
+            android:id="@+id/button_edit_secondary_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="edit" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/Gray" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textview_auto_upload"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/button_edit_duration_time"
+            android:padding="@dimen/default_padding"
+            android:text="@string/auto_upload"
+            android:textColor="@color/black"
+            android:textSize="@dimen/safeapp_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textview_auto_upload_description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/textview_auto_upload"
+            android:padding="@dimen/default_padding"
+            android:text="@string/auto_upload_description"
+            android:textColor="@color/black"
+
+             />
+
+
+        <Button
+            android:id="@+id/button_edit_duration_time"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:background="@color/transparent"
+            android:textSize="@dimen/safeapp_text_size"
+            android:textColor="@color/black"
+            android:text="edit" />
+    </RelativeLayout>
+
+</LinearLayout>

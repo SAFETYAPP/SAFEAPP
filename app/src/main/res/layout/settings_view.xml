@@ -20,7 +20,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/hight_size_setting_item"
                 android:background="@color/transparent"
-                android:text="@string/back_up" />
+                android:text="@string/back_up"
+                android:textSize="@dimen/safeapp_text_size" />
 
             <View
                 android:layout_width="fill_parent"
@@ -32,7 +33,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/hight_size_setting_item"
                 android:background="@color/transparent"
-                android:text="@string/notifications" />
+                android:text="@string/notifications"
+                android:textSize="@dimen/safeapp_text_size" />
 
             <View
                 android:layout_width="fill_parent"
@@ -44,7 +46,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/hight_size_setting_item"
                 android:background="@color/transparent"
-                android:text="@string/security" />
+                android:text="@string/security"
+                android:textSize="@dimen/safeapp_text_size" />
 
             <View
                 android:layout_width="fill_parent"
@@ -56,7 +59,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/hight_size_setting_item"
                 android:background="@color/transparent"
-                android:text="@string/contact_us" />
+                android:text="@string/contact_us"
+                android:textSize="@dimen/safeapp_text_size" />
 
             <View
                 android:layout_width="fill_parent"
@@ -68,7 +72,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/hight_size_setting_item"
                 android:background="@color/transparent"
-                android:text="@string/primacy_policy" />
+                android:text="@string/primacy_policy"
+                android:textSize="@dimen/safeapp_text_size" />
 
             <View
                 android:layout_width="fill_parent"
@@ -80,7 +85,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/hight_size_setting_item"
                 android:background="@color/transparent"
-                android:text="@string/term_condition" />
+                android:text="@string/term_condition"
+                android:textSize="@dimen/safeapp_text_size" />
 
             <View
                 android:layout_width="fill_parent"
