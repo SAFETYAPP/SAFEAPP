@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.viewnine.safeapp.activity.HistoryActivity;
 import com.viewnine.safeapp.activity.R;
+import com.viewnine.safeapp.manager.EmailManager;
 import com.viewnine.safeapp.manager.SharePreferenceManager;
 import com.viewnine.safeapp.manager.VideoQueueManager;
 import com.viewnine.safeapp.model.VideoObject;
@@ -213,7 +214,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
                 LogUtils.logD(TAG, "Save video starting...");
                 String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
-                VideoObject videoObjectDB = new VideoObject();
+                final VideoObject videoObjectDB = new VideoObject();
                 videoObjectDB.setId(videoObject.getId());
                 videoObjectDB.setImageLink(imageLink);
                 videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
@@ -223,6 +224,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     @Override
                     public void successful(VideoObject videoObject) {
                         Ulti.showNotificationForEachBackup(getContext());
+
+                        //Send email
+                        EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObjectDB.getVideoUrl());
                     }
 
                     @Override

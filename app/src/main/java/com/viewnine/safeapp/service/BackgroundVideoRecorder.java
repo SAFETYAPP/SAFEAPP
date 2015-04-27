@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.viewnine.safeapp.activity.HistoryActivity;
 import com.viewnine.safeapp.activity.R;
+import com.viewnine.safeapp.manager.EmailManager;
 import com.viewnine.safeapp.manager.VideoQueueManager;
 import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.Constants;
@@ -171,7 +172,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                 if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
                     LogUtils.logD(TAG, "Save video starting...");
                     String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
-                    VideoObject videoObjectDB = new VideoObject();
+                    final VideoObject videoObjectDB = new VideoObject();
                     videoObjectDB.setId(videoObject.getId());
                     videoObjectDB.setImageLink(imageLink);
                     videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
@@ -185,6 +186,9 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                             sendBroadcast(intent);
 
                             Ulti.showNotificationForEachBackup(getBaseContext());
+
+                            //Send email
+                            EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObjectDB.getVideoUrl());
                         }
 
                         @Override

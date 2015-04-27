@@ -58,7 +58,7 @@ public class SettingsActivity extends ParentActivity implements View.OnClickList
                 SwitchViewManager.getInstance().gotoSecurityScreen(this);
                 break;
             case R.id.button_contact_us:
-
+//                EmailManager.getInstance().getSenderEmail();
                 break;
             case R.id.button_primacy_policy:
 
@@ -69,4 +69,6 @@ public class SettingsActivity extends ParentActivity implements View.OnClickList
             default:
         }
     }
+
+
 }
