@@ -128,6 +128,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             mediaRecorder.setMaxDuration(Constants.DEFAULT_TIME_TO_RECORDING);
             LogUtils.logD(TAG, "File name: " + fileName);
             mediaRecorder.setOutputFile(fileName);
+            mediaRecorder.setVideoEncodingBitRate(Constants.VIDEO_QUALITY);
 
             mediaRecorder.prepare();
 

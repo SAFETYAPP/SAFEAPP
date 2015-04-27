@@ -28,6 +28,8 @@ public class Constants {
     public static final int DEFAULT_TIME_TO_RECORDING = 60 * 1000;
     public static final int TIME_TO_PENDING = 2000;
     public static final int TIME_DELAY = 500;
+    public static final int VIDEO_QUALITY = 1 * 1000 * 1000;
+
     public static final int OK = 0;
     public static final int ERROR = 1;
     public static final int NUMBER_LOAD_VIDEO = 15;

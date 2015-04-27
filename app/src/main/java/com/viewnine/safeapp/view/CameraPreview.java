@@ -169,23 +169,16 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 rotateVideo = Constants.DEGREE_270;
             }
             mediaRecorder.setOrientationHint(rotateVideo);
-
-//            if(mCameraId == DEFAULT_CAMERA){
-//                mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH_SPEED_480P));
-//            }else {
-//                mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_480P));
-//            }
-
             try {
                 mediaRecorder.setProfile(CamcorderProfile.get(Constants.CAMERA_QUALITY));
             }catch (Exception e){
                 e.printStackTrace();
             }
-
             mediaRecorder.setMaxDuration(maxTime);
-
             mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
             mediaRecorder.setOutputFile(fileName);
+            mediaRecorder.setVideoEncodingBitRate(Constants.VIDEO_QUALITY);
+//            mediaRecorder.setVideoFrameRate(10);
 
             mediaRecorder.prepare();
             mediaRecorder.start();
