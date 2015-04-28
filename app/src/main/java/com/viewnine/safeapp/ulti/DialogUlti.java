@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.viewnine.safeapp.activity.R;
 import com.viewnine.safeapp.view.DurationVideoTimeView;
@@ -36,6 +37,31 @@ public class DialogUlti {
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
 
+        dialog.show();
+    }
+
+    public void showDeleteVideoConfirmationDialog(Context context, final View.OnClickListener onOKClickListener){
+        final Dialog dialog = new Dialog(context, R.style.ThemeDialogCustom);
+        dialog.setContentView(R.layout.dialog_delete_vide_confirmation);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        Button ok = (Button) dialog.findViewById(R.id.button_ok);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onOKClickListener.onClick(v);
+            }
+        });
+
+        Button cancel = (Button) dialog.findViewById(R.id.button_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               dialog.dismiss();
+            }
+        });
         dialog.show();
     }
 }

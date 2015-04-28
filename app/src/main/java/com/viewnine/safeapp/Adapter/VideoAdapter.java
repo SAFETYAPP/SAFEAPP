@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.viewnine.safeapp.activity.HistoryActivity;
 import com.viewnine.safeapp.activity.R;
 import com.viewnine.safeapp.customView.SquareImageView;
 import com.viewnine.safeapp.manager.SwitchViewManager;
@@ -64,6 +65,8 @@ public class VideoAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(R.layout.item_video, null);
             holder.videoImageView = (SquareImageView) convertView.findViewById(R.id.image_video);
+            holder.imageHighlight = (SquareImageView) convertView.findViewById(R.id.image_highlight);
+
 
             convertView.setTag(holder);
         } else {
@@ -101,16 +104,28 @@ public class VideoAdapter extends BaseAdapter {
             }
         });
 
+        if(videoObject.isSelected()){
+            holder.imageHighlight.setVisibility(View.VISIBLE);
+        }else {
+            holder.imageHighlight.setVisibility(View.GONE);
+        }
+
         holder.videoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SwitchViewManager.getInstance().gotoVideoScreen(mContext, videoObject);
+                if(((HistoryActivity)mContext).getInDeleteModeStatus()){
+                    videoObject.setIsSelected(!videoObject.isSelected());
+                    notifyDataSetChanged();
+                }else {
+                    SwitchViewManager.getInstance().gotoVideoScreen(mContext, videoObject);
+                }
             }
         });
     }
 
     private class ViewHolder{
         SquareImageView videoImageView;
+        SquareImageView imageHighlight;
     }
 
 }

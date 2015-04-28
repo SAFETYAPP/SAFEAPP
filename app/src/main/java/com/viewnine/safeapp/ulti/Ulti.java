@@ -9,13 +9,17 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
@@ -28,6 +32,8 @@ import com.viewnine.safeapp.manager.SharePreferenceManager;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -309,6 +315,28 @@ public class Ulti {
             mNotificationManager.notify(randomNotification.nextInt(), mBuilder.build());
         }
 
+    }
+
+    public static void generateKeyHash(Context context){
+        PackageInfo info = null;
+        try {
+            info = context.getPackageManager().getPackageInfo("com.viewnine.safeapp",  PackageManager.GET_SIGNATURES);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        for (android.content.pm.Signature signature : info.signatures)
+        {
+            MessageDigest md = null;
+            try {
+                md = MessageDigest.getInstance("SHA");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            md.update(signature.toByteArray());
+
+            Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+        }
     }
 
 

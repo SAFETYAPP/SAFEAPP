@@ -12,6 +12,15 @@ public class VideoObject implements  Parcelable{
     String videoUrl;
     String imageLink;
     long time;
+    boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
 
     public String getVideoUrl() {
         return videoUrl;

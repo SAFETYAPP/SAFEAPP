@@ -34,6 +34,7 @@ public class SafeAppApplication extends Application {
         mStackActivity = new Stack<Activity>();
         safeAppDataObject = new SafeAppDataObject();
         initImageLoader(getApplicationContext());
+//        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
     public static Context getInstance(){

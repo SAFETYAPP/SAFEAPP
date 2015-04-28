@@ -16,14 +16,17 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.viewnine.safeapp.Adapter.VideoAdapter;
 import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.manager.HistoryManager;
 import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.manager.VideoManager;
 import com.viewnine.safeapp.model.DataObject;
 import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.AlertHelper;
 import com.viewnine.safeapp.ulti.Constants;
+import com.viewnine.safeapp.ulti.DialogUlti;
 import com.viewnine.safeapp.ulti.LogUtils;
 
 import java.util.ArrayList;
@@ -61,7 +64,12 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
     private String TAG = HistoryActivity.class.getName();
     private SafeAppApplication safeAppApplication;
     private int totalVideos = 0;
+    private boolean isInDeletetMode = false;
 
+
+    public boolean getInDeleteModeStatus(){
+        return isInDeletetMode;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,15 +91,22 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
 
     private void setupViews() {
         addChidlView(R.layout.history);
-        addSettingButton();
-        addGoToShareButton();
-        addVideoNumber(0);
+//        addSettingButton();
+//        addGoToShareButton();
+//        addVideoNumber(0);
+
+        setInDeleteModeInHistoryScreen(isInDeletetMode);
 
 
         gridviewVideos = (GridViewWithHeaderAndFooter) findViewById(R.id.griview_history);
         listviewVideos = (ListView) findViewById(R.id.listview_history);
         gridviewVideos.setOnScrollListener(this);
         listviewVideos.setOnScrollListener(this);
+        FloatingActionButton fabStartNewRecord = (FloatingActionButton) findViewById(R.id.fab_start_new_record);
+        fabStartNewRecord.attachToListView(gridviewVideos);
+        fabStartNewRecord.attachToListView(listviewVideos);
+        fabStartNewRecord.setOnClickListener(this);
+
         addFooterView();
         lnTabBar = (LinearLayout) findViewById(R.id.linearlayout_tabbar);
         btnGrid = (Button) findViewById(R.id.button_grid);
@@ -159,7 +174,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
             videoAdapter.setListVideos(listVideos);
         }
         this.totalVideos = totalVideos;
-        addVideoNumber(this.totalVideos);
+        addVideoNumber(this.totalVideos, isInDeletetMode);
         if(listVideos.size() == totalVideos){
             needToShowLoadMore = false;
             mFooterListView.setVisibility(View.INVISIBLE);
@@ -173,7 +188,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
 
     @Override
     public void onClick(View v) {
-        super.onClick(v);
+//        super.onClick(v);
         switch (v.getId()){
             case R.id.relativelayout_grid:
             case R.id.button_grid:
@@ -187,12 +202,93 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
                     handleClickTabBar(LIST_TAB);
                 }
                 break;
+            case R.id.fab_start_new_record:
             case R.id.button_start_record_foreground_video:
                 handleClickRecordVideo();
+                break;
+
+            case R.id.button_setting:
+                super.onClick(v);
+                break;
+
+            case R.id.linearlayout_edit_mode:
+                handleClickEditButton();
+                break;
+
+            case R.id.linearlayout_delete:
+                handleClickOnDeleteButton();
+                break;
+            case R.id.button_back:
+                handleClickBackButton(v);
+
                 break;
             default:
         }
 
+    }
+
+    private void handleClickEditButton(){
+        isInDeletetMode = true;
+        setInDeleteModeInHistoryScreen(isInDeletetMode);
+        lnTabBar.setVisibility(View.GONE);
+    }
+
+    private void handleClickBackButton(View v){
+
+        if(isInDeletetMode){
+            isInDeletetMode = false;
+            setInDeleteModeInHistoryScreen(isInDeletetMode);
+            lnTabBar.setVisibility(View.VISIBLE);
+
+            for (VideoObject videoObject : listVideos){
+                videoObject.setIsSelected(false);
+            }
+            videoAdapter.notifyDataSetChanged();
+
+        }else {
+            isInDeletetMode = true;
+            setInDeleteModeInHistoryScreen(isInDeletetMode);
+            lnTabBar.setVisibility(View.GONE);
+            super.onClick(v);
+        }
+
+    }
+
+    private void handleClickOnDeleteButton(){
+        final ArrayList<VideoObject> listVideosDelete = new ArrayList<VideoObject>();
+        for (VideoObject videoObject : listVideos){
+            if(videoObject.isSelected()){
+                listVideosDelete.add(videoObject);
+            }
+        }
+
+        if(listVideosDelete.size() > 0){
+            DialogUlti.getInstance().showDeleteVideoConfirmationDialog(this, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteListVideo(listVideosDelete);
+
+                }
+            });
+        }
+
+    }
+
+    private void deleteListVideo(final ArrayList<VideoObject> listVideosDelete){
+        VideoManager.getInstance(this).deleteListVideos(this, listVideosDelete, new VideoManager.IDeleteVideoListener() {
+            @Override
+            public void deleteSpecificVideoSuccessful(VideoObject videoObject) {}
+
+            @Override
+            public void deleteListVideoSuccessful(ArrayList<VideoObject> listVideoObject) {
+                removeListVideosDeletedFromTheOriginalVideosList(listVideosDelete);
+            }
+
+            @Override
+            public void fail() {
+                AlertHelper.getInstance().showMessageAlert(HistoryActivity.this, getString(R.string.could_not_delete_this_video));
+            }
+        });
     }
 
     private void handleClickRecordVideo() {
@@ -280,23 +376,33 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
         DataObject dataObject = (DataObject) data;
         switch (dataObject.getTypeChange()){
             case Constants.DELETE_VIDEO_SIGNAL:
-                removeVideoFromTheList(videoObject);
+                ArrayList<VideoObject> listVideosDeleted = new ArrayList<VideoObject>();
+                listVideosDeleted.add(videoObject);
+                removeListVideosDeletedFromTheOriginalVideosList(listVideosDeleted);
                 break;
             default:
         }
     }
 
-    private void removeVideoFromTheList(VideoObject videoObjectDeleted){
-        for (int i = 0; i < listVideos.size(); i++) {
-            VideoObject videoObject = listVideos.get(i);
-            if(videoObject.getId().equalsIgnoreCase(videoObjectDeleted.getId())){
-                listVideos.remove(i);
-                videoAdapter.notifyDataSetChanged();
-                totalVideos --;
-                addVideoNumber(totalVideos);
-                break;
+    private void removeListVideosDeletedFromTheOriginalVideosList(ArrayList<VideoObject> listVideosDeleted){
+
+        for (int i = 0; i < listVideosDeleted.size(); i++) {
+            VideoObject videoObjectDeleted = listVideosDeleted.get(i);
+            for (int j = 0; j < listVideos.size(); j++) {
+                VideoObject videoObject = listVideos.get(j);
+                if(videoObject.getId().equalsIgnoreCase(videoObjectDeleted.getId())){
+                    listVideos.remove(j);
+                    totalVideos --;
+                    addVideoNumber(totalVideos, isInDeletetMode);
+                    break;
+                }
             }
         }
+
+        listVideosDeleted.clear();
+        listVideosDeleted = null;
+        videoAdapter.notifyDataSetChanged();
+
     }
 
     private class SaveVideoReceiver extends BroadcastReceiver{

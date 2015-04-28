@@ -1,10 +1,23 @@
 package com.viewnine.safeapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.ulti.LogUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Created by user on 4/25/15.
@@ -21,7 +34,7 @@ public class SettingsActivity extends ParentActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setupViews();
     }
 
@@ -59,6 +72,7 @@ public class SettingsActivity extends ParentActivity implements View.OnClickList
                 break;
             case R.id.button_contact_us:
 //                EmailManager.getInstance().getSenderEmail();
+                handleClickOnContactus();
                 break;
             case R.id.button_primacy_policy:
 
@@ -70,5 +84,44 @@ public class SettingsActivity extends ParentActivity implements View.OnClickList
         }
     }
 
+    CallbackManager callbackManager;
+    private void handleClickOnContactus() {
 
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Toast.makeText(getApplicationContext(), loginResult.getAccessToken().toString(), Toast.LENGTH_SHORT).show();
+                LogUtils.logE(SettingsActivity.class.getName(), "Facebook token: " + loginResult.getAccessToken().toString());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                LogUtils.logE(SettingsActivity.class.getName(), "Facebook error: " + e.toString());
+            }
+        });
+
+        Collection<String> permission = Arrays.asList("user_friends");
+
+        LoginManager.getInstance().logInWithPublishPermissions(this, null);
+//        LoginManager.getInstance().logInWithReadPermissions(this, null);
+
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+    }
 }

@@ -85,6 +85,7 @@
             android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar"
+            android:launchMode="singleInstance"
             />
 
         <activity android:name=".SecurityActivity"
@@ -124,6 +125,17 @@
             </intent-filter>
         </receiver>
 
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facbeook_app_id"/>
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider823989157654749"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
 
     </application>
 

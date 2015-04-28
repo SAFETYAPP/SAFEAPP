@@ -9,4 +9,12 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scaleType="centerCrop" />
+
+    <com.viewnine.safeapp.customView.SquareImageView
+        android:id="@+id/image_highlight"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:background="@drawable/item_select_highlight"/>
+
 </RelativeLayout>

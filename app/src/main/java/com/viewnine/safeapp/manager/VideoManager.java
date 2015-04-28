@@ -10,6 +10,7 @@ import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.LogUtils;
 import com.viewnine.safeapp.ulti.Ulti;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -33,7 +34,8 @@ public class VideoManager {
     private ISavingVideoListener savingVideoListener;
 
     public interface IDeleteVideoListener{
-        public void successful(VideoObject videoObject);
+        public void deleteSpecificVideoSuccessful(VideoObject videoObject);
+        public void deleteListVideoSuccessful(ArrayList<VideoObject> listVideoObject);
         public void fail();
     }
 
@@ -131,7 +133,7 @@ public class VideoManager {
     }
 
 
-    public void deleteVideo(Context context, VideoObject videoObject, IDeleteVideoListener deleteVideoListener){
+    public void deleteSpecificVideo(Context context, VideoObject videoObject, IDeleteVideoListener deleteVideoListener){
         new DeleteVideoAsync(context, videoObject, deleteVideoListener).execute();
     }
     private class DeleteVideoAsync extends BaseAsyncTaskV2{
@@ -169,7 +171,62 @@ public class VideoManager {
             if(deleteVideoListener != null){
                 switch (result){
                     case Constants.OK:
-                        deleteVideoListener.successful(videoObject);
+                        deleteVideoListener.deleteSpecificVideoSuccessful(videoObject);
+                        break;
+                    default:
+                        deleteVideoListener.fail();
+
+                }
+            }
+
+        }
+    }
+
+    public void deleteListVideos(Context context, ArrayList<VideoObject> listVideoObject, IDeleteVideoListener deleteVideoListener){
+        new DeleteListVideosAsync(context, listVideoObject, deleteVideoListener).execute();
+    }
+
+    private class DeleteListVideosAsync extends BaseAsyncTaskV2{
+        Context context;
+        ArrayList<VideoObject> listVideoObject;
+        IDeleteVideoListener deleteVideoListener;
+        public DeleteListVideosAsync(Context context, ArrayList<VideoObject> listVideoObject, IDeleteVideoListener deleteVideoListener){
+            super(context);
+            this.context = context;
+            this.listVideoObject = listVideoObject;
+            this.deleteVideoListener = deleteVideoListener;
+        }
+
+        private DeleteListVideosAsync(Context context){
+            super(context);
+        }
+        @Override
+        protected Integer doInBackground(Void... params) {
+
+
+            VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
+            int numberVideoDeleted = videoDBAdapter.deleteListVideos(listVideoObject);
+            if(numberVideoDeleted > 0){
+
+                for(VideoObject videoObject : listVideoObject){
+                    Ulti.deleteFile(videoObject.getImageLink()); //Delete Video
+                    Ulti.deleteFile(videoObject.getVideoUrl()); //Delete Image
+                }
+
+                return Constants.OK;
+            }else {
+                return Constants.ERROR;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            if(deleteVideoListener != null){
+                switch (result){
+                    case Constants.OK:
+                        deleteVideoListener.deleteListVideoSuccessful(listVideoObject);
                         break;
                     default:
                         deleteVideoListener.fail();

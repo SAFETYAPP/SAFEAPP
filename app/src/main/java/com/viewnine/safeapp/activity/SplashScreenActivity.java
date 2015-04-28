@@ -54,6 +54,7 @@ public class SplashScreenActivity extends ParentActivity {
             SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
         }
 
+//        SwitchViewManager.getInstance().gotoSettingsScreen(this);
 
     }
 

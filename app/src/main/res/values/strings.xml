@@ -38,7 +38,7 @@
     <string name="settings">Settings</string>
     <string name="screen_unlock">Screen Unlock</string>
     <string name="choose_a_pattern">Choose a pattern</string>
-    <string name="successful">Successful</string>
+    <string name="deleteSpecificVideoSuccessful">Successful</string>
     <string name="confirm_pattern">Re-enter pattern</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
@@ -49,6 +49,12 @@
     <string name="notify_me_after_each_back_up">Notify me after each back up</string>
     <string name="back">Back</string>
     <string name="delete_video_confirmation">Are you sure you want to delete this video?</string>
-    <string name="could_not_delete_this_video">Could not delete this video. Please try again!</string>
+    <string name="could_not_delete_this_video">Could not delete. Please try again!</string>
     <!-- END -->
+
+    <string name="facbeook_app_id">823989157654749</string>
+    <string name="edit">Edit</string>
+    <string name="delete_confirmation">Delete Confirmation</string>
+    <string name="successful">Successful</string>
+    <!-- UW -->
 </resources>

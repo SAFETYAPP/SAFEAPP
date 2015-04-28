@@ -64,6 +64,20 @@ public class VideoDBAdapter extends BaseAdapter{
         return result;
     }
 
+    public int deleteListVideos(ArrayList<VideoObject> listVideosDelete){
+        String[] listVideoIds = new String[listVideosDelete.size()];
+        for (int i = 0; i < listVideosDelete.size(); i++) {
+            listVideoIds[i] = listVideosDelete.get(i).getId();
+        }
+        boolean result = false;
+        openDatabase();
+
+        String query = DbDefines.VIDEO_ID + " IN (" + new String(new char[listVideoIds.length-1]).replace("\0", "?,") + "?)";
+        int number = mDb.delete(DbDefines.TABLE_VIDEOS, query , listVideoIds);
+
+        return number;
+    }
+
     public ArrayList<VideoObject> getAllVideos() {
         ArrayList<VideoObject> msgs = new ArrayList<VideoObject>();
         // Open database

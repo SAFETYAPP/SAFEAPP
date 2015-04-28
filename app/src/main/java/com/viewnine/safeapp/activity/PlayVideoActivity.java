@@ -1,7 +1,6 @@
 package com.viewnine.safeapp.activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +15,9 @@ import com.viewnine.safeapp.manager.VideoManager;
 import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.AlertHelper;
 import com.viewnine.safeapp.ulti.Constants;
+import com.viewnine.safeapp.ulti.DialogUlti;
+
+import java.util.ArrayList;
 
 /**
  * Created by user on 4/25/15.
@@ -133,20 +135,27 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     }
 
     private void handleClickOnDeleteButton() {
-        AlertHelper.getInstance().showMessageAlert(this, getString(R.string.delete_video_confirmation), true, new DialogInterface.OnClickListener() {
+
+        DialogUlti.getInstance().showDeleteVideoConfirmationDialog(this, new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+
                 deleteVideo();
             }
         });
+
+//        VideoDBAdapter videoDBAdapter = new VideoDBAdapter(this);
+//        ArrayList<VideoObject> listVideosDelete = new ArrayList<VideoObject>();
+//        listVideosDelete.add(videoObject);
+//        videoDBAdapter.deleteListVideos(listVideosDelete);
     }
 
 
 
     private void deleteVideo(){
-        VideoManager.getInstance(this).deleteVideo(this, videoObject, new VideoManager.IDeleteVideoListener() {
+        VideoManager.getInstance(this).deleteSpecificVideo(this, videoObject, new VideoManager.IDeleteVideoListener() {
             @Override
-            public void successful(VideoObject videoObject) {
+            public void deleteSpecificVideoSuccessful(VideoObject videoObject) {
                 SafeAppApplication safeAppApplication = (SafeAppApplication) getApplication();
                 safeAppApplication.getSafeAppDataObject().notifyVideoChanged(PlayVideoActivity.class.getName(), videoObject, Constants.DELETE_VIDEO_SIGNAL);
                 exitThisScreen();
@@ -155,6 +164,10 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
             @Override
             public void fail() {
                 AlertHelper.getInstance().showMessageAlert(PlayVideoActivity.this, getString(R.string.could_not_delete_this_video));
+            }
+
+            @Override
+            public void deleteListVideoSuccessful(ArrayList<VideoObject> listVideoObject) {
             }
         });
     }

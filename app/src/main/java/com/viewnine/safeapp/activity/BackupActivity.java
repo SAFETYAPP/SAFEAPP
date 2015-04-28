@@ -96,7 +96,7 @@ public class BackupActivity extends ParentActivity implements View.OnClickListen
             if(secondaryEmail.isEmpty() || (!secondaryEmail.isEmpty() && ValidationHelper.getInstance().isEmailValid(secondaryEmail))){
                 SharePreferenceManager.getInstance().setPrimaryEmail(primaryEmail);
                 SharePreferenceManager.getInstance().setSecondaryEmail(secondaryEmail);
-                finish();
+                super.onBackPressed();
             }else {
                 AlertHelper.getInstance().showMessageAlert(this, getString(R.string.invalid_email));
             }

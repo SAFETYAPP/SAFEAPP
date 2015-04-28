@@ -44,6 +44,8 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     private String TAG = ParentActivity.class.getName();
     Handler handler = new Handler();
     protected int timeToRecord = Constants.DEFAULT_TIME_TO_RECORDING;
+    private LinearLayout lnEdit;
+    private LinearLayout lnDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,11 +120,15 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
         btnGotoShare = (Button) findViewById(R.id.button_goto_share);
         btnShare = (Button) findViewById(R.id.button_share);
         btnBack = (Button) findViewById(R.id.button_back);
+        lnEdit = (LinearLayout) findViewById(R.id.linearlayout_edit_mode);
+        lnDelete = (LinearLayout) findViewById(R.id.linearlayout_delete);
 
         btnBack.setOnClickListener(this);
         btnGotoShare.setOnClickListener(this);
         btnSettings.setOnClickListener(this);
         btnShare.setOnClickListener(this);
+        lnEdit.setOnClickListener(this);
+        lnDelete.setOnClickListener(this);
 
         frParent = (FrameLayout) findViewById(R.id.framelayout_parent);
 
@@ -143,6 +149,45 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
         frParent.addView(childView);
     }
 
+    protected void showEditButton(Boolean isShow){
+        if(isShow){
+            lnEdit.setVisibility(View.VISIBLE);
+        }else {
+            lnEdit.setVisibility(View.GONE);
+        }
+    }
+
+    protected void setInDeleteModeInHistoryScreen(boolean isInEditMode){
+        if(isInEditMode){
+            btnSettings.setVisibility(View.GONE);
+            btnGotoShare.setVisibility(View.GONE);
+            addTitle(getString(R.string.edit));
+            lnVideoNumber.setVisibility(View.GONE);
+            lnEdit.setVisibility(View.GONE);
+
+            btnBack.setVisibility(View.VISIBLE);
+            lnDelete.setVisibility(View.VISIBLE);
+
+        }else {
+            btnSettings.setVisibility(View.VISIBLE);
+            btnGotoShare.setVisibility(View.VISIBLE);
+            lnVideoNumber.setVisibility(View.VISIBLE);
+            lnEdit.setVisibility(View.VISIBLE);
+
+            txtTitle.setVisibility(View.GONE);
+            btnBack.setVisibility(View.GONE);
+            lnDelete.setVisibility(View.GONE);
+        }
+    }
+
+    protected void showDeleteButton(Boolean isShow){
+        if(isShow){
+            lnDelete.setVisibility(View.VISIBLE);
+        }else {
+            lnDelete.setVisibility(View.GONE);
+        }
+    }
+
     protected void addSettingButton(){
         btnSettings.setVisibility(View.VISIBLE);
     }
@@ -159,7 +204,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
         btnShare.setVisibility(View.VISIBLE);
     }
 
-    protected void addVideoNumber(int videoNumbers){
+    protected void addVideoNumber(int videoNumbers, boolean isInDeleteMode){
         if(videoNumbers > Constants.ZERO_NUMBER){
             lnVideoNumber.setVisibility(View.VISIBLE);
             txtVideoNumber.setText(String.valueOf(videoNumbers));
@@ -173,6 +218,12 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
             lnVideoNumber.setVisibility(View.VISIBLE);
             txtVideoNumber.setText(String.valueOf(videoNumbers));
             txtVideos.setText(getString(R.string.video));
+        }
+
+        if(isInDeleteMode){
+            lnVideoNumber.setVisibility(View.GONE);
+        }else {
+            lnVideoNumber.setVisibility(View.VISIBLE);
         }
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/White">
@@ -84,6 +85,7 @@
         android:layout_below="@+id/linearlayout_tabbar"
         android:divider="@color/transparent"
         android:dividerHeight="5dp"
+
         android:listSelector="@color/transparent"
         android:visibility="visible" />
 
@@ -94,7 +96,27 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
-        android:background="@drawable/video_button" />
+        android:background="@drawable/video_button"
+        android:visibility="gone"/>
+
+
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab_start_new_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitXY"
+        fab:fab_colorNormal="@color/transparent"
+        fab:fab_colorPressed="@color/transparent"
+        fab:fab_colorRipple="@color/transparent"
+        android:background="@color/transparent"
+        android:src="@drawable/video_button"
+
+
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp" />
 
 
 </RelativeLayout>
