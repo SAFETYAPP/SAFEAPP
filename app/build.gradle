@@ -17,14 +17,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+//    productFlavors{
+//        safeAppDev{
+//            applicationId "com.viewnine.safeapp.dev"
+//            resValue("string", "app_name", "Safe App Dev")
+//        }
+//
+//        safeAppRelease{
+//            applicationId "com.viewnine.safeapp.release"
+//            resValue("string", "app_name", "Safe App Release")
+//        }
+//    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     compile 'com.android.support:appcompat-v7:21.0.2'
     compile project(':ffmpeg4android_lib')
     compile project(':ImageLoader')
     compile 'in.srain.cube:grid-view-with-header-footer:1.0.11'
     //https://github.com/liaohuqiu/android-GridViewWithHeaderAndFooter
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 }

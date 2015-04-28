@@ -1,6 +1,7 @@
 package com.viewnine.safeapp.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,10 @@ import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.viewnine.safeapp.application.SafeAppApplication;
+import com.viewnine.safeapp.manager.VideoManager;
+import com.viewnine.safeapp.model.VideoObject;
+import com.viewnine.safeapp.ulti.AlertHelper;
 import com.viewnine.safeapp.ulti.Constants;
 
 /**
@@ -19,9 +24,11 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     VideoView myVideoView;
 
     private int position = 0;
-    private String videoUrl;
+//    private String videoUrl;
     private Button btnShare;
     private Button btnBack;
+    private VideoObject videoObject;
+    private Button btnDeleteVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +45,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     private void initBundle() {
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            videoUrl = bundle.getString(Constants.VIDEO_LINK);
+            videoObject = bundle.getParcelable(Constants.VIDEO_LINK);
         }
     }
 
@@ -48,8 +55,10 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
         myVideoView =(VideoView)findViewById(R.id.videoView1);
         btnBack = (Button) findViewById(R.id.button_back);
         btnShare = (Button) findViewById(R.id.button_share);
+        btnDeleteVideo = (Button) findViewById(R.id.button_delete_video);
         btnBack.setOnClickListener(this);
         btnShare.setOnClickListener(this);
+        btnDeleteVideo.setOnClickListener(this);
     }
 
     private void initVideo(){
@@ -60,7 +69,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
             myVideoView.setMediaController(mediaControls);
 
             //set the uri of the video to be played
-            Uri uri=Uri.parse(videoUrl);
+            Uri uri=Uri.parse(videoObject.getVideoUrl());
             myVideoView.setVideoURI(uri);
 
         } catch (Exception e) {
@@ -106,13 +115,48 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_back:
-                finish();
+                exitThisScreen();
                 break;
             case R.id.button_share:
                 handleClickOnShareButton();
                 break;
+            case R.id.button_delete_video:
+                handleClickOnDeleteButton();
+                break;
             default:
         }
+    }
+
+    private void exitThisScreen(){
+        onBackPressed();
+        overridePendingTransition(R.anim.stay, R.anim.push_down_out);
+    }
+
+    private void handleClickOnDeleteButton() {
+        AlertHelper.getInstance().showMessageAlert(this, getString(R.string.delete_video_confirmation), true, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteVideo();
+            }
+        });
+    }
+
+
+
+    private void deleteVideo(){
+        VideoManager.getInstance(this).deleteVideo(this, videoObject, new VideoManager.IDeleteVideoListener() {
+            @Override
+            public void successful(VideoObject videoObject) {
+                SafeAppApplication safeAppApplication = (SafeAppApplication) getApplication();
+                safeAppApplication.getSafeAppDataObject().notifyVideoChanged(PlayVideoActivity.class.getName(), videoObject, Constants.DELETE_VIDEO_SIGNAL);
+                exitThisScreen();
+            }
+
+            @Override
+            public void fail() {
+                AlertHelper.getInstance().showMessageAlert(PlayVideoActivity.this, getString(R.string.could_not_delete_this_video));
+            }
+        });
     }
 
     private void handleClickOnShareButton() {

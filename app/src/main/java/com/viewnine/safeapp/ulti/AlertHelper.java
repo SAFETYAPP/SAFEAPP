@@ -57,10 +57,16 @@ public class AlertHelper {
                                         DialogInterface.OnClickListener listener) {
 
         if(context != null && !((Activity)context).isFinishing()){
-            AlertDialog.Builder alertbox = new AlertDialog.Builder(context);
+            final AlertDialog.Builder alertbox = new AlertDialog.Builder(context);
             // alertbox.setTitle("Message");
             alertbox.setMessage(message);
             alertbox.setCancelable(cancelable);
+            alertbox.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
             alertbox.setPositiveButton(R.string.OK, listener);
 
             alertbox.show();

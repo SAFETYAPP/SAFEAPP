@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
+import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.ulti.Ulti;
 
 
@@ -41,6 +42,8 @@ public class lockScreenReceiver extends BroadcastReceiver {
             k1 = km.newKeyguardLock("IN");
             k1.disableKeyguard();
 */
+
+            SafeAppApplication.finishAllPreviousActivity();
             Intent intent11 = new Intent(context, LockScreenAppActivity.class);
 
             intent11.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -57,6 +60,7 @@ public class lockScreenReceiver extends BroadcastReceiver {
 
     private void openLockScreen(Context context){
         if(!Ulti.isAppOnTop(context)){
+            SafeAppApplication.finishAllPreviousActivity();
             Intent intent11 = new Intent(context, LockScreenAppActivity.class);
             intent11.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

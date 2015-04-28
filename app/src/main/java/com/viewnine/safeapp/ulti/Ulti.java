@@ -99,12 +99,7 @@ public class Ulti {
         }
     }
 
-    public static void deleteFile(String fileStr){
-        File file = new File(fileStr);
-        if(file.exists()){
-            file.delete();
-        }
-    }
+
 
     public static int[] getScreenSize(Context context){
         int[] sizeOfScreen = new int[2];
@@ -170,6 +165,16 @@ public class Ulti {
         return false;
     }
 
+    public static boolean deleteFile(String filePath){
+        File file = new File(filePath);
+        if(file.exists()){
+            boolean isDeleted = file.delete();
+            return isDeleted;
+        }else {
+            return true;
+        }
+    }
+
     public static boolean saveBitmapToSDCard(Bitmap bitmap, String filePath){
         FileOutputStream out = null;
         try {
@@ -193,6 +198,20 @@ public class Ulti {
         }
 
         return false;
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        return dir.delete();
     }
 
     public static void releaseBitmap(Bitmap bitmap){

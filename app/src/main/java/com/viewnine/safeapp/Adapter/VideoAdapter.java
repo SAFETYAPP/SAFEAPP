@@ -104,7 +104,7 @@ public class VideoAdapter extends BaseAdapter {
         holder.videoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SwitchViewManager.getInstance().gotoVideoScreen(mContext, videoObject.getVideoUrl());
+                SwitchViewManager.getInstance().gotoVideoScreen(mContext, videoObject);
             }
         });
     }

@@ -48,5 +48,7 @@
     <string name="tap_to_end_current_recording">Tap to end current recording</string>
     <string name="notify_me_after_each_back_up">Notify me after each back up</string>
     <string name="back">Back</string>
+    <string name="delete_video_confirmation">Are you sure you want to delete this video?</string>
+    <string name="could_not_delete_this_video">Could not delete this video. Please try again!</string>
     <!-- END -->
 </resources>

@@ -48,6 +48,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SafeAppApplication.pushToSStackActivity(this);
         checkToStartLockScreenService();
         getTimeToRecord();
         setupParentViews();
@@ -187,7 +188,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
                 SwitchViewManager.getInstance().gotoSettingsScreen(this);
                 break;
             case R.id.button_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.button_goto_share:
 
@@ -201,6 +202,17 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (SafeAppApplication.getStackActivity() != null
+                && SafeAppApplication.getStackActivity().size() > 0) {
+//            SafeAppApplication.hideKeyboard(this);
+            SafeAppApplication.getStackActivity().pop().finish();
+        }
+        super.onBackPressed();
+        overridePendingTransition(R.anim.stay, R.anim.push_down_out);
+
+    }
 
     protected void startRecordingInBackgroundThread(){
         Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);

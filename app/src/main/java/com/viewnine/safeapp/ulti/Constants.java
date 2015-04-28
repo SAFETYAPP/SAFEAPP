@@ -45,4 +45,22 @@ public class Constants {
     public static final LinkedHashMap<String, Integer> TIME_INTERVAL_LIST = new LinkedHashMap<String, Integer>() {{put("1 min", DEFAULT_TIME_TO_RECORDING);
                                                                                                         put("45 sec", 45 * 1000);
                                                                                                         put("30 sec", 30 * 1000);}};
+
+    public static final int CHILD_ACTIVITY = 100;
+    public static final int LOCK_SCREEN_ACTIVITY = 1;
+    public static final int RECORD_FOREGROUND_ACTIVITY = 2;
+    public static final int SETUP_ACTIVITY = 3;
+    public static final int HISTORY_ACTIVITY = 4;
+    public static final int SETTINGS_ACTIVITY = 5;
+    public static final int SECURITY_ACTIVITY = 6;
+    public static final int NOTIFICATIONS_ACTIVITY = 7;
+    public static final int BACKUP_ACTIVITY = 8;
+    public static final int UNLOCK_PATTERN_ACTIIVTY = 9;
+
+
+
+    public static final int DELETE_VIDEO_SIGNAL = 1;
+
+
+
 }

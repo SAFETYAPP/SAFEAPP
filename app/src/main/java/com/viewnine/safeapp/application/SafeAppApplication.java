@@ -1,5 +1,6 @@
 package com.viewnine.safeapp.application;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -9,7 +10,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.viewnine.safeapp.activity.R;
+import com.viewnine.safeapp.manager.SafeAppIndexActivityManager;
+import com.viewnine.safeapp.model.SafeAppDataObject;
+import com.viewnine.safeapp.ulti.Constants;
 
+import java.util.Stack;
 import java.util.Timer;
 
 /**
@@ -19,13 +24,15 @@ public class SafeAppApplication extends Application {
 
     private static SafeAppApplication instance;
     private static Timer timer;
-
+    private static Stack<Activity> mStackActivity;
+    SafeAppDataObject safeAppDataObject;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-
+        mStackActivity = new Stack<Activity>();
+        safeAppDataObject = new SafeAppDataObject();
         initImageLoader(getApplicationContext());
     }
 
@@ -56,6 +63,8 @@ public class SafeAppApplication extends Application {
         super.onTerminate();
         stopTimer();
     }
+
+    public SafeAppDataObject getSafeAppDataObject(){return safeAppDataObject;};
 
     public static void initImageLoader(Context context) {
         // This configuration tuning is custom. You can tune every option, you may tune some of them,
@@ -92,5 +101,50 @@ public class SafeAppApplication extends Application {
 
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
+    }
+
+
+    public static boolean isFinishPreviousActivity() {
+        if (SafeAppIndexActivityManager.getCurrent() != SafeAppIndexActivityManager.getPrevious())
+            return true;
+        return false;
+    }
+
+    public static boolean isFinishCurrentActivity() {
+        if (isChildActivity()) {
+            // AnomoIndexActivityManager.setCurrent(AnomoIndexActivityManager.getPrevious());
+            // AnomoIndexActivityManager.setPrevious(-1);
+            SafeAppIndexActivityManager.pop();
+            return true;
+        }
+        SafeAppIndexActivityManager.reset();
+        return false;
+    }
+
+    private static boolean isChildActivity() {
+        if (SafeAppIndexActivityManager.getCurrent() == Constants.CHILD_ACTIVITY) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static void finishAllPreviousActivity() {
+//		if (isFinishPreviousActivity()) {
+//			while (!mStackActivity.isEmpty()) {
+//				mStackActivity.pop().finish();
+//			}
+//		}
+        while (!mStackActivity.isEmpty()) {
+            mStackActivity.pop().finish();
+        }
+    }
+
+    public static Stack<Activity> getStackActivity() {
+        return mStackActivity;
+    }
+
+    public static void pushToSStackActivity(Activity activity){
+        mStackActivity.push(activity);
     }
 }

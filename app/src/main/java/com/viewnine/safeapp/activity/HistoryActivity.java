@@ -17,8 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.viewnine.safeapp.Adapter.VideoAdapter;
+import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.manager.HistoryManager;
 import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.model.DataObject;
 import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.AlertHelper;
 import com.viewnine.safeapp.ulti.Constants;
@@ -26,13 +28,15 @@ import com.viewnine.safeapp.ulti.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Observable;
+import java.util.Observer;
 
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 /**
  * Created by user on 4/24/15.
  */
-public class HistoryActivity extends ParentActivity implements AbsListView.OnScrollListener{
+public class HistoryActivity extends ParentActivity implements AbsListView.OnScrollListener, Observer{
     ArrayList<VideoObject> listVideos;
     String lastVideoId = Constants.EMPTY_STRING;
     VideoAdapter videoAdapter;
@@ -55,13 +59,26 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
     private RelativeLayout rlList;
     private SaveVideoReceiver saveVideoReceiver;
     private String TAG = HistoryActivity.class.getName();
+    private SafeAppApplication safeAppApplication;
+    private int totalVideos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        addVideoObjectObserver();
         setupViews();
         initData();
+    }
+
+    private void addVideoObjectObserver(){
+        safeAppApplication = (SafeAppApplication) getApplication();
+        safeAppApplication.getSafeAppDataObject().addObserver(this);
+    }
+
+    private void removeVideoObjectObserver(){
+        if(safeAppApplication != null){
+            safeAppApplication.getSafeAppDataObject().deleteObserver(this);
+        }
     }
 
     private void setupViews() {
@@ -141,7 +158,8 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
             listVideos.addAll(listVideosTmp);
             videoAdapter.setListVideos(listVideos);
         }
-        addVideoNumber(totalVideos);
+        this.totalVideos = totalVideos;
+        addVideoNumber(this.totalVideos);
         if(listVideos.size() == totalVideos){
             needToShowLoadMore = false;
             mFooterListView.setVisibility(View.INVISIBLE);
@@ -243,6 +261,42 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
     protected void onStop() {
         unregisterVideoReceiver();
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        removeVideoObjectObserver();
+        super.onDestroy();
+    }
+
+    /**
+     * Receive notification when videoObject is changed (Delete, modify...)
+     * @param observable
+     * @param data
+     */
+    @Override
+    public void update(Observable observable, Object data) {
+        VideoObject videoObject = safeAppApplication.getSafeAppDataObject().getVideoObject();
+        DataObject dataObject = (DataObject) data;
+        switch (dataObject.getTypeChange()){
+            case Constants.DELETE_VIDEO_SIGNAL:
+                removeVideoFromTheList(videoObject);
+                break;
+            default:
+        }
+    }
+
+    private void removeVideoFromTheList(VideoObject videoObjectDeleted){
+        for (int i = 0; i < listVideos.size(); i++) {
+            VideoObject videoObject = listVideos.get(i);
+            if(videoObject.getId().equalsIgnoreCase(videoObjectDeleted.getId())){
+                listVideos.remove(i);
+                videoAdapter.notifyDataSetChanged();
+                totalVideos --;
+                addVideoNumber(totalVideos);
+                break;
+            }
+        }
     }
 
     private class SaveVideoReceiver extends BroadcastReceiver{

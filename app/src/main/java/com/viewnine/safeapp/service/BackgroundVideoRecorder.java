@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.viewnine.safeapp.activity.HistoryActivity;
 import com.viewnine.safeapp.activity.R;
 import com.viewnine.safeapp.manager.EmailManager;
-import com.viewnine.safeapp.manager.VideoQueueManager;
+import com.viewnine.safeapp.manager.VideoManager;
 import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.LogUtils;
@@ -178,7 +178,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                     videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
                     videoObjectDB.setTime(videoObject.getTime());
                     videoObject = null;
-                    VideoQueueManager.getInstance(getBaseContext()).addVideoInQueue(videoObjectDB, true, new VideoQueueManager.ISavingVideoListener() {
+                    VideoManager.getInstance(getBaseContext()).addVideoInQueue(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
                         @Override
                         public void successful(VideoObject videoObject) {
                             Intent intent = new Intent();
