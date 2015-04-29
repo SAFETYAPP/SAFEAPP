@@ -222,7 +222,10 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
                 handleClickBackButton(v);
 
                 break;
+
             default:
+                super.onClick(v);
+
         }
 
     }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.viewnine.safeapp.application.SafeAppApplication;
@@ -173,6 +174,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     }
 
     private void handleClickOnShareButton() {
+        Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
 
     }
 }

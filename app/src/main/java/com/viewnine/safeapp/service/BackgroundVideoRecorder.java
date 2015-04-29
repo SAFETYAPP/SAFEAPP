@@ -17,7 +17,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Toast;
 
 import com.viewnine.safeapp.activity.HistoryActivity;
 import com.viewnine.safeapp.activity.R;
@@ -162,8 +161,6 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                 camera.release();
 
                 windowManager.removeView(surfaceView);
-
-                Toast.makeText(getBaseContext(), "Recording Stopped", Toast.LENGTH_SHORT).show();
 
                 if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
                     LogUtils.logD(TAG, "Save video starting...");
