@@ -1,7 +1,11 @@
 package com.viewnine.safeapp.manager;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.viewnine.safeapp.ulti.LogUtils;
@@ -186,6 +190,14 @@ public class EmailManager {
 
         return internetAddress;
     }
+
+    public void contactUs(Context context, String email, String subject){
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null));
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        ((Activity) context).startActivity(intent);
+    }
+
 
 
 

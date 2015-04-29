@@ -125,17 +125,13 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                 e.printStackTrace();
             }
             mediaRecorder.setOrientationHint(Constants.POSITIVE_90_DEGREE);
-
             mediaRecorder.setMaxDuration(Constants.DEFAULT_TIME_TO_RECORDING);
             LogUtils.logD(TAG, "File name: " + fileName);
             mediaRecorder.setOutputFile(fileName);
             mediaRecorder.setVideoEncodingBitRate(Constants.VIDEO_QUALITY);
 
             mediaRecorder.prepare();
-
             mediaRecorder.start();
-
-            Toast.makeText(getBaseContext(), "Recording Started", Toast.LENGTH_SHORT).show();
 
             videoObject = new VideoObject();
             videoObject.setId(Constants.PREFIX_VIDEO_ID + time);

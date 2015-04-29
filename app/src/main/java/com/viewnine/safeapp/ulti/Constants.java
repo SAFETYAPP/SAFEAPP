@@ -58,7 +58,7 @@ public class Constants {
     public static final int UNLOCK_PATTERN_ACTIIVTY = 9;
 
 
-
+    public static final String CONTACT_EMAIL = "gro4tech@gmail.com";
     public static final int DELETE_VIDEO_SIGNAL = 1;
 
 

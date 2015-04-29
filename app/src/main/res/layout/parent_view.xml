@@ -60,6 +60,7 @@
             android:id="@+id/button_setting"
             android:layout_width="@dimen/icon_header_size"
             android:layout_height="@dimen/icon_header_size"
+            android:layout_marginTop="3dp"
             android:background="@drawable/settings_button"
             android:visibility="gone" />
 

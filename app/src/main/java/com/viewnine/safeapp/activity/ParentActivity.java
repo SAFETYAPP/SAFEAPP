@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.manager.SharePreferenceManager;
@@ -242,10 +243,10 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
                 onBackPressed();
                 break;
             case R.id.button_goto_share:
-
+                Toast.makeText(this, "Comming soon", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.button_share:
-
+                Toast.makeText(this, "Comming soon", Toast.LENGTH_SHORT).show();
                 break;
             default:
 

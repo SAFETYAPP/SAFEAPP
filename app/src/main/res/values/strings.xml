@@ -57,5 +57,6 @@
     <string name="edit">Edit</string>
     <string name="delete_confirmation">Delete Confirmation</string>
     <string name="successful">Successful</string>
+    <string name="contact_us_subject">[SafeApp Team]</string>
     <!-- UW -->
 </resources>

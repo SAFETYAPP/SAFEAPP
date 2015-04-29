@@ -13,7 +13,9 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.viewnine.safeapp.manager.EmailManager;
 import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.LogUtils;
 
 import java.util.Arrays;
@@ -71,8 +73,7 @@ public class SettingsActivity extends ParentActivity implements View.OnClickList
                 SwitchViewManager.getInstance().gotoSecurityScreen(this);
                 break;
             case R.id.button_contact_us:
-//                EmailManager.getInstance().getSenderEmail();
-                handleClickOnContactus();
+                EmailManager.getInstance().contactUs(this, Constants.CONTACT_EMAIL, getString(R.string.contact_us_subject));
                 break;
             case R.id.button_primacy_policy:
 
