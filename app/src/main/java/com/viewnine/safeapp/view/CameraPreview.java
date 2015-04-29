@@ -89,6 +89,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         this.mCurrentFlashMode = currentFlashMode;
     }
 
+    public interface IRecordListener{
+        public void notifyStartRecording();
+        public void notifyStopRecording();
+    }
+
+    IRecordListener recordListener;
+
+    public void setRecordListener(IRecordListener recordListener){
+        this.recordListener = recordListener;
+    }
+
     public CameraPreview(Activity activity, int cameraId, LayoutMode mode, int currentFlashMode) {
         super(activity); // Always necessary
         try {
@@ -183,8 +194,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
             mediaRecorder.prepare();
             mediaRecorder.start();
-//
-//
+
+            if(recordListener != null){
+                recordListener.notifyStartRecording();
+            }
+
             videoObject = new VideoObject();
             videoObject.setId(Constants.PREFIX_VIDEO_ID + time);
             videoObject.setVideoUrl(fileName);
@@ -197,6 +211,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }catch (Exception e){
             e.printStackTrace();
             Ulti.deleteFile(fileName);
+            if(recordListener != null){
+                recordListener.notifyStopRecording();
+            }
         }
 
 
@@ -239,6 +256,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }else {
                 LogUtils.logD(TAG, "Fail to save video");
             }
+        }
+
+        if(recordListener != null){
+            recordListener.notifyStopRecording();
         }
     }
 

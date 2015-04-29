@@ -1,10 +1,12 @@
 package com.viewnine.safeapp.activity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.manager.SwitchViewManager;
@@ -18,7 +20,7 @@ import java.util.TimerTask;
 /**
  * Created by user on 4/19/15.
  */
-public class RecordForegroundVideoActivity extends ParentActivity {
+public class RecordForegroundVideoActivity extends ParentActivity implements CameraPreview.IRecordListener {
 
     private RelativeLayout rlCameraTakePicture;
     private int heightSizeOfTopView;
@@ -32,10 +34,11 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     private Button btnAudio;
     private boolean enableRecordAudio = true;
     private View btnGallery;
-
-
-
     private static final String TAG = RecordForegroundVideoActivity.class.getName();
+    private TextView lblRecordTime;
+
+    CountDownTimer countTime;
+    int second = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,34 @@ public class RecordForegroundVideoActivity extends ParentActivity {
         btnAudio = (Button) findViewById(R.id.button_audio_mode);
         btnAudio.setOnClickListener(this);
 
+        lblRecordTime = (TextView) findViewById(R.id.textview_time_recorder);
+
+
+        countTime = new CountDownTimer( Long.MAX_VALUE , 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                second++;
+//                String time = new Integer(second).toString();
+//
+//                long second = second;
+//                int minute = (int) (second / 60);
+//                int hour = minute / 60;
+//                minute     = minute % 60;
+//                LogUtils.logD(TAG," hour: " + hour +  "minute: " + minute + ". minute: " + second);
+//                lblRecordTime.setText(String.format("%d:%02d:%02d", hour, minute,second));
+
+
+                lblRecordTime.setText(String.format("%02d:%02d:%02d",
+                        second / 3600, (second % 3600) / 60, second % 60));
+
+            }
+
+            @Override
+            public void onFinish() {            }
+        };
+
 
 
     }
@@ -111,6 +142,7 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     private void initCameraView(){
         //set width/height for camera view
         mPreviewTakePicture = new CameraPreview(this, mCurrentCameraID, CameraPreview.LayoutMode.FitToParent, mCurrentFlashMode);
+        mPreviewTakePicture.setRecordListener(this);
         handleFlashButtonUI();
         showHideFlashButton();
 
@@ -217,18 +249,12 @@ public class RecordForegroundVideoActivity extends ParentActivity {
 
                     LogUtils.logI(TAG, "Stop Recording");
                     mPreviewTakePicture.releaseMediaRecorder();
-                    btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_normal_state);
-                    btnGallery.setVisibility(View.VISIBLE);
-                    recording = false;
 
                 }else {
 
                     LogUtils.logI(TAG, "Start Recording");
 //                    mPreviewTakePicture.startRecording(enableRecordAudio);
                     handleRecordingInForeground();
-                    btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_active_state);
-                    recording = true;
-                    btnGallery.setVisibility(View.GONE);
                 }
             }
 
@@ -284,4 +310,27 @@ public class RecordForegroundVideoActivity extends ParentActivity {
     }
 
 
+    @Override
+    public void notifyStartRecording() {
+        countTime.start();
+        btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_active_state);
+        recording = true;
+        btnGallery.setVisibility(View.GONE);
+        btnAudio.setVisibility(View.GONE);
+        btnSwitchCamera.setVisibility(View.GONE);
+
+
+    }
+
+    @Override
+    public void notifyStopRecording() {
+        second = -1;
+        countTime.cancel();
+        btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_normal_state);
+        btnGallery.setVisibility(View.VISIBLE);
+        btnAudio.setVisibility(View.VISIBLE);
+        btnSwitchCamera.setVisibility(View.VISIBLE);
+        recording = false;
+
+    }
 }

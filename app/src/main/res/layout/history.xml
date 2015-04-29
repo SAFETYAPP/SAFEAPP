@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/linearlayout_tabbar"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="@color/safeapp_color"
         android:orientation="horizontal">
 
@@ -23,8 +23,8 @@
 
             <Button
                 android:id="@+id/button_grid"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_centerInParent="true"
 
                 android:background="@drawable/grid_button" />
@@ -49,8 +49,8 @@
 
             <Button
                 android:id="@+id/button_list"
-                android:layout_width="35dp"
-                android:layout_height="28dp"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
                 android:layout_centerInParent="true"
 
                 android:background="@drawable/list_button" />

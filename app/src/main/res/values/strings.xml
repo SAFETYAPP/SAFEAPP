@@ -30,6 +30,7 @@
     <string name="error">error</string>
     <string name="load_more">Load more...</string>
     <string name="back_up">Back Up</string>
+    <string name="back_up_completed">Backup completed.</string>
     <string name="notifications">Notifications</string>
     <string name="security">Security</string>
     <string name="contact_us">Contact Us</string>

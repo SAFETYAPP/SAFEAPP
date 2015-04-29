@@ -301,7 +301,7 @@ public class Ulti {
         if(SharePreferenceManager.getInstance().isEnableNotificationForEachBackup()){
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(R.drawable.safeapp_system_tray_icon)
                     .setContentTitle(context.getResources().getString(R.string.app_name))
-                    .setContentText(context.getResources().getString(R.string.back_up))
+                    .setContentText(context.getResources().getString(R.string.back_up_completed))
                     .setAutoCancel(true);
 
 

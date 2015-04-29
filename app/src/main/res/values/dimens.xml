@@ -34,7 +34,7 @@
     <dimen name="loading_wheel_icon">100dp</dimen>
     <dimen name="freely_icon_loading_circle">35dp</dimen>
     <dimen name="hight_size_setting_item">60dp</dimen>
-    <dimen name="size_of_icons">60dp</dimen>
+    <dimen name="size_of_icons">50dp</dimen>
     <dimen name="icon_header_size">27dp</dimen>
     <dimen name="icon_share_size">24dp</dimen>
     <dimen name="padding_setting">20dp</dimen>

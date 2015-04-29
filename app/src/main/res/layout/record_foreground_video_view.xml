@@ -5,10 +5,27 @@
     android:background="@color/transparent">
 
 
+
+
+
     <RelativeLayout
         android:id="@+id/relativelayout_camera"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"></RelativeLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/gradient_shape"
+        android:contentDescription="@string/app_name" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+
+        android:background="@drawable/gradient_shape_270"
+        android:contentDescription="@string/app_name" />
 
     <!-- Top bar -->
 
@@ -41,8 +58,18 @@
             android:layout_height="@dimen/size_of_icons"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:background="@drawable/switch_camera_button" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/textview_time_recorder"
+            android:textSize="@dimen/safeapp_text_size"
+            android:textColor="@color/White"
+            android:text="00:00:00"/>
+
     </RelativeLayout>
 
 
