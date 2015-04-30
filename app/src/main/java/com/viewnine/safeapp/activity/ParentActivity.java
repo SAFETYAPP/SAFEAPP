@@ -47,6 +47,10 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     protected int timeToRecord = Constants.DEFAULT_TIME_TO_RECORDING;
     private LinearLayout lnEdit;
     private LinearLayout lnDelete;
+    private RelativeLayout rlSettings;
+    private RelativeLayout rlGotoShare;
+    private RelativeLayout rlShare;
+    private RelativeLayout rlBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +122,13 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
         txtVideoNumber = (TextView) findViewById(R.id.textview_videos_number);
         txtVideos = (TextView) findViewById(R.id.videos);
         btnSettings = (Button) findViewById(R.id.button_setting);
+        rlSettings = (RelativeLayout) findViewById(R.id.relativelayout_setting);
         btnGotoShare = (Button) findViewById(R.id.button_goto_share);
+        rlGotoShare = (RelativeLayout) findViewById(R.id.relativelayout_goto_share);
         btnShare = (Button) findViewById(R.id.button_share);
+        rlShare = (RelativeLayout) findViewById(R.id.relativelayout_share);
         btnBack = (Button) findViewById(R.id.button_back);
+        rlBack = (RelativeLayout) findViewById(R.id.relativelayout_back);
         lnEdit = (LinearLayout) findViewById(R.id.linearlayout_edit_mode);
         lnDelete = (LinearLayout) findViewById(R.id.linearlayout_delete);
 
@@ -130,6 +138,10 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
         btnShare.setOnClickListener(this);
         lnEdit.setOnClickListener(this);
         lnDelete.setOnClickListener(this);
+        rlSettings.setOnClickListener(this);
+        rlGotoShare.setOnClickListener(this);
+        rlShare.setOnClickListener(this);
+        rlBack.setOnClickListener(this);
 
         frParent = (FrameLayout) findViewById(R.id.framelayout_parent);
 
@@ -160,23 +172,23 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
 
     protected void setInDeleteModeInHistoryScreen(boolean isInEditMode){
         if(isInEditMode){
-            btnSettings.setVisibility(View.GONE);
-            btnGotoShare.setVisibility(View.GONE);
+            rlSettings.setVisibility(View.GONE);
+            rlGotoShare.setVisibility(View.GONE);
             addTitle(getString(R.string.edit));
             lnVideoNumber.setVisibility(View.GONE);
             lnEdit.setVisibility(View.GONE);
 
-            btnBack.setVisibility(View.VISIBLE);
+            rlBack.setVisibility(View.VISIBLE);
             lnDelete.setVisibility(View.VISIBLE);
 
         }else {
-            btnSettings.setVisibility(View.VISIBLE);
-            btnGotoShare.setVisibility(View.VISIBLE);
+            rlSettings.setVisibility(View.VISIBLE);
+            rlGotoShare.setVisibility(View.VISIBLE);
             lnVideoNumber.setVisibility(View.VISIBLE);
             lnEdit.setVisibility(View.VISIBLE);
 
             txtTitle.setVisibility(View.GONE);
-            btnBack.setVisibility(View.GONE);
+            rlBack.setVisibility(View.GONE);
             lnDelete.setVisibility(View.GONE);
         }
     }
@@ -190,19 +202,19 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     }
 
     protected void addSettingButton(){
-        btnSettings.setVisibility(View.VISIBLE);
+        rlSettings.setVisibility(View.VISIBLE);
     }
 
     protected void addBackButton(){
-        btnBack.setVisibility(View.VISIBLE);
+        rlBack.setVisibility(View.VISIBLE);
     }
 
     protected void addGoToShareButton(){
-        btnGotoShare.setVisibility(View.VISIBLE);
+        rlGotoShare.setVisibility(View.VISIBLE);
     }
 
     protected void addShareButton(){
-        btnShare.setVisibility(View.VISIBLE);
+        rlBack.setVisibility(View.VISIBLE);
     }
 
     protected void addVideoNumber(int videoNumbers, boolean isInDeleteMode){
@@ -236,15 +248,19 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.relativelayout_setting:
             case R.id.button_setting:
                 SwitchViewManager.getInstance().gotoSettingsScreen(this);
                 break;
+            case R.id.relativelayout_back:
             case R.id.button_back:
                 onBackPressed();
                 break;
+            case R.id.relativelayout_goto_share:
             case R.id.button_goto_share:
                 Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.relativelayout_share:
             case R.id.button_share:
                 Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
                 break;

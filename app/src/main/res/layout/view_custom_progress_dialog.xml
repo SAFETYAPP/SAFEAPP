@@ -25,7 +25,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/loading_icon_freely" />
+        android:src="@drawable/loading_icon_freely"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

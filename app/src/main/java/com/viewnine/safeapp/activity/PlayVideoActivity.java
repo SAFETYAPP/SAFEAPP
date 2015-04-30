@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -32,6 +33,9 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     private Button btnBack;
     private VideoObject videoObject;
     private Button btnDeleteVideo;
+    private RelativeLayout rlDelete;
+    private RelativeLayout rlShare;
+    private RelativeLayout rlBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +61,17 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
 
         myVideoView =(VideoView)findViewById(R.id.videoView1);
         btnBack = (Button) findViewById(R.id.button_back);
+        rlBack = (RelativeLayout) findViewById(R.id.relativelayout_back);
         btnShare = (Button) findViewById(R.id.button_share);
+        rlShare = (RelativeLayout) findViewById(R.id.relativelayout_share);
         btnDeleteVideo = (Button) findViewById(R.id.button_delete_video);
+        rlDelete = (RelativeLayout) findViewById(R.id.relativelayout_delete);
         btnBack.setOnClickListener(this);
         btnShare.setOnClickListener(this);
         btnDeleteVideo.setOnClickListener(this);
+        rlBack.setOnClickListener(this);
+        rlShare.setOnClickListener(this);
+        rlDelete.setOnClickListener(this);
     }
 
     private void initVideo(){
@@ -117,12 +127,15 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.relativelayout_back:
             case R.id.button_back:
                 exitThisScreen();
                 break;
+            case R.id.relativelayout_share:
             case R.id.button_share:
                 handleClickOnShareButton();
                 break;
+            case R.id.relativelayout_delete:
             case R.id.button_delete_video:
                 handleClickOnDeleteButton();
                 break;

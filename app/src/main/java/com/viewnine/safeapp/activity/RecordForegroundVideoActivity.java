@@ -243,6 +243,7 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
 
     boolean recording = false;
     private void handleRecordVideo() {
+        btnTakeOrRecordCamera.setEnabled(false);
         try {
             if(mPreviewTakePicture != null){
                 if(recording){
@@ -312,6 +313,7 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
 
     @Override
     public void notifyStartRecording() {
+        btnTakeOrRecordCamera.setEnabled(true);
         countTime.start();
         btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_active_state);
         recording = true;
@@ -324,6 +326,7 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
 
     @Override
     public void notifyStopRecording() {
+        btnTakeOrRecordCamera.setEnabled(true);
         second = -1;
         countTime.cancel();
         btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_normal_state);

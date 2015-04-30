@@ -216,6 +216,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
             case R.id.linearlayout_delete:
                 handleClickOnDeleteButton();
                 break;
+            case R.id.relativelayout_back:
             case R.id.button_back:
                 handleClickBackButton(v);
 
