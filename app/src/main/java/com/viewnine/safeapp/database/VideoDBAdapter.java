@@ -65,17 +65,21 @@ public class VideoDBAdapter extends BaseAdapter{
     }
 
     public int deleteListVideos(ArrayList<VideoObject> listVideosDelete){
-        String[] listVideoIds = new String[listVideosDelete.size()];
-        for (int i = 0; i < listVideosDelete.size(); i++) {
-            listVideoIds[i] = listVideosDelete.get(i).getId();
+        if(listVideosDelete != null && listVideosDelete.size() > 0){
+            String[] listVideoIds = new String[listVideosDelete.size()];
+            for (int i = 0; i < listVideosDelete.size(); i++) {
+                listVideoIds[i] = listVideosDelete.get(i).getId();
+            }
+            boolean result = false;
+            openDatabase();
+            String query = DbDefines.VIDEO_ID + " IN (" + new String(new char[listVideoIds.length-1]).replace("\0", "?,") + "?)";
+            int number = mDb.delete(DbDefines.TABLE_VIDEOS, query , listVideoIds);
+            this.close();
+
+            return number;
+        }else {
+            return 0;
         }
-        boolean result = false;
-        openDatabase();
-
-        String query = DbDefines.VIDEO_ID + " IN (" + new String(new char[listVideoIds.length-1]).replace("\0", "?,") + "?)";
-        int number = mDb.delete(DbDefines.TABLE_VIDEOS, query , listVideoIds);
-
-        return number;
     }
 
     public ArrayList<VideoObject> getAllVideos() {
@@ -171,6 +175,68 @@ public class VideoDBAdapter extends BaseAdapter{
         }
         // value return
         return msgs;
+    }
+
+    public List<VideoObject> getListVideosBasedOnTime(long time){
+        List<VideoObject> msgs = new ArrayList<VideoObject>();
+        String whereClause = DbDefines.Time + " < " + time;
+
+
+        String queryString = "SELECT * FROM " + DbDefines.TABLE_VIDEOS + " WHERE " + whereClause;
+//        String queryString = "DELETE FROM " + DbDefines.TABLE_VIDEOS + " WHERE " + whereClause;
+        LogUtils.logI(TAG, "QueryString: " + queryString);
+        // Open database
+        openDatabase();
+        Cursor results = null;
+        try {
+            // Query
+            results = mDb.rawQuery(queryString, null);
+            if (results.getCount() > 0) {
+                for (int counter = 0; counter < results.getCount(); counter++) {
+                    results.moveToPosition(counter);
+                    VideoObject tempMsg = mapMessageData(results);
+                    msgs.add(tempMsg);
+                    LogUtils.logI(TAG, "Post ID: " + tempMsg.getId());
+                }
+            }
+
+
+        } catch (Exception e) {
+            LogUtils.logI(TAG, e.toString());
+        } finally {
+            if (results != null) {
+                results.close();
+            }
+            // close the cursor and the database
+            this.close();
+        }
+        // value return
+        return msgs;
+    }
+
+    public boolean deleteVideosBasedOnTime(long time){
+        boolean result;
+        String whereClause = DbDefines.Time + " < " + time;
+        String queryString = "DELETE FROM " + DbDefines.TABLE_VIDEOS + " WHERE " + whereClause;
+        LogUtils.logI(TAG, "QueryString: " + queryString);
+        // Open database
+        openDatabase();
+
+        try {
+            // Query
+            mDb.rawQuery(queryString, null).moveToFirst();
+
+            result = true;
+
+        } catch (Exception e) {
+            LogUtils.logI(TAG, e.toString());
+            result = false;
+        } finally {
+            // close the cursor and the database
+            this.close();
+        }
+        // value return
+        return result;
     }
 
     public ArrayList<VideoObject> getListVideosBaseOnTime(long time){

@@ -55,7 +55,6 @@ public class HistoryManager {
             VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
             listVideos = videoDBAdapter.getListVideosBaseOnTime(latestVideoTime);
             totalVideo = videoDBAdapter.getTotalVideos();
-            videoDBAdapter = null;
             if(listVideos != null){
                 return Constants.OK;
             }

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.manager.VideoManager;
 import com.viewnine.safeapp.ulti.ValidationHelper;
 
 /**
@@ -51,6 +52,7 @@ public class SplashScreenActivity extends ParentActivity {
         if(!ValidationHelper.getInstance().alreadySetupEmail()){
             SwitchViewManager.getInstance().gotoRecordSetupScreen(this);
         }else {
+            deleteVideosExpiredDay();
             SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
         }
 
@@ -62,6 +64,13 @@ public class SplashScreenActivity extends ParentActivity {
     protected void onResume() {
         super.onResume();
         handleFirstTimeRunning();
+    }
+
+    /**
+     * Remove videos after 7days
+     */
+    private void deleteVideosExpiredDay(){
+        VideoManager.getInstance(this).deleteVideosExpiredDay();
     }
 
 

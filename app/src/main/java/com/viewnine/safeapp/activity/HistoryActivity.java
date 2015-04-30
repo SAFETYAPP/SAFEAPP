@@ -127,8 +127,6 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
         gridviewVideos.setAdapter(videoAdapter);
         listviewVideos.setAdapter(videoAdapter);
 
-
-
     }
 
     private void registerVideoReceiver(){
@@ -278,7 +276,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
     }
 
     private void deleteListVideo(final ArrayList<VideoObject> listVideosDelete){
-        VideoManager.getInstance(this).deleteListVideos(this, listVideosDelete, new VideoManager.IDeleteVideoListener() {
+        VideoManager.getInstance(this).deleteListVideos(this, listVideosDelete, true, new VideoManager.IDeleteVideoListener() {
             @Override
             public void deleteSpecificVideoSuccessful(VideoObject videoObject) {}
 

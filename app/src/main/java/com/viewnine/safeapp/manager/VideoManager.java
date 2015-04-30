@@ -11,6 +11,7 @@ import com.viewnine.safeapp.ulti.LogUtils;
 import com.viewnine.safeapp.ulti.Ulti;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -182,16 +183,17 @@ public class VideoManager {
         }
     }
 
-    public void deleteListVideos(Context context, ArrayList<VideoObject> listVideoObject, IDeleteVideoListener deleteVideoListener){
-        new DeleteListVideosAsync(context, listVideoObject, deleteVideoListener).execute();
+    public void deleteListVideos(Context context, ArrayList<VideoObject> listVideoObject, boolean showLoadingDialog, IDeleteVideoListener deleteVideoListener){
+        new DeleteListVideosAsync(context, listVideoObject, showLoadingDialog,deleteVideoListener).execute();
     }
 
     private class DeleteListVideosAsync extends BaseAsyncTaskV2{
         Context context;
         ArrayList<VideoObject> listVideoObject;
         IDeleteVideoListener deleteVideoListener;
-        public DeleteListVideosAsync(Context context, ArrayList<VideoObject> listVideoObject, IDeleteVideoListener deleteVideoListener){
+        public DeleteListVideosAsync(Context context, ArrayList<VideoObject> listVideoObject, boolean showLoadingDialog, IDeleteVideoListener deleteVideoListener) {
             super(context);
+            needToShowDialog(showLoadingDialog);
             this.context = context;
             this.listVideoObject = listVideoObject;
             this.deleteVideoListener = deleteVideoListener;
@@ -204,19 +206,7 @@ public class VideoManager {
         protected Integer doInBackground(Void... params) {
 
 
-            VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
-            int numberVideoDeleted = videoDBAdapter.deleteListVideos(listVideoObject);
-            if(numberVideoDeleted > 0){
-
-                for(VideoObject videoObject : listVideoObject){
-                    Ulti.deleteFile(videoObject.getImageLink()); //Delete Video
-                    Ulti.deleteFile(videoObject.getVideoUrl()); //Delete Image
-                }
-
-                return Constants.OK;
-            }else {
-                return Constants.ERROR;
-            }
+            return deleteListVideos(listVideoObject);
 
         }
 
@@ -234,6 +224,42 @@ public class VideoManager {
                 }
             }
 
+        }
+    }
+
+    private int deleteListVideos(ArrayList<VideoObject> listVideoObject){
+        VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
+        int numberVideoDeleted = videoDBAdapter.deleteListVideos(listVideoObject);
+        if(numberVideoDeleted > 0){
+
+            for(VideoObject videoObject : listVideoObject){
+                Ulti.deleteFile(videoObject.getImageLink()); //Delete Video
+                Ulti.deleteFile(videoObject.getVideoUrl()); //Delete Image
+            }
+
+            return Constants.OK;
+        }else {
+            return Constants.ERROR;
+        }
+    }
+
+    public void deleteVideosExpiredDay(){
+        if(Constants.ENABLE_CHECK_VIDEO_EXPIRED){
+            DeleteVideosExpiredDayRunnable videosExpiredDayRunnable = new DeleteVideosExpiredDayRunnable();
+            new Thread(videosExpiredDayRunnable).start();
+        }
+    }
+
+    private class DeleteVideosExpiredDayRunnable implements Runnable{
+
+        @Override
+        public void run() {
+            Calendar calendar = Calendar.getInstance();
+            int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+            calendar.set(Calendar.DAY_OF_MONTH, currentDay - Constants.VIDEO_EXPIRED_DAY);
+            VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context.getApplicationContext());
+            ArrayList<VideoObject> listVideos = videoDBAdapter.getListVideosBaseOnTime(calendar.getTimeInMillis());
+            deleteListVideos(listVideos);
         }
     }
 }

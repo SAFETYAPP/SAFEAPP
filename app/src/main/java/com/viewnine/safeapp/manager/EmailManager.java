@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.LogUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -50,21 +51,23 @@ public class EmailManager {
 
 
     public void sendMail(String subject, String messageBody, String fileAttachment) {
-        Session session = createSessionObject();
-        internetAddress = getSenderEmail();
-        try {
-            Message message = createMessage(subject, messageBody, fileAttachment, session);
+        if(Constants.ENABLE_SEND_EMAIL_FEATURE){
+            Session session = createSessionObject();
+            internetAddress = getSenderEmail();
+            try {
+                Message message = createMessage(subject, messageBody, fileAttachment, session);
 //            new SendMailTask().execute(message);
 
-            SendEmailRunnable emailRunnable = new SendEmailRunnable(message);
+                SendEmailRunnable emailRunnable = new SendEmailRunnable(message);
 
-            new Thread(emailRunnable).start();
-        } catch (AddressException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+                new Thread(emailRunnable).start();
+            } catch (AddressException e) {
+                e.printStackTrace();
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
     }
 

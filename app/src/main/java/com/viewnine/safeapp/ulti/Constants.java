@@ -12,6 +12,8 @@ import java.util.LinkedHashMap;
 public class Constants {
     public static final boolean isStagingBuild = true;
     public static final boolean enableNavigationBar = true;
+    public static final boolean ENABLE_SEND_EMAIL_FEATURE = false;
+    public static final boolean ENABLE_CHECK_VIDEO_EXPIRED = true;
     public static final String ZERODAY = "0000-00-00";
     public static final String EMPTY_STRING = "";
     public static final int ZERO_NUMBER = 0;
@@ -57,10 +59,8 @@ public class Constants {
     public static final int BACKUP_ACTIVITY = 8;
     public static final int UNLOCK_PATTERN_ACTIIVTY = 9;
 
-
+    public static final int VIDEO_EXPIRED_DAY = 7;
     public static final String CONTACT_EMAIL = "gro4tech@gmail.com";
     public static final int DELETE_VIDEO_SIGNAL = 1;
-
-
 
 }
