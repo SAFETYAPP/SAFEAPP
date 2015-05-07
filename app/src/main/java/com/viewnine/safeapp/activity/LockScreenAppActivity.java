@@ -1,7 +1,9 @@
 package com.viewnine.safeapp.activity;
 
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -44,6 +47,11 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
     private String TAG = LockScreenAppActivity.class.getName();
     private TextView lblTimeAMPM;
     private String patternStringSetting;
+    private enum GLOWPAD_TYPE{
+        PROFILE, VIDEO, HOME
+    }
+
+    GLOWPAD_TYPE glowpad_type;
 
 
     @Override
@@ -60,8 +68,8 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
 
         setupViews();
@@ -72,6 +80,11 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
         addChidlView(R.layout.lockscreen_view);
         showHideHeader(false);
 //        setContentView(R.layout.lockscreen_view);
+
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+
+        ((LinearLayout) findViewById(R.id.linearlayout_test)).setBackground(wallpaperDrawable);
 
         initLockScreen();
         initGlowPad();
@@ -87,6 +100,9 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
         btnCancelPattern = (Button) findViewById(R.id.button_cancel_pattern);
         btnCancelPattern.setOnClickListener(this);
         patternStringSetting = SharePreferenceManager.getInstance().getUnlockPattern();
+
+        btnCancelPattern.setShadowLayer(25, 0, 0, getResources().getColor(R.color.black));
+        txtWrongPattern.setShadowLayer(25, 0, 0, getResources().getColor(R.color.black));
 
         lockPatternView.setOnPatternListener(new LockPatternViewEx.OnPatternListener() {
             @Override
@@ -121,7 +137,19 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
             lockPatternView.clearPattern();
             txtWrongPattern.setVisibility(View.VISIBLE);
         }else {
-            SwitchViewManager.getInstance().gotoHistoryScreen(this);
+            switch (glowpad_type){
+                case PROFILE:
+                    SwitchViewManager.getInstance().gotoHistoryScreen(this);
+                    break;
+                case VIDEO:
+                    startRecordVideobackground();
+                    break;
+                case HOME:
+                    finish();
+                    break;
+            }
+
+
         }
     }
 
@@ -143,7 +171,7 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
 //                Toast.makeText(LockScreenAppActivity.this, "Clicked on position: " + target, Toast.LENGTH_SHORT).show();
                 switch (target) {
                     case HOME_TYPE:
-                        finish();
+                        handleUnlockSelected();
                         break;
                     case VIDEO_TYPE:
                         handleVideoSelected();
@@ -200,6 +228,10 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
         lblTime = (TextView) findViewById(R.id.time);
         lblTimeAMPM = (TextView) findViewById(R.id.time2);
         lblDate = (TextView) findViewById(R.id.date);
+
+        lblTime.setShadowLayer(25, 0, 0, getResources().getColor(R.color.black));
+        lblTimeAMPM.setShadowLayer(25, 0, 0, getResources().getColor(R.color.black));
+        lblDate.setShadowLayer(25, 0, 0, getResources().getColor(R.color.black));
 
         setCurrentDateTime();
 
@@ -355,7 +387,20 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
     }
 
     private void handleVideoSelected() {
-//        Toast.makeText(LockScreenAppActivity.this, "Start record video", Toast.LENGTH_SHORT).show();
+        glowpad_type = GLOWPAD_TYPE.VIDEO;
+
+        if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty()){
+            startRecordVideobackground();
+        }else {
+            txtWrongPattern.setVisibility(View.GONE);
+            rlLockPattern.setVisibility(View.VISIBLE);
+            glowPadView.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void startRecordVideobackground(){
+        stopTimerTask();
         handleRecordingInBackgroundThread();
 //        SwitchViewManager.getInstance().sendAppToBackground(this);
         finish();
@@ -363,8 +408,20 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
 
 
     private void handlePatternSelected() {
+        glowpad_type = GLOWPAD_TYPE.PROFILE;
         if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty()){
             SwitchViewManager.getInstance().gotoHistoryScreen(this);
+        }else {
+            txtWrongPattern.setVisibility(View.GONE);
+            rlLockPattern.setVisibility(View.VISIBLE);
+            glowPadView.setVisibility(View.GONE);
+        }
+    }
+
+    private void handleUnlockSelected(){
+        glowpad_type = GLOWPAD_TYPE.HOME;
+        if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty()){
+            finish();
         }else {
             txtWrongPattern.setVisibility(View.GONE);
             rlLockPattern.setVisibility(View.VISIBLE);

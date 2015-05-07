@@ -42,7 +42,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     private Button btnBack;
     private FrameLayout frParent;
     private LinearLayout lnVideoNumber;
-    private String TAG = ParentActivity.class.getName();
+    public String TAG = ParentActivity.class.getName();
     Handler handler = new Handler();
     protected int timeToRecord = Constants.DEFAULT_TIME_TO_RECORDING;
     private LinearLayout lnEdit;
@@ -173,7 +173,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     protected void setInDeleteModeInHistoryScreen(boolean isInEditMode){
         if(isInEditMode){
             rlSettings.setVisibility(View.GONE);
-            rlGotoShare.setVisibility(View.GONE);
+//            rlGotoShare.setVisibility(View.GONE);
             addTitle(getString(R.string.edit));
             lnVideoNumber.setVisibility(View.GONE);
             lnEdit.setVisibility(View.GONE);
@@ -183,7 +183,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
 
         }else {
             rlSettings.setVisibility(View.VISIBLE);
-            rlGotoShare.setVisibility(View.VISIBLE);
+//            rlGotoShare.setVisibility(View.VISIBLE);
             lnVideoNumber.setVisibility(View.VISIBLE);
             lnEdit.setVisibility(View.VISIBLE);
 
@@ -332,8 +332,8 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     protected void onResume() {
         super.onResume();
 
-        stopTimerTask();
-        stopRecordingInBackgroundThread();
+//        stopTimerTask();
+//        stopRecordingInBackgroundThread();
     }
 
     @Override

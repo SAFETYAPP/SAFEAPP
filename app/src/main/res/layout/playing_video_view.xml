@@ -8,18 +8,23 @@
         android:id="@+id/videoView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerVertical="true" />
 
 
 
     <RelativeLayout
+        android:id="@+id/relativelayout_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/gradient_shape_270"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:visibility="gone"
         >
 
         <RelativeLayout

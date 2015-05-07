@@ -98,12 +98,14 @@
                 android:gravity="left|center_vertical"
                 android:paddingLeft="@dimen/padding_setting"
                 android:text="@string/term_condition"
-                android:textSize="@dimen/safeapp_text_size" />
+                android:textSize="@dimen/safeapp_text_size"
+                android:visibility="gone" />
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/light_gray" />
+                android:background="@color/light_gray"
+                android:visibility="gone" />
 
 
         </LinearLayout>

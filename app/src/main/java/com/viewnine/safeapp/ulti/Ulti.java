@@ -14,8 +14,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
+import android.os.Environment;
+import android.os.StatFs;
 import android.support.v4.app.NotificationCompat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -300,6 +303,7 @@ public class Ulti {
     public static void showNotificationForEachBackup(Context context){
         if(SharePreferenceManager.getInstance().isEnableNotificationForEachBackup()){
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(R.drawable.safeapp_system_tray_icon)
+                    .setLargeIcon(((BitmapDrawable)context.getResources().getDrawable(R.drawable.ic_launcher)).getBitmap())
                     .setContentTitle(context.getResources().getString(R.string.app_name))
                     .setContentText(context.getResources().getString(R.string.back_up_completed))
                     .setAutoCancel(true);
@@ -315,6 +319,24 @@ public class Ulti {
             mNotificationManager.notify(randomNotification.nextInt(), mBuilder.build());
         }
 
+    }
+
+    public static void showNotificationBackupStarting(Context context){
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(R.drawable.safeapp_system_tray_icon)
+                .setLargeIcon(((BitmapDrawable)context.getResources().getDrawable(R.drawable.ic_launcher)).getBitmap())
+                .setContentTitle(context.getResources().getString(R.string.app_name))
+                .setContentText(context.getResources().getString(R.string.tap_to_end_current_recording))
+                .setAutoCancel(true);
+
+
+        Intent resultIntent = new Intent(context, HistoryActivity.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
+
+        int mNotificationID = 001;
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(mNotificationID, mBuilder.build());
     }
 
     public static void generateKeyHash(Context context){
@@ -338,6 +360,50 @@ public class Ulti {
             Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
         }
     }
+
+    public static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return capitalize(model);
+        } else {
+            return capitalize(manufacturer) + " " + model;
+        }
+    }
+
+
+    private static String capitalize(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        char first = s.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return s;
+        } else {
+            return Character.toUpperCase(first) + s.substring(1);
+        }
+    }
+
+    public static long checkSDCardFreeSpace(){
+
+        Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+
+        long sdAvailSize = 0;
+
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2){
+            sdAvailSize = (long)stat.getAvailableBlocks()
+                    * (long)stat.getBlockSize();
+        }else {
+            sdAvailSize = (long)stat.getAvailableBlocksLong()
+                    * (long)stat.getBlockSizeLong();
+
+        }
+        long megAvailable = sdAvailSize / (1024 * 1024);
+        return megAvailable;
+
+     }
 
 
 }

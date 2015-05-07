@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.FacebookSdk;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -31,6 +32,7 @@ public class SafeAppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
         mStackActivity = new Stack<Activity>();
         safeAppDataObject = new SafeAppDataObject();
         initImageLoader(getApplicationContext());

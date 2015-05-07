@@ -2,6 +2,7 @@ package com.viewnine.safeapp.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -26,7 +27,6 @@ import com.viewnine.safeapp.model.DataObject;
 import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.AlertHelper;
 import com.viewnine.safeapp.ulti.Constants;
-import com.viewnine.safeapp.ulti.DialogUlti;
 import com.viewnine.safeapp.ulti.LogUtils;
 
 import java.util.ArrayList;
@@ -73,9 +73,12 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        stopTimerTask();
+        stopRecordingInBackgroundThread();
         addVideoObjectObserver();
         setupViews();
         initData();
+
     }
 
     private void addVideoObjectObserver(){
@@ -108,6 +111,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
         fabStartNewRecord.setOnClickListener(this);
 
         addFooterView();
+        addHeaderView();
         lnTabBar = (LinearLayout) findViewById(R.id.linearlayout_tabbar);
         btnGrid = (Button) findViewById(R.id.button_grid);
         btnList = (Button) findViewById(R.id.button_list);
@@ -265,11 +269,18 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
         }
 
         if(listVideosDelete.size() > 0){
-            DialogUlti.getInstance().showDeleteVideoConfirmationDialog(this, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteListVideo(listVideosDelete);
+//            DialogUlti.getInstance().showDeleteVideoConfirmationDialog(this, new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    deleteListVideo(listVideosDelete);
+//
+//                }
+//            });
 
+            AlertHelper.getInstance().showMessageAlert(this, getString(R.string.delete_confirmation), true, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    deleteListVideo(listVideosDelete);
                 }
             });
         }
@@ -328,6 +339,15 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
         mFooterViewGridView = (ViewGroup) layoutInflater.inflate(
                 R.layout.footer_loadmore, null);
         gridviewVideos.addFooterView(mFooterViewGridView);
+    }
+
+    private void addHeaderView(){
+        final LayoutInflater layoutInflater = LayoutInflater.from(this);
+        ViewGroup headerListView = (ViewGroup) layoutInflater.inflate(R.layout.header_view, null);
+        listviewVideos.addHeaderView(headerListView);
+
+        ViewGroup headerGridview = (ViewGroup) layoutInflater.inflate(R.layout.header_view, null);
+        gridviewVideos.addHeaderView(headerGridview);
     }
 
 
@@ -411,6 +431,8 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
         @Override
         public void onReceive(Context context, Intent intent) {
             LogUtils.logI(TAG, "Received notification signal: video is saved");
+            stopTimerTask();
+            stopRecordingInBackgroundThread();
             initData();
         }
     }

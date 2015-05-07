@@ -1,30 +1,49 @@
 package com.viewnine.safeapp.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareVideo;
+import com.facebook.share.model.ShareVideoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.manager.VideoManager;
 import com.viewnine.safeapp.model.VideoObject;
 import com.viewnine.safeapp.ulti.AlertHelper;
 import com.viewnine.safeapp.ulti.Constants;
-import com.viewnine.safeapp.ulti.DialogUlti;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by user on 4/25/15.
  */
 public class PlayVideoActivity extends Activity implements View.OnClickListener{
+    private static final String TAG = PlayVideoActivity.class.getName();
     VideoView myVideoView;
 
     private int position = 0;
@@ -36,17 +55,81 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     private RelativeLayout rlDelete;
     private RelativeLayout rlShare;
     private RelativeLayout rlBack;
+    private RelativeLayout rlHeader;
+
+    private CallbackManager callbackManager;
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
+    private ShareDialog shareDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        initFacebook();
         initBundle();
 
         initViews();
 
         initVideo();
 
+    }
+
+    private void initFacebook(){
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.i(TAG, "Share dialog successful");
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                Log.i(TAG, "Share dialog error: " + e.toString());
+            }
+        });
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.i(TAG, "Logged successful");
+
+                startSharing();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                Log.i(TAG, "Logged error: " + e.toString());
+            }
+        });
+
+
+
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken accessToken, AccessToken accessToken1) {
+                Log.i(TAG, "onCurrentAccessTokenChanged() is called");
+            }
+        };
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile profile, Profile profile1) {
+                Log.i(TAG, "onCurrentProfileChanged() is called");
+            }
+        };
     }
 
     private void initBundle() {
@@ -59,6 +142,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     private void initViews() {
         setContentView(R.layout.playing_video_view);
 
+        rlHeader = (RelativeLayout) findViewById(R.id.relativelayout_header);
         myVideoView =(VideoView)findViewById(R.id.videoView1);
         btnBack = (Button) findViewById(R.id.button_back);
         rlBack = (RelativeLayout) findViewById(R.id.relativelayout_back);
@@ -72,6 +156,14 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
         rlBack.setOnClickListener(this);
         rlShare.setOnClickListener(this);
         rlDelete.setOnClickListener(this);
+
+        myVideoView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                handleToggleVideoView();
+                return false;
+            }
+        });
     }
 
     private void initVideo(){
@@ -143,6 +235,26 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
         }
     }
 
+    private void handleToggleVideoView() {
+        if(rlHeader.getVisibility() != View.VISIBLE){
+            rlHeader.setVisibility(View.VISIBLE);
+            mHandler.postDelayed(mRunnable, 3 * 1000);
+        }else {
+            rlHeader.setVisibility(View.GONE);
+            mHandler.removeCallbacks(mRunnable);
+        }
+
+    }
+
+    Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            rlHeader.setVisibility(View.GONE);
+        }
+    };
+
+    Handler mHandler = new Handler();
+
     private void exitThisScreen(){
         onBackPressed();
         overridePendingTransition(R.anim.stay, R.anim.push_down_out);
@@ -150,18 +262,20 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
 
     private void handleClickOnDeleteButton() {
 
-        DialogUlti.getInstance().showDeleteVideoConfirmationDialog(this, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        DialogUlti.getInstance().showDeleteVideoConfirmationDialog(this, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                deleteVideo();
+//            }
+//        });
 
+        AlertHelper.getInstance().showMessageAlert(this, getString(R.string.delete_confirmation), true, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 deleteVideo();
             }
         });
-
-//        VideoDBAdapter videoDBAdapter = new VideoDBAdapter(this);
-//        ArrayList<VideoObject> listVideosDelete = new ArrayList<VideoObject>();
-//        listVideosDelete.add(videoObject);
-//        videoDBAdapter.deleteListVideos(listVideosDelete);
     }
 
 
@@ -187,7 +301,82 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     }
 
     private void handleClickOnShareButton() {
-        Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
+        startSharing();
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        accessTokenTracker.stopTracking();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        simpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+
+    }
+
+    private void startSharing() {
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+        if(accessToken == null || accessToken.isExpired()){
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
+        }else {
+
+            if(ShareDialog.canShow(ShareVideoContent.class)){
+                Uri videoUri = Uri.fromFile(new File(videoObject.getVideoUrl()));
+                ShareVideo video = new ShareVideo.Builder()
+                        .setLocalUrl(videoUri)
+                        .build();
+                ShareVideoContent videoContent = new ShareVideoContent.Builder().setVideo(video)
+                        .setContentTitle("Title")
+                        .setContentDescription("Content description").build();
+                shareDialog.show(this, videoContent);
+//                ShareApi.share(videoContent, new FacebookCallback<Sharer.Result>() {
+//                    @Override
+//                    public void onSuccess(Sharer.Result result) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(FacebookException e) {
+//
+//                    }
+//                });
+
+
+
+                //Share link
+//                ShareLinkContent linkContent = new ShareLinkContent.Builder()
+//                        .setContentTitle("Hello Facebook")
+//                        .setContentDescription(
+//                                "The 'Hello Facebook' sample  showcases simple Facebook integration")
+//                        .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+//                        .build();
+//
+//                shareDialog.show(linkContent);
+
+
+                //Share image
+//                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.lockicon);
+//                SharePhoto sharePhoto = new SharePhoto.Builder().setBitmap(image).setUserGenerated(true).build();
+//                SharePhotoContent imageContent = new SharePhotoContent.Builder().addPhoto(sharePhoto).build();
+//                shareDialog.show(imageContent);
+
+            }
+        }
+
+
+    }
+
 }

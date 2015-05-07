@@ -4,7 +4,9 @@ import android.media.CamcorderProfile;
 import android.os.Environment;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created by user on 4/17/15.
@@ -58,9 +60,29 @@ public class Constants {
     public static final int NOTIFICATIONS_ACTIVITY = 7;
     public static final int BACKUP_ACTIVITY = 8;
     public static final int UNLOCK_PATTERN_ACTIIVTY = 9;
+    public static final int BROWSER_SCREEN = 10;
 
     public static final int VIDEO_EXPIRED_DAY = 7;
     public static final String CONTACT_EMAIL = "gro4tech@gmail.com";
     public static final int DELETE_VIDEO_SIGNAL = 1;
+
+    // Source - http://en.wikipedia.org/wiki/Samsung_Galaxy_S_III
+    private static final String s3ModelNames[] = { "XXXXXXXXXXXXXXXX", // Place holder
+            "SAMSUNG-SGH-I747", // AT&T
+            "SAMSUNG-SGH-T999", // T-Mobile
+            "SAMSUNG-SGH-N064", // Japan
+            "SAMSUNG-SCH-R530", // US Cellular
+            "SAMSUNG-SCH-I535", // Verizon
+            "SAMSUNG-SPH-L710", // Sprint
+            "SAMSUNG-GT-I9300", // International
+            "SGH-I747", // AT&T
+            "SGH-T999", // T-Mobile
+            "SGH-N064", // Japan
+            "SCH-R530", // US Cellular
+            "SCH-I535", // Verizon
+            "SPH-L710", // Sprint
+            "GT-I9300"  // International
+    };
+    public static List<String> s3ModelList = Arrays.asList(s3ModelNames);
 
 }

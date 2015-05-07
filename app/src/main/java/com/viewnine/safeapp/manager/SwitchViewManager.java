@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.viewnine.safeapp.activity.BackupActivity;
 import com.viewnine.safeapp.activity.HistoryActivity;
+import com.viewnine.safeapp.activity.InAppBrowserActivity;
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
 import com.viewnine.safeapp.activity.NotificationsActivity;
 import com.viewnine.safeapp.activity.PlayVideoActivity;
@@ -102,6 +103,15 @@ public class SwitchViewManager {
     public void gotoBackupScreen(Context context){
         SafeAppIndexActivityManager.setCurrent(Constants.BACKUP_ACTIVITY);
         Intent intent = new Intent(context, BackupActivity.class);
+        ((Activity)context).startActivity(intent);
+        startPushScreenIn(context);
+    }
+
+    public void gotoBrowserScreen(Context context, String title, String url){
+        SafeAppIndexActivityManager.setCurrent(Constants.BROWSER_SCREEN);
+        Intent intent = new Intent(context, InAppBrowserActivity.class);
+        intent.putExtra(InAppBrowserActivity.CONTENT_URL, url);
+        intent.putExtra(InAppBrowserActivity.TITLE, title);
         ((Activity)context).startActivity(intent);
         startPushScreenIn(context);
     }

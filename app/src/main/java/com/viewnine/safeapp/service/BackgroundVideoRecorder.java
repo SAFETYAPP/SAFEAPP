@@ -1,8 +1,5 @@
 package com.viewnine.safeapp.service;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -11,15 +8,12 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
-import com.viewnine.safeapp.activity.HistoryActivity;
-import com.viewnine.safeapp.activity.R;
 import com.viewnine.safeapp.manager.EmailManager;
 import com.viewnine.safeapp.manager.VideoManager;
 import com.viewnine.safeapp.model.VideoObject;
@@ -48,25 +42,12 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 //            .setSmallIcon(R.drawable.lockicon)
 //            .build();
 //        startForeground(1234, notification);
-        initNotificaiton();
+//        initNotificaiton();
         super.onCreate();
     }
 
     private void initNotificaiton(){
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.safeapp_system_tray_icon)
-                .setContentTitle(getResources().getString(R.string.app_name))
-                .setContentText(getResources().getString(R.string.tap_to_end_current_recording))
-                .setAutoCancel(true);
-
-
-        Intent resultIntent = new Intent(this, HistoryActivity.class);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setContentIntent(resultPendingIntent);
-        mBuilder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
-
-        int mNotificationID = 001;
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotificationManager.notify(mNotificationID, mBuilder.build());
+       Ulti.showNotificationBackupStarting(this);
     }
 
 
@@ -106,6 +87,23 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
             camera = Camera.open();
             mediaRecorder = new MediaRecorder();
+
+            Camera.Size sizeOfCamera = null;
+            for (int i = 0; i < camera.getParameters().getSupportedPreviewSizes().size(); i++) {
+                Camera.Size previewSize = camera.getParameters().getSupportedPreviewSizes().get(i);
+                boolean foundEqualSize = false;
+                for (int j = 0; j < camera.getParameters().getSupportedPictureSizes().size(); j++) {
+                    Camera.Size pictureSize = camera.getParameters().getSupportedPictureSizes().get(j);
+                    if(previewSize.width == pictureSize.width && previewSize.height == pictureSize.height){
+                        sizeOfCamera = previewSize;
+                        foundEqualSize = true;
+                        break;
+                    }
+                }
+
+                if(foundEqualSize) break;
+            }
+
             camera.unlock();
             try {
                 camera.enableShutterSound(false);
@@ -129,6 +127,17 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             mediaRecorder.setOutputFile(fileName);
             mediaRecorder.setVideoEncodingBitRate(Constants.VIDEO_QUALITY);
 
+
+
+
+
+            if(sizeOfCamera != null){
+                LogUtils.logI(TAG, "Cam width: " + sizeOfCamera.width + ".Cam height: " + sizeOfCamera.height);
+                mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);
+            }
+
+//            mediaRecorder.setVideoSize();
+
             mediaRecorder.prepare();
             mediaRecorder.start();
 
@@ -137,11 +146,14 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             videoObject.setVideoUrl(fileName);
             videoObject.setTime(time);
 
+            initNotificaiton();
+
         } catch (Exception e) {
             videoObject = null;
             e.printStackTrace();
             Ulti.deleteFile(fileName);
             stopSelf(startId);
+            LogUtils.logE(TAG, "Surface created error: " + e.toString());
         }
 
 

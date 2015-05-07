@@ -161,6 +161,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mediaRecorder = new MediaRecorder();  // Works well
             camera.unlock();
             try {
+//                Camera.CameraInfo info = new Camera.CameraInfo();
+//                info.canDisableShutterSound;
                 camera.enableShutterSound(false);
 
             }catch (Exception e){
@@ -181,16 +183,20 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 rotateVideo = Constants.DEGREE_270;
             }
             mediaRecorder.setOrientationHint(rotateVideo);
+
+            CamcorderProfile profile = CamcorderProfile.get(Constants.CAMERA_QUALITY);
             try {
-                mediaRecorder.setProfile(CamcorderProfile.get(Constants.CAMERA_QUALITY));
+                mediaRecorder.setProfile(profile);
             }catch (Exception e){
                 e.printStackTrace();
             }
             mediaRecorder.setMaxDuration(maxTime);
-            mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
+
             mediaRecorder.setOutputFile(fileName);
             mediaRecorder.setVideoEncodingBitRate(Constants.VIDEO_QUALITY);
-//            mediaRecorder.setVideoFrameRate(10);
+
+
+            mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);
 
             mediaRecorder.prepare();
             mediaRecorder.start();
@@ -240,7 +246,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 VideoManager.getInstance(mActivity).addVideoInQueue(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
                     @Override
                     public void successful(VideoObject videoObject) {
-                        Ulti.showNotificationForEachBackup(getContext());
+//                        Ulti.showNotificationForEachBackup(getContext());
 
                         //Send email
                         EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObjectDB.getVideoUrl());
@@ -643,10 +649,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         camera.setParameters(cameraParams);
     }
 
+    Size sizeOfCamera = null;
+
     private void setCameraSizeAndPictureSize(Camera.Parameters cameraParams){
 //      cameraParams.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 
-        Size sizeOfCamera = null;
+
 
         for (int i = 0; i < cameraParams.getSupportedPreviewSizes().size(); i++) {
             Size previewSize = cameraParams.getSupportedPreviewSizes().get(i);
@@ -672,8 +680,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         }
 
+
         cameraParams.setPreviewSize(sizeOfCamera.width, sizeOfCamera.height);
-        cameraParams.setPictureSize(sizeOfCamera.width, sizeOfCamera.height);
+
+        //Workarround - do not set picture size (crash on only S3)
+        String deviceModel = Ulti.getDeviceName();
+        if(!Constants.s3ModelList.contains(deviceModel)){
+            cameraParams.setPictureSize(sizeOfCamera.width, sizeOfCamera.height);
+        }
 
         if (DEBUGGING) {
 //             Log.v(LOG_TAG, "Preview Actual Size - w: " + mPreviewSize.width + ", h: " + mPreviewSize.height);

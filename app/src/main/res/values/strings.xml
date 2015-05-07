@@ -34,7 +34,7 @@
     <string name="notifications">Notifications</string>
     <string name="security">Security</string>
     <string name="contact_us">Contact Us</string>
-    <string name="primacy_policy">Primacy Policy</string>
+    <string name="primacy_policy">Primacy Policy and Terms</string>
     <string name="term_condition"><![CDATA[Terms & Conditions]]></string>
     <string name="settings">Settings</string>
     <string name="screen_unlock">Screen Unlock</string>
@@ -54,9 +54,10 @@
     <!-- END -->
 
     <string name="facbeook_app_id">823989157654749</string>
+    <!--<string name="facbeook_app_id">360387744155569</string> --><!-- UW -->
     <string name="edit">Edit</string>
     <string name="delete_confirmation">Delete Confirmation</string>
     <string name="successful">Successful</string>
     <string name="contact_us_subject">[SafeApp Team]</string>
-    <!-- UW -->
+    <string name="privacy_link">http://safeapp.us/html/privacy.htm</string>
 </resources>

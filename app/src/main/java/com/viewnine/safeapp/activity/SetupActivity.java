@@ -62,7 +62,7 @@ public class SetupActivity extends ParentActivity {
             if(secondaryEmail.isEmpty() || (!secondaryEmail.isEmpty() && ValidationHelper.getInstance().isEmailValid(secondaryEmail))){
                 SharePreferenceManager.getInstance().setPrimaryEmail(primaryEmail);
                 SharePreferenceManager.getInstance().setSecondaryEmail(secondaryEmail);
-                SwitchViewManager.getInstance().gotoLockScreen(this);
+                SwitchViewManager.getInstance().gotoHistoryScreen(this);
             }else {
                 AlertHelper.getInstance().showMessageAlert(this, getString(R.string.invalid_email));
             }

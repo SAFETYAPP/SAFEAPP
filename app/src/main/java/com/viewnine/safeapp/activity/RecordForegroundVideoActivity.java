@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,6 +44,12 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
+        stopTimerTask();
+        stopRecordingInBackgroundThread();
+
         getWidthHeightScreen();
         setupViews();
 
@@ -68,7 +75,7 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
         stopTimerTask();
         mPreviewTakePicture.releaseMediaRecorder();
         releaseCameraView();
-        finish();
+//        finish();
 
     }
 
@@ -243,13 +250,15 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
 
     boolean recording = false;
     private void handleRecordVideo() {
-        btnTakeOrRecordCamera.setEnabled(false);
+
         try {
             if(mPreviewTakePicture != null){
                 if(recording){
 
                     LogUtils.logI(TAG, "Stop Recording");
                     mPreviewTakePicture.releaseMediaRecorder();
+
+                    SwitchViewManager.getInstance().gotoHistoryScreen(this);
 
                 }else {
 
@@ -280,7 +289,7 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
 
 
     protected void handleRecordingInForeground() {
-
+        btnTakeOrRecordCamera.setEnabled(false);
         TimerTask timerTask = new TimerTask() {
 
             @Override
@@ -327,6 +336,7 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
     @Override
     public void notifyStopRecording() {
         btnTakeOrRecordCamera.setEnabled(true);
+
         second = -1;
         countTime.cancel();
         btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_normal_state);
