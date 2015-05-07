@@ -59,9 +59,10 @@ public class DialogUlti {
             @Override
             public void onClick(View v) {
 
-               dialog.dismiss();
+                dialog.dismiss();
             }
         });
         dialog.show();
     }
+
 }

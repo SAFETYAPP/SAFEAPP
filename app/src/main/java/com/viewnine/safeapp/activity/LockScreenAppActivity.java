@@ -23,7 +23,9 @@ import com.viewnine.safeapp.lockPattern.LockPatternViewEx;
 import com.viewnine.safeapp.manager.SharePreferenceManager;
 import com.viewnine.safeapp.manager.SwitchViewManager;
 import com.viewnine.safeapp.service.LockScreenService;
+import com.viewnine.safeapp.ulti.AlertHelper;
 import com.viewnine.safeapp.ulti.DateHelper;
+import com.viewnine.safeapp.ulti.Ulti;
 import com.viewnine.safeapp.ulti.ViewUlti;
 
 import java.text.SimpleDateFormat;
@@ -389,21 +391,28 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
     private void handleVideoSelected() {
         glowpad_type = GLOWPAD_TYPE.VIDEO;
 
-        if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty()){
-            startRecordVideobackground();
+        if(Ulti.checkSDCardFreeSpaceToStartRecording()){
+            if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty()){
+                startRecordVideobackground();
+            }else {
+                txtWrongPattern.setVisibility(View.GONE);
+                rlLockPattern.setVisibility(View.VISIBLE);
+                glowPadView.setVisibility(View.GONE);
+            }
         }else {
-            txtWrongPattern.setVisibility(View.GONE);
-            rlLockPattern.setVisibility(View.VISIBLE);
-            glowPadView.setVisibility(View.GONE);
+            AlertHelper.getInstance().showMessageAlert(this, getResources().getString(R.string.storage_full));
         }
+
 
     }
 
     private void startRecordVideobackground(){
-        stopTimerTask();
-        handleRecordingInBackgroundThread();
+
+            stopTimerTask();
+            handleRecordingInBackgroundThread();
 //        SwitchViewManager.getInstance().sendAppToBackground(this);
-        finish();
+            finish();
+
     }
 
 

@@ -303,13 +303,20 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
 
                     @Override
                     public void run() {
-                        Log.d(TAG, "Stop recording");
-                        stopRecordingInBackgroundThread();
-                        for (int i = 0; i < 100000; i++) {
+                        if(Ulti.checkSDCardFreeSpaceToStartRecording()){
+                            Log.d(TAG, "Stop recording");
+                            stopRecordingInBackgroundThread();
+                            for (int i = 0; i < 100000; i++) {
 
+                            }
+                            Log.d(TAG, "Start recording");
+                            startRecordingInBackgroundThread();
+
+                        }else {
+                            stopTimerTask();
+                            Toast.makeText(ParentActivity.this, ParentActivity.this.getResources().getString(R.string.storage_full), Toast.LENGTH_LONG).show();
                         }
-                        Log.d(TAG, "Start recording");
-                        startRecordingInBackgroundThread();
+
 
 //                        Log.d(TAG, "Start timer");
                     }

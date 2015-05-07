@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.ulti.AlertHelper;
 import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.LogUtils;
 import com.viewnine.safeapp.ulti.Ulti;
@@ -117,16 +118,6 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
             public void onTick(long millisUntilFinished) {
 
                 second++;
-//                String time = new Integer(second).toString();
-//
-//                long second = second;
-//                int minute = (int) (second / 60);
-//                int hour = minute / 60;
-//                minute     = minute % 60;
-//                LogUtils.logD(TAG," hour: " + hour +  "minute: " + minute + ". minute: " + second);
-//                lblRecordTime.setText(String.format("%d:%02d:%02d", hour, minute,second));
-
-
                 lblRecordTime.setText(String.format("%02d:%02d:%02d",
                         second / 3600, (second % 3600) / 60, second % 60));
 
@@ -262,9 +253,15 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
 
                 }else {
 
-                    LogUtils.logI(TAG, "Start Recording");
+
+                    if(Ulti.checkSDCardFreeSpaceToStartRecording()){
+                        LogUtils.logI(TAG, "Start Recording");
 //                    mPreviewTakePicture.startRecording(enableRecordAudio);
-                    handleRecordingInForeground();
+                        handleRecordingInForeground();
+                    }else {
+                        AlertHelper.getInstance().showMessageAlert(this, getResources().getString(R.string.storage_full));
+                    }
+
                 }
             }
 
@@ -301,6 +298,7 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
                         if(mPreviewTakePicture != null){
                             Log.d(TAG, "Stop recording");
                             mPreviewTakePicture.releaseMediaRecorder();
+
                             for (int i = 0; i < 100000; i++) {
 
                             }
@@ -336,7 +334,6 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
     @Override
     public void notifyStopRecording() {
         btnTakeOrRecordCamera.setEnabled(true);
-
         second = -1;
         countTime.cancel();
         btnTakeOrRecordCamera.setBackgroundResource(R.drawable.record_button_normal_state);

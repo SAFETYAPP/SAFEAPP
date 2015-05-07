@@ -66,6 +66,8 @@ public class Constants {
     public static final String CONTACT_EMAIL = "gro4tech@gmail.com";
     public static final int DELETE_VIDEO_SIGNAL = 1;
 
+    public static final long MINIMUM_STORAGE_SPACE = 500; //500Mb
+
     // Source - http://en.wikipedia.org/wiki/Samsung_Galaxy_S_III
     private static final String s3ModelNames[] = { "XXXXXXXXXXXXXXXX", // Place holder
             "SAMSUNG-SGH-I747", // AT&T

@@ -148,6 +148,8 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
             initNotificaiton();
 
+
+
         } catch (Exception e) {
             videoObject = null;
             e.printStackTrace();

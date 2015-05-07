@@ -384,9 +384,7 @@ public class Ulti {
         }
     }
 
-    public static long checkSDCardFreeSpace(){
-
-        Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+    public static boolean checkSDCardFreeSpaceToStartRecording(){
 
         StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
 
@@ -401,7 +399,13 @@ public class Ulti {
 
         }
         long megAvailable = sdAvailSize / (1024 * 1024);
-        return megAvailable;
+
+
+        if(megAvailable <= Constants.MINIMUM_STORAGE_SPACE){
+            return false;
+        }else {
+            return true;
+        }
 
      }
 

@@ -60,4 +60,5 @@
     <string name="successful">Successful</string>
     <string name="contact_us_subject">[SafeApp Team]</string>
     <string name="privacy_link">http://safeapp.us/html/privacy.htm</string>
+    <string name="storage_full">There is insufficient space on this device. Please delete some old videos on SafeApp.</string>
 </resources>
