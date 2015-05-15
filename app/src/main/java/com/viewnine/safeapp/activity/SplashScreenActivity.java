@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.crashlytics.android.Crashlytics;
 import com.viewnine.safeapp.manager.SwitchViewManager;
 import com.viewnine.safeapp.manager.VideoManager;
 import com.viewnine.safeapp.ulti.ValidationHelper;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by user on 4/18/15.
@@ -20,6 +22,7 @@ public class SplashScreenActivity extends ParentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         mContext = SplashScreenActivity.this;
     }
 

@@ -3,6 +3,7 @@ package com.viewnine.safeapp.manager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.view.WindowManager;
 
 import com.viewnine.safeapp.activity.BackupActivity;
 import com.viewnine.safeapp.activity.HistoryActivity;
@@ -37,7 +38,9 @@ public class SwitchViewManager {
         SafeAppApplication.finishAllPreviousActivity();
         SafeAppIndexActivityManager.setCurrent(Constants.LOCK_SCREEN_ACTIVITY);
         Intent intent = new Intent(context, LockScreenAppActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
         ((Activity)context).startActivity(intent);
         ((Activity)context).finish();
     }

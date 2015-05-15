@@ -1,5 +1,6 @@
 package com.viewnine.safeapp.activity;
 
+import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,13 +19,17 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.viewnine.safeapp.application.SafeAppApplication;
 import com.viewnine.safeapp.glowpad.GlowPadView;
 import com.viewnine.safeapp.lockPattern.LockPatternViewEx;
 import com.viewnine.safeapp.manager.SharePreferenceManager;
 import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.service.BackgroundVideoRecorder;
 import com.viewnine.safeapp.service.LockScreenService;
 import com.viewnine.safeapp.ulti.AlertHelper;
+import com.viewnine.safeapp.ulti.Constants;
 import com.viewnine.safeapp.ulti.DateHelper;
 import com.viewnine.safeapp.ulti.Ulti;
 import com.viewnine.safeapp.ulti.ViewUlti;
@@ -31,9 +37,10 @@ import com.viewnine.safeapp.ulti.ViewUlti;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimerTask;
 
 
-public class LockScreenAppActivity extends ParentActivity implements View.OnClickListener{
+public class LockScreenAppActivity extends Activity implements View.OnClickListener{
 
     private static final int HOME_TYPE = 0;
     private static final int VIDEO_TYPE = 1;
@@ -55,6 +62,13 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
 
     GLOWPAD_TYPE glowpad_type;
 
+    public WindowManager winManager;
+    public RelativeLayout wrapperView;
+
+    View mainView;
+
+    Handler handler = new Handler();
+    protected int timeToRecord = Constants.DEFAULT_TIME_TO_RECORDING;
 
     @Override
     public void onAttachedToWindow() {
@@ -69,24 +83,45 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+//        if(Constants.DISABLE_SYSTEM_LOCK_SCREEN){
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+//        }
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
 
+
+
+
+//        WindowManager.LayoutParams localLayoutParams = new WindowManager.LayoutParams( WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
+//                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+//                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|
+//                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+//                PixelFormat.TRANSLUCENT);
+
+        WindowManager.LayoutParams localLayoutParams = new WindowManager.LayoutParams( WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
+        this.winManager = ((WindowManager)getApplicationContext().getSystemService(WINDOW_SERVICE));
+        this.wrapperView = new RelativeLayout(getBaseContext());
+        getWindow().setAttributes(localLayoutParams);
+        mainView = View.inflate(this, R.layout.lockscreen_view, this.wrapperView);
+        this.winManager.addView(this.wrapperView, localLayoutParams);
+
+
+
         setupViews();
+        getTimeToRecord();
 
     }
 
     private void setupViews(){
-        addChidlView(R.layout.lockscreen_view);
-        showHideHeader(false);
+//        addChidlView(R.layout.lockscreen_view);
+//        showHideHeader(false);
 //        setContentView(R.layout.lockscreen_view);
 
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
         final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
 
-        ((LinearLayout) findViewById(R.id.linearlayout_test)).setBackground(wallpaperDrawable);
+        ((LinearLayout) mainView.findViewById(R.id.linearlayout_test)).setBackground(wallpaperDrawable);
 
         initLockScreen();
         initGlowPad();
@@ -96,10 +131,10 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
 
 
     private void initLockPattern() {
-        rlLockPattern = (RelativeLayout) findViewById(R.id.relativelayout_pattern);
-        lockPatternView = (LockPatternViewEx) findViewById(R.id.lockpatternview_pattern);
-        txtWrongPattern = (TextView) findViewById(R.id.textview_wrong_pattern);
-        btnCancelPattern = (Button) findViewById(R.id.button_cancel_pattern);
+        rlLockPattern = (RelativeLayout) mainView.findViewById(R.id.relativelayout_pattern);
+        lockPatternView = (LockPatternViewEx) mainView.findViewById(R.id.lockpatternview_pattern);
+        txtWrongPattern = (TextView) mainView.findViewById(R.id.textview_wrong_pattern);
+        btnCancelPattern = (Button) mainView.findViewById(R.id.button_cancel_pattern);
         btnCancelPattern.setOnClickListener(this);
         patternStringSetting = SharePreferenceManager.getInstance().getUnlockPattern();
 
@@ -156,7 +191,7 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
     }
 
     private void initGlowPad() {
-        glowPadView = (GlowPadView) findViewById(R.id.glow_pad_view);
+        glowPadView = (GlowPadView) mainView.findViewById(R.id.glow_pad_view);
         glowPadView.setOnTriggerListener(new GlowPadView.OnTriggerListener() {
             @Override
             public void onGrabbed(View v, int handle) {
@@ -227,9 +262,9 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
     };
 
     private void initDateTime() {
-        lblTime = (TextView) findViewById(R.id.time);
-        lblTimeAMPM = (TextView) findViewById(R.id.time2);
-        lblDate = (TextView) findViewById(R.id.date);
+        lblTime = (TextView) mainView.findViewById(R.id.time);
+        lblTimeAMPM = (TextView) mainView.findViewById(R.id.time2);
+        lblDate = (TextView) mainView.findViewById(R.id.date);
 
         lblTime.setShadowLayer(25, 0, 0, getResources().getColor(R.color.black));
         lblTimeAMPM.setShadowLayer(25, 0, 0, getResources().getColor(R.color.black));
@@ -347,6 +382,8 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
         // finish();
     }
 
+
+
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_POWER || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {
             //Intent i = new Intent(this, NewActivity.class);
@@ -369,6 +406,8 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
     public void onDestroy() {
         // k1.reenableKeyguard();
 
+        this.winManager.removeView(this.wrapperView);
+        this.wrapperView.removeAllViews();
         super.onDestroy();
     }
 
@@ -436,6 +475,64 @@ public class LockScreenAppActivity extends ParentActivity implements View.OnClic
             rlLockPattern.setVisibility(View.VISIBLE);
             glowPadView.setVisibility(View.GONE);
         }
+    }
+
+
+    private void getTimeToRecord(){
+        timeToRecord = Ulti.getDurationVideoTime(SharePreferenceManager.getInstance().getIndexDurationTime(), Constants.TIME_INTERVAL_LIST);
+    }
+
+    protected void stopTimerTask(){
+
+        SafeAppApplication.stopTimer();
+    }
+
+    protected void handleRecordingInBackgroundThread() {
+
+        TimerTask timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if(Ulti.checkSDCardFreeSpaceToStartRecording()){
+                            Log.d(TAG, "Stop recording");
+                            stopRecordingInBackgroundThread();
+                            for (int i = 0; i < 100000; i++) {
+
+                            }
+                            Log.d(TAG, "Start recording");
+                            startRecordingInBackgroundThread();
+
+                        }else {
+                            stopTimerTask();
+                            Toast.makeText(LockScreenAppActivity.this, LockScreenAppActivity.this.getResources().getString(R.string.storage_full), Toast.LENGTH_LONG).show();
+                        }
+
+
+//                        Log.d(TAG, "Start timer");
+                    }
+                });
+
+            }
+        };
+
+        SafeAppApplication.getTimer().schedule(timerTask, Constants.TIME_DELAY, timeToRecord + Constants.TIME_TO_PENDING);
+
+
+    }
+
+    protected void startRecordingInBackgroundThread(){
+        Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
+        startService(intent);
+
+    }
+
+    protected void stopRecordingInBackgroundThread(){
+        Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
+        stopService(intent);
     }
 
 

@@ -3,6 +3,7 @@ package com.viewnine.safeapp.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.view.WindowManager;
 
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
 import com.viewnine.safeapp.application.SafeAppApplication;
@@ -47,6 +48,7 @@ public class lockScreenReceiver extends BroadcastReceiver {
             Intent intent11 = new Intent(context, LockScreenAppActivity.class);
 
             intent11.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent11.addFlags(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
             context.startActivity(intent11);
 
             //  Intent intent = new Intent(context, LockPage.class);
@@ -63,6 +65,7 @@ public class lockScreenReceiver extends BroadcastReceiver {
             SafeAppApplication.finishAllPreviousActivity();
             Intent intent11 = new Intent(context, LockScreenAppActivity.class);
             intent11.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent11.addFlags(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
 
             context.startActivity(intent11);
         }

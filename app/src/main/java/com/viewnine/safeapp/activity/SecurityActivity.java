@@ -1,10 +1,13 @@
 package com.viewnine.safeapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.service.LockScreenService;
+import com.viewnine.safeapp.ulti.Ulti;
 
 /**
  * Created by user on 4/25/15.
@@ -31,6 +34,14 @@ public class SecurityActivity extends ParentActivity implements View.OnClickList
         addTitle(getString(R.string.security));
         btnScreenUnlock = (Button) findViewById(R.id.button_screen_unlock);
         btnScreenUnlock.setOnClickListener(this);
+
+
+        boolean isServiceRunning = Ulti.isServiceRunning(this, LockScreenService.class);
+        if(isServiceRunning){
+            stopService(new Intent(this, LockScreenService.class));
+        }else {
+            startService(new Intent(this, LockScreenService.class));
+        }
 
     }
 
