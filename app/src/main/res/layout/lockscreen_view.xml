@@ -62,7 +62,7 @@
         android:textSize="22sp"
         android:textStyle="normal" />
 
-    <com.viewnine.safeapp.glowpad.GlowPadView
+    <com.viewnine.nuttysnap.glowpad.GlowPadView
         android:id="@+id/glow_pad_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/wrong_pattern" />
 
-        <com.viewnine.safeapp.lockPattern.LockPatternViewEx
+        <com.viewnine.nuttysnap.lockPattern.LockPatternViewEx
             android:id="@+id/lockpatternview_pattern"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

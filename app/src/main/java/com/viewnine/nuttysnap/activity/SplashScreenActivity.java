@@ -1,0 +1,80 @@
+package com.viewnine.nuttysnap.activity;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+
+import com.crashlytics.android.Crashlytics;
+import com.viewnine.nuttysnap.manager.SwitchViewManager;
+import com.viewnine.nuttysnap.manager.VideoManager;
+import com.viewnine.nuttysnap.ulti.ValidationHelper;
+import io.fabric.sdk.android.Fabric;
+
+/**
+ * Created by user on 4/18/15.
+ */
+public class SplashScreenActivity extends ParentActivity {
+    Context mContext;
+    static int key_exit = 1;
+    private String TAG = SplashScreenActivity.class.getName();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+        mContext = SplashScreenActivity.this;
+    }
+
+
+    private void handleFirstTimeRunning(){
+
+        addChidlView(R.layout.splashscreen_view);
+        showHideHeader(false);
+        handler.sendEmptyMessageDelayed(key_exit, 1000);
+
+
+
+    }
+
+    Handler handler = new Handler(new Handler.Callback() {
+
+        @Override
+        public boolean handleMessage(Message msg) {
+            if (msg.what == key_exit) {
+                handleGotoNextScreen();
+            }
+            return false;
+        }
+
+
+    });
+
+    private void handleGotoNextScreen() {
+
+        if(!ValidationHelper.getInstance().alreadySetupEmail()){
+            SwitchViewManager.getInstance().gotoRecordSetupScreen(this);
+        }else {
+            deleteVideosExpiredDay();
+            SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
+        }
+
+//        SwitchViewManager.getInstance().gotoLockScreen(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handleFirstTimeRunning();
+    }
+
+    /**
+     * Remove videos after 7days
+     */
+    private void deleteVideosExpiredDay(){
+        VideoManager.getInstance(this).deleteVideosExpiredDay();
+    }
+
+
+}

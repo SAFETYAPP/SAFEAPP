@@ -4,13 +4,13 @@
     android:layout_height="match_parent">
 
 
-    <com.viewnine.safeapp.customView.SquareImageView
+    <com.viewnine.nuttysnap.customView.SquareImageView
         android:id="@+id/image_video"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scaleType="centerCrop" />
 
-    <com.viewnine.safeapp.customView.SquareImageView
+    <com.viewnine.nuttysnap.customView.SquareImageView
         android:id="@+id/image_highlight"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Safe App</string>
+    <string name="app_name">Nuttysnap</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -53,7 +53,7 @@
     <string name="could_not_delete_this_video">Could not delete. Please try again!</string>
     <!-- END -->
 
-    <string name="facbeook_app_id">823989157654749</string>
+    <string name="facbeook_app_id">1619021364980291</string>
     <!--<string name="facbeook_app_id">360387744155569</string> --><!-- UW -->
     <string name="edit">Edit</string>
     <string name="delete_confirmation">Delete Confirmation</string>

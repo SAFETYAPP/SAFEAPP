@@ -36,7 +36,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
-import com.viewnine.safeapp.activity.R;
+import com.viewnine.nuttysnap.activity.R;
 
 
 /**
