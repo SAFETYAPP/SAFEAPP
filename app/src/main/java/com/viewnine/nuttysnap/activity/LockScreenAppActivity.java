@@ -2,8 +2,10 @@ package com.viewnine.nuttysnap.activity;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,11 +33,13 @@ import com.viewnine.nuttysnap.service.LockScreenService;
 import com.viewnine.nuttysnap.ulti.AlertHelper;
 import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.ulti.DateHelper;
+import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
 import com.viewnine.nuttysnap.ulti.ViewUlti;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -43,8 +47,8 @@ import java.util.TimerTask;
 public class LockScreenAppActivity extends Activity implements View.OnClickListener{
 
     private static final int HOME_TYPE = 0;
-    private static final int VIDEO_TYPE = 1;
-    private static final int PATTERN_TYPE = 2;
+    private static final int PATTERN_TYPE = 1;
+    private static final int VIDEO_TYPE = 2;
     private GlowPadView glowPadView;
     private TextView lblTime, lblDate;
     private Calendar calendar;
@@ -69,6 +73,8 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
 
     Handler handler = new Handler();
     protected int timeToRecord = Constants.DEFAULT_TIME_TO_RECORDING;
+    CallReceiver callReceiver;
+
 
     @Override
     public void onAttachedToWindow() {
@@ -110,6 +116,7 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
 
         setupViews();
         getTimeToRecord();
+        registerPhoneCall();
 
     }
 
@@ -377,7 +384,6 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
-
         // Don't hang around.
         // finish();
     }
@@ -408,7 +414,9 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
 
         this.winManager.removeView(this.wrapperView);
         this.wrapperView.removeAllViews();
+        this.unregisterReceiver(callReceiver);
         super.onDestroy();
+
     }
 
     @Override
@@ -534,6 +542,150 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
         Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
         stopService(intent);
     }
+
+    private void registerPhoneCall(){
+
+//        callReceiver = new CallReceiver(){
+//
+//            @Override
+//            public void inComingCallStarted() {
+//                SwitchViewManager.getInstance().sendAppToBackground(LockScreenAppActivity.this);
+//
+//            }
+//        };
+
+        callReceiver = new CallReceiver();
+
+//        IntentFilter intentFilter = new IntentFilter("android.intent.action.PHONE_STATE");
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.intent.action.PHONE_STATE");
+        intentFilter.addAction("android.intent.action.NEW_OUTGOING_CALL");
+        intentFilter.setPriority(999);
+        this.registerReceiver(callReceiver, intentFilter);
+    }
+
+
+    class CallReceiver extends PhonecallReceiver {
+
+        private final String TAG = CallReceiver.class.getName();
+
+        @Override
+        protected void onIncomingCallStarted(Context ctx, String number, Date start) {
+            LogUtils.logD(TAG, "IncommingCall Started");
+            finish();
+
+        }
+
+        @Override
+        protected void onOutgoingCallStarted(Context ctx, String number, Date start) {
+            LogUtils.logD(TAG, "onOutgoingCallStarted");
+        }
+
+        @Override
+        protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end) {
+            LogUtils.logD(TAG, "onIncomingCallEnded");
+        }
+
+        @Override
+        protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end) {
+            LogUtils.logD(TAG, "onOutgoingCallEnded");
+        }
+
+        @Override
+        protected void onMissedCall(Context ctx, String number, Date start) {
+            LogUtils.logD(TAG, "onMissedCall");
+        }
+
+    }
+
+
+
+    class PhonecallReceiver extends BroadcastReceiver {
+
+        //The receiver will be recreated whenever android feels like it.  We need a static variable to remember data between instantiations
+
+        private int lastState = TelephonyManager.CALL_STATE_IDLE;
+        private Date callStartTime;
+        private boolean isIncoming;
+        private String savedNumber;  //because the passed incoming is only valid in ringing
+
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
+            if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
+                savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
+            }
+            else{
+                String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
+                String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
+                int state = 0;
+                if(stateStr.equals(TelephonyManager.EXTRA_STATE_IDLE)){
+                    state = TelephonyManager.CALL_STATE_IDLE;
+                }
+                else if(stateStr.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)){
+                    state = TelephonyManager.CALL_STATE_OFFHOOK;
+                }
+                else if(stateStr.equals(TelephonyManager.EXTRA_STATE_RINGING)){
+                    state = TelephonyManager.CALL_STATE_RINGING;
+                }
+
+
+                onCallStateChanged(context, state, number);
+            }
+        }
+
+        //Derived classes should override these to respond to specific events of interest
+        protected void onIncomingCallStarted(Context ctx, String number, Date start){}
+        protected void onOutgoingCallStarted(Context ctx, String number, Date start){}
+        protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end){}
+        protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end){}
+        protected void onMissedCall(Context ctx, String number, Date start){}
+
+        //Deals with actual events
+
+        //Incoming call-  goes from IDLE to RINGING when it rings, to OFFHOOK when it's answered, to IDLE when its hung up
+        //Outgoing call-  goes from IDLE to OFFHOOK when it dials out, to IDLE when hung up
+        public void onCallStateChanged(Context context, int state, String number) {
+            if(lastState == state){
+                //No change, debounce extras
+                return;
+            }
+            switch (state) {
+                case TelephonyManager.CALL_STATE_RINGING:
+                    isIncoming = true;
+                    callStartTime = new Date();
+                    savedNumber = number;
+                    onIncomingCallStarted(context, number, callStartTime);
+                    break;
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    //Transition of ringing->offhook are pickups of incoming calls.  Nothing done on them
+                    if(lastState != TelephonyManager.CALL_STATE_RINGING){
+                        isIncoming = false;
+                        callStartTime = new Date();
+                        onOutgoingCallStarted(context, savedNumber, callStartTime);
+                    }
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+                    //Went to idle-  this is the end of a call.  What type depends on previous state(s)
+                    if(lastState == TelephonyManager.CALL_STATE_RINGING){
+                        //Ring but no pickup-  a miss
+                        onMissedCall(context, savedNumber, callStartTime);
+                    }
+                    else if(isIncoming){
+                        onIncomingCallEnded(context, savedNumber, callStartTime, new Date());
+                    }
+                    else{
+                        onOutgoingCallEnded(context, savedNumber, callStartTime, new Date());
+                    }
+                    break;
+            }
+            lastState = state;
+        }
+    }
+
+
 
 
 
