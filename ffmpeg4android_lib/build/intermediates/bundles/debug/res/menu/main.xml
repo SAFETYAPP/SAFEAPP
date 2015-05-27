@@ -1,9 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/action_about"
-        android:title="About"
-        android:showAsAction="never" />
-
-</menu>
-<!-- From: file:/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/ffmpeg4android_lib/src/main/res/menu/main.xml -->

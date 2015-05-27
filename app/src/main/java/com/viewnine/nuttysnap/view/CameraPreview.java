@@ -179,10 +179,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
 
             int rotateVideo = Constants.POSITIVE_90_DEGREE;
+            int videoBitRate = 0;
             if(mCameraId != DEFAULT_CAMERA){
                 rotateVideo = Constants.DEGREE_270;
+                videoBitRate = Constants.FRONT_CAMERA_BIT_RATE;
+            }else{
+                videoBitRate = Constants.BACK_CAMERA_BIT_RATE;
             }
             mediaRecorder.setOrientationHint(rotateVideo);
+            mediaRecorder.setVideoEncodingBitRate(videoBitRate);
 
             CamcorderProfile profile = CamcorderProfile.get(Constants.CAMERA_QUALITY);
             try {
@@ -193,7 +198,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mediaRecorder.setMaxDuration(maxTime);
 
             mediaRecorder.setOutputFile(fileName);
-            mediaRecorder.setVideoEncodingBitRate(Constants.VIDEO_QUALITY);
+
 
 
             mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);

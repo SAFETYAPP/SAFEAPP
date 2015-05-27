@@ -116,6 +116,12 @@
             android:theme="@android:style/Theme.NoTitleBar"
             />
 
+        <activity android:name="com.viewnine.nuttysnap.activity.TestActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar"
+            />
+
         <service android:name="com.viewnine.nuttysnap.service.LockScreenService" >
         </service>
         <service android:name="com.viewnine.nuttysnap.service.BackgroundVideoRecorder"/>
@@ -143,6 +149,15 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="bfec512103f961e0a69876d9d494c583456ba996" />
+
+        <receiver android:name="com.viewnine.nuttysnap.receiver.CallReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

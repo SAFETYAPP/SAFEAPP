@@ -40,7 +40,7 @@
         jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/SafeApp/ImageLoader/unspecified/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="a009603ef93f1cc947b8e6114ee3fd6783a7b01a">
+        sha1="ef43c1258b4597af211480159089f9219626ee33">
         <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-8d5dbf955abe26926864cc0810c0d064d4ec827a.jar" />
     </item>
     <item
@@ -68,7 +68,7 @@
         jar="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/exploded-aar/SafeApp/ffmpeg4android_lib/unspecified/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="41e7d95584fd4737b04376dc6ce4a57807b81d21">
+        sha1="633cd21f6af50458c79cf01209b1d01323436d08">
         <dex dex="/Users/user/Documents/AndroidWorkSpace/VideoWorkspace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-5c37582bfbbb519c81cd4fddd2f29415c1b81b57.jar" />
     </item>
     <item

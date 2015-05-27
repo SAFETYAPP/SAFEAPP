@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import com.viewnine.nuttysnap.activity.LockScreenAppActivity;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
+import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.ulti.Ulti;
 
 
@@ -44,12 +45,15 @@ public class lockScreenReceiver extends BroadcastReceiver {
             k1.disableKeyguard();
 */
 
-            SafeAppApplication.finishAllPreviousActivity();
-            Intent intent11 = new Intent(context, LockScreenAppActivity.class);
+            if(SharePreferenceManager.getInstance().isEnableLockScreen()){
+                SafeAppApplication.finishAllPreviousActivity();
+                Intent intent11 = new Intent(context, LockScreenAppActivity.class);
 
-            intent11.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent11.addFlags(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
-            context.startActivity(intent11);
+                intent11.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent11.addFlags(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
+                context.startActivity(intent11);
+            }
+
 
             //  Intent intent = new Intent(context, LockPage.class);
             //  context.startActivity(intent);

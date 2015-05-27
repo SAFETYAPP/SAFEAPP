@@ -7,6 +7,7 @@ import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
@@ -15,11 +16,13 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
 import com.viewnine.nuttysnap.manager.EmailManager;
+import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
+import com.viewnine.nuttysnap.view.CameraPreview;
 
 import java.util.Calendar;
 
@@ -85,7 +88,17 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
         try {
 
-            camera = Camera.open();
+            int cameraId = SharePreferenceManager.getInstance().getBackgroundCameraId();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                if (Camera.getNumberOfCameras() > cameraId) {
+                    cameraId = SharePreferenceManager.getInstance().getBackgroundCameraId();
+                } else {
+                    cameraId = CameraPreview.DEFAULT_CAMERA;
+                }
+            } else {
+                cameraId = CameraPreview.DEFAULT_CAMERA;
+            }
+            camera = Camera.open(cameraId);
             mediaRecorder = new MediaRecorder();
 
             Camera.Size sizeOfCamera = null;
@@ -121,11 +134,22 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             }catch (Exception e){
                 e.printStackTrace();
             }
-            mediaRecorder.setOrientationHint(Constants.POSITIVE_90_DEGREE);
+
+            int rotateVideo = Constants.POSITIVE_90_DEGREE;
+            int videoBitRate = 0;
+            if(cameraId != CameraPreview.DEFAULT_CAMERA){
+                rotateVideo = Constants.DEGREE_270;
+                videoBitRate = Constants.FRONT_CAMERA_BIT_RATE;
+            }else {
+                videoBitRate = Constants.BACK_CAMERA_BIT_RATE;
+            }
+
+            mediaRecorder.setVideoEncodingBitRate(videoBitRate);
+            mediaRecorder.setOrientationHint(rotateVideo);
             mediaRecorder.setMaxDuration(Constants.DEFAULT_TIME_TO_RECORDING);
             LogUtils.logD(TAG, "File name: " + fileName);
             mediaRecorder.setOutputFile(fileName);
-            mediaRecorder.setVideoEncodingBitRate(Constants.VIDEO_QUALITY);
+
 
 
 

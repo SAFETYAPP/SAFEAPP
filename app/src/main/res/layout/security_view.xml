@@ -14,21 +14,65 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:id="@+id/relativelayout_enable_lock_screen"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_screen_unlock"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/hight_size_setting_item"
-                android:gravity="left|center_vertical"
-                android:paddingLeft="@dimen/padding_setting"
-                android:textSize="@dimen/safeapp_text_size"
-                android:background="@color/transparent"
-                android:text="@string/screen_unlock" />
+                <TextView
+                    android:id="@+id/textview_enable_lock_screen"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/hight_size_setting_item"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@+id/button_notification"
+                    android:background="@color/transparent"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="@dimen/padding_setting"
+                    android:text="@string/enable_lock_screen"
+                    android:textColor="@color/Black"
+                    android:textSize="@dimen/safeapp_text_size" />
+
+                <Button
+                    android:id="@+id/button_enable_lock_screen"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_margin="20dp"
+                    android:background="@drawable/orange_selected" />
+
+
+            </RelativeLayout>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/light_gray" />
+
+
+            <LinearLayout
+                android:id="@+id/linearlayout_security_lock"
+                android:layout_width="fill_parent"
+                android:layout_height="70dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/button_screen_unlock"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/hight_size_setting_item"
+                    android:background="@color/transparent"
+                    android:gravity="left|center_vertical"
+
+                    android:paddingLeft="@dimen/padding_setting"
+                    android:text="@string/screen_unlock"
+                    android:textSize="@dimen/safeapp_text_size" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_gray" />
+            </LinearLayout>
 
 
         </LinearLayout>

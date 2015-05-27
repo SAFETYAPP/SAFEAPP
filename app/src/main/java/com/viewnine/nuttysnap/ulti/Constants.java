@@ -33,7 +33,8 @@ public class Constants {
     public static final int DEFAULT_TIME_TO_RECORDING = 60 * 1000;
     public static final int TIME_TO_PENDING = 2000;
     public static final int TIME_DELAY = 500;
-    public static final int VIDEO_QUALITY = 1 * 1000 * 1000;
+    public static final int BACK_CAMERA_BIT_RATE = 1 * 1000 * 1000;
+    public static final int FRONT_CAMERA_BIT_RATE = 2 * 1000 * 1000;
     public static final String MAIL_SUBJECT = "[SafeApp] video";
     public static final String MAIL_CONTENT = "MAIL CONTENT";
 

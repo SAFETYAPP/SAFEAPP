@@ -58,7 +58,8 @@
     <string name="edit">Edit</string>
     <string name="delete_confirmation">Delete Confirmation</string>
     <string name="successful">Successful</string>
-    <string name="contact_us_subject">[SafeApp Team]</string>
+    <string name="contact_us_subject">[Nuttysnap Team]</string>
     <string name="privacy_link">http://safeapp.us/html/privacy.htm</string>
     <string name="storage_full">There is insufficient space on this device. Please delete some old videos on SafeApp.</string>
+    <string name="enable_lock_screen">Enable Lock Screen</string>
 </resources>

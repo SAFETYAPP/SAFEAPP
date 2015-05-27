@@ -22,6 +22,7 @@ import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.service.BackgroundVideoRecorder;
 import com.viewnine.nuttysnap.service.LockScreenService;
 import com.viewnine.nuttysnap.ulti.Constants;
+import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
 
 import java.util.TimerTask;
@@ -67,17 +68,18 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
         timeToRecord = Ulti.getDurationVideoTime(SharePreferenceManager.getInstance().getIndexDurationTime(), Constants.TIME_INTERVAL_LIST);
     }
 
-    private void checkToStartLockScreenService(){
+    protected void checkToStartLockScreenService(){
         String splashScreenClass = SplashScreenActivity.class.getName();
         String setupClass = SetupActivity.class.getName();
         String currentClass = ParentActivity.class.getName();
         boolean isServiceRunning = Ulti.isServiceRunning(this, LockScreenService.class);
-        if(!currentClass.equalsIgnoreCase(splashScreenClass) && !currentClass.equalsIgnoreCase(setupClass) && !isServiceRunning){
+        boolean enableLockScreen = SharePreferenceManager.getInstance().isEnableLockScreen();
+        if(enableLockScreen && !currentClass.equalsIgnoreCase(splashScreenClass) && !currentClass.equalsIgnoreCase(setupClass) && !isServiceRunning){
             try {
                 // initialize receiver
 
 
-                startService(new Intent(this, LockScreenService.class));
+               startLockScreenService();
 
   /*      KeyguardManager km =(KeyguardManager)getSystemService(KEYGUARD_SERVICE);
         k1 = km.newKeyguardLock("IN");
@@ -91,6 +93,16 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
                 // TODO: handle exception
             }
         }
+    }
+
+    protected void startLockScreenService(){
+        LogUtils.logI(TAG, "Start lockscreen service");
+        startService(new Intent(this, LockScreenService.class));
+    }
+
+    protected void stopLockScreenService(){
+        LogUtils.logI(TAG, "Stop lockscreen service");
+        stopService(new Intent(this, LockScreenService.class));
     }
 
     class StateListener extends PhoneStateListener {

@@ -572,7 +572,10 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
         @Override
         protected void onIncomingCallStarted(Context ctx, String number, Date start) {
             LogUtils.logD(TAG, "IncommingCall Started");
+//            stopService(new Intent(ctx, LockScreenService.class));
+            SharePreferenceManager.getInstance().setIsExitAppFromLockScreenActivity(true);
             finish();
+//            startService(new Intent(ctx, LockScreenService.class));
 
         }
 
