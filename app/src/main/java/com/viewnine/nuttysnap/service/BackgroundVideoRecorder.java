@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
 import com.viewnine.nuttysnap.manager.EmailManager;
-import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.Constants;
@@ -34,6 +33,9 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
     private MediaRecorder mediaRecorder = null;
     private String fileName = Constants.EMPTY_STRING;
     private VideoObject videoObject;
+    public static final int BACK_CAMERA_ID = 0;
+    public static final int FRONT_CAMERA_ID = 1;
+    private int cameraId = BACK_CAMERA_ID;
 
     @Override
     public void onCreate() {
@@ -75,6 +77,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         super.onStartCommand(intent, flags, startId);
 
         this.startId = startId;
+        cameraId = intent.getIntExtra(Constants.CAMERA_ID, BACK_CAMERA_ID);
         initSurface();
 
         return START_STICKY;
@@ -88,13 +91,11 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
         try {
 
-            int cameraId = SharePreferenceManager.getInstance().getBackgroundCameraId();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                if (Camera.getNumberOfCameras() > cameraId) {
-                    cameraId = SharePreferenceManager.getInstance().getBackgroundCameraId();
-                } else {
+                if (Camera.getNumberOfCameras() <= cameraId) {
                     cameraId = CameraPreview.DEFAULT_CAMERA;
                 }
+
             } else {
                 cameraId = CameraPreview.DEFAULT_CAMERA;
             }

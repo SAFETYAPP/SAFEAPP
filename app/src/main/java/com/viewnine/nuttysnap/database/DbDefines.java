@@ -11,7 +11,7 @@ public class DbDefines {
     // Table Names
     public static final String TABLE_VIDEOS = "VIDEOS";
 
-    //Table VIDEO's column names
+    //Table BACK_VIDEO's column names
     public static final String ID = "Id";
     public static final String VIDEO_ID = "VideoId";
     public static final String Video_URL = "VideoURL";

@@ -36,6 +36,7 @@ import com.viewnine.nuttysnap.ulti.DateHelper;
 import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
 import com.viewnine.nuttysnap.ulti.ViewUlti;
+import com.viewnine.nuttysnap.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,9 +47,10 @@ import java.util.TimerTask;
 
 public class LockScreenAppActivity extends Activity implements View.OnClickListener{
 
-    private static final int HOME_TYPE = 0;
-    private static final int PATTERN_TYPE = 1;
-    private static final int VIDEO_TYPE = 2;
+    private static final int FRONT_VIDEO_TYPE = 0;
+    private static final int HOME_TYPE = 1;
+    private static final int BACK_VIDEO_TYPE = 2;
+    private static final int PATTERN_TYPE = 3;
     private GlowPadView glowPadView;
     private TextView lblTime, lblDate;
     private Calendar calendar;
@@ -60,8 +62,9 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
     private String TAG = LockScreenAppActivity.class.getName();
     private TextView lblTimeAMPM;
     private String patternStringSetting;
+    private int cameraId = 0;
     private enum GLOWPAD_TYPE{
-        PROFILE, VIDEO, HOME
+        PROFILE, BACK_VIDEO, HOME, FRONT_VIDEO
     }
 
     GLOWPAD_TYPE glowpad_type;
@@ -185,7 +188,9 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
                 case PROFILE:
                     SwitchViewManager.getInstance().gotoHistoryScreen(this);
                     break;
-                case VIDEO:
+                case BACK_VIDEO:
+                    startRecordVideobackground();
+                case FRONT_VIDEO:
                     startRecordVideobackground();
                     break;
                 case HOME:
@@ -217,11 +222,14 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
                     case HOME_TYPE:
                         handleUnlockSelected();
                         break;
-                    case VIDEO_TYPE:
-                        handleVideoSelected();
+                    case BACK_VIDEO_TYPE:
+                        handleVideoSelected(BACK_VIDEO_TYPE);
                         break;
                     case PATTERN_TYPE:
                         handlePatternSelected();
+                        break;
+                    case FRONT_VIDEO_TYPE:
+                        handleVideoSelected(FRONT_VIDEO_TYPE);
                         break;
                     default:
 //                        finish();
@@ -435,8 +443,14 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
         glowPadView.setVisibility(View.VISIBLE);
     }
 
-    private void handleVideoSelected() {
-        glowpad_type = GLOWPAD_TYPE.VIDEO;
+    private void handleVideoSelected(int videoType) {
+        if(videoType == BACK_VIDEO_TYPE){
+            glowpad_type = GLOWPAD_TYPE.BACK_VIDEO;
+            cameraId = BackgroundVideoRecorder.BACK_CAMERA_ID;
+        }else {
+            glowpad_type = GLOWPAD_TYPE.FRONT_VIDEO;
+            cameraId = BackgroundVideoRecorder.FRONT_CAMERA_ID;
+        }
 
         if(Ulti.checkSDCardFreeSpaceToStartRecording()){
             if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty()){
@@ -459,7 +473,6 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
             handleRecordingInBackgroundThread();
 //        SwitchViewManager.getInstance().sendAppToBackground(this);
             finish();
-
     }
 
 
@@ -534,6 +547,7 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
 
     protected void startRecordingInBackgroundThread(){
         Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
+        intent.putExtra(Constants.CAMERA_ID, cameraId);
         startService(intent);
 
     }

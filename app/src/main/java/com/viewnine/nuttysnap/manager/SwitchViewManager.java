@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.WindowManager;
 
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.activity.BackupActivity;
 import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.activity.InAppBrowserActivity;
 import com.viewnine.nuttysnap.activity.LockScreenAppActivity;
 import com.viewnine.nuttysnap.activity.NotificationsActivity;
 import com.viewnine.nuttysnap.activity.PlayVideoActivity;
-import com.viewnine.nuttysnap.activity.R;
 import com.viewnine.nuttysnap.activity.RecordForegroundVideoActivity;
 import com.viewnine.nuttysnap.activity.ScreenUnlockActivity;
 import com.viewnine.nuttysnap.activity.SecurityActivity;
@@ -20,7 +20,6 @@ import com.viewnine.nuttysnap.activity.SetupActivity;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.Constants;
-
 /**
  * Created by user on 4/19/15.
  */

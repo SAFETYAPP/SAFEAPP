@@ -9,8 +9,7 @@ import android.os.AsyncTask;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 
-import com.viewnine.nuttysnap.activity.R;
-
+import com.viewnine.nuttysnap.R;
 
 public class CustomLoadingDialogHelper {
 	private Context mContext;

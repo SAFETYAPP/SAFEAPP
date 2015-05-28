@@ -27,9 +27,9 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.activity.LockScreenAppActivity;
-import com.viewnine.nuttysnap.activity.R;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 
 import java.io.File;
@@ -43,7 +43,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 /**
  * Created by user on 4/19/15.
  */

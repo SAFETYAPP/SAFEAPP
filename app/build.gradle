@@ -18,7 +18,7 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
     defaultConfig {
-        applicationId "com.viewnine.safeapp"
+        applicationId "com.viewnine.nuttysnap"
         minSdkVersion 17
         targetSdkVersion 21
         versionCode 1
@@ -58,7 +58,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.1.0'
     //https://github.com/makovkastar/FloatingActionButton
     compile 'com.melnykov:floatingactionbutton:1.3.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.3@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.3.0@aar') {
         transitive = true;
     }
 }

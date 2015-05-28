@@ -5,8 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.viewnine.nuttysnap.activity.R;
-
+import com.viewnine.nuttysnap.R;
 /**
  * Created by user on 4/19/15.
  */

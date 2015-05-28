@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import com.viewnine.nuttysnap.R;
 
 import com.viewnine.nuttysnap.ulti.Constants;
 

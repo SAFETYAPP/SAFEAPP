@@ -10,7 +10,7 @@ import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.ulti.AlertHelper;
 import com.viewnine.nuttysnap.ulti.ValidationHelper;
 import com.viewnine.nuttysnap.ulti.ViewUlti;
-
+import com.viewnine.nuttysnap.R;
 /**
  * Created by user on 4/18/15.
  */

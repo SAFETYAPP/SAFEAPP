@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.viewnine.nuttysnap.R;
 
 import com.viewnine.nuttysnap.application.SafeAppApplication;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;

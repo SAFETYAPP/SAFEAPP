@@ -6,9 +6,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.viewnine.nuttysnap.activity.R;
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.view.DurationVideoTimeView;
-
 /**
  * Created by user on 4/26/15.
  */

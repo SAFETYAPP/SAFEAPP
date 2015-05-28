@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.viewnine.nuttysnap.application.SafeAppApplication;
-
 /**
  * Created by user on 5/19/15.
  */

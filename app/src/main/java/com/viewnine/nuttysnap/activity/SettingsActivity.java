@@ -7,7 +7,7 @@ import android.widget.Button;
 import com.viewnine.nuttysnap.manager.EmailManager;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.ulti.Constants;
-
+import com.viewnine.nuttysnap.R;
 /**
  * Created by user on 4/25/15.
  */

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.viewnine.nuttysnap.Adapter.VideoAdapter;
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
 import com.viewnine.nuttysnap.manager.HistoryManager;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;

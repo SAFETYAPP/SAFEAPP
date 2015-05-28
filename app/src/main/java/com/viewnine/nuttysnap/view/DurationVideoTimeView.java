@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.viewnine.nuttysnap.activity.R;
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.ulti.LogUtils;
@@ -19,7 +19,6 @@ import java.util.Map;
 import spinnerwheel.adapters.AbstractWheel;
 import spinnerwheel.adapters.AbstractWheelTextAdapter;
 import spinnerwheel.adapters.OnWheelChangedListener;
-
 /**
  * Created by user on 4/26/15.
  */

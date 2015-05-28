@@ -34,6 +34,7 @@ import com.viewnine.nuttysnap.manager.VideoManager;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.AlertHelper;
 import com.viewnine.nuttysnap.ulti.Constants;
+import com.viewnine.nuttysnap.R;
 
 import java.io.File;
 import java.util.ArrayList;

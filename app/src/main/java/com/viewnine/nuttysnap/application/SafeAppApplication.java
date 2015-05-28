@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.viewnine.nuttysnap.activity.R;
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.manager.SafeAppIndexActivityManager;
 import com.viewnine.nuttysnap.model.SafeAppDataObject;
 import com.viewnine.nuttysnap.ulti.Constants;
@@ -17,6 +18,7 @@ import com.viewnine.nuttysnap.ulti.Constants;
 import java.util.Stack;
 import java.util.Timer;
 
+import io.fabric.sdk.android.Fabric;
 /**
  * Created by user on 4/18/15.
  */
@@ -35,6 +37,8 @@ public class SafeAppApplication extends Application {
         mStackActivity = new Stack<Activity>();
         safeAppDataObject = new SafeAppDataObject();
         initImageLoader(getApplicationContext());
+
+        Fabric.with(this, new Crashlytics());
 //        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 

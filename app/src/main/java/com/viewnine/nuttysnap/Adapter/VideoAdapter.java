@@ -11,7 +11,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.viewnine.nuttysnap.activity.HistoryActivity;
-import com.viewnine.nuttysnap.activity.R;
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.customView.SquareImageView;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.model.VideoObject;

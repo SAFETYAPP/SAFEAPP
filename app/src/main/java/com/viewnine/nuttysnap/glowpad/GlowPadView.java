@@ -16,8 +16,6 @@
 
 package com.viewnine.nuttysnap.glowpad;
 
-import java.util.ArrayList;
-
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
@@ -45,8 +43,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 
-import com.viewnine.nuttysnap.activity.R;
+import com.viewnine.nuttysnap.R;
 
+import java.util.ArrayList;
 /**
  * This is a copy of com.android.internal.widget.multiwaveview.GlowPadView with
  * minor changes to remove dependencies on private api's.

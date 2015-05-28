@@ -4,13 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.Button;
 
 import com.crashlytics.android.Crashlytics;
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
 import com.viewnine.nuttysnap.ulti.ValidationHelper;
-import io.fabric.sdk.android.Fabric;
 
+import io.fabric.sdk.android.Fabric;
 /**
  * Created by user on 4/18/15.
  */
@@ -18,20 +21,38 @@ public class SplashScreenActivity extends ParentActivity {
     Context mContext;
     static int key_exit = 1;
     private String TAG = SplashScreenActivity.class.getName();
+    private Button btnStartRecordingNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
+
         mContext = SplashScreenActivity.this;
+
+        handleFirstTimeRunning();
     }
 
 
-    private void handleFirstTimeRunning(){
+    private void handleFirstTimeRunning() {
 
         addChidlView(R.layout.splashscreen_view);
         showHideHeader(false);
-        handler.sendEmptyMessageDelayed(key_exit, 1000);
+
+        btnStartRecordingNow = (Button) findViewById(R.id.button_start_recording_now);
+        btnStartRecordingNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SwitchViewManager.getInstance().gotoRecordSetupScreen(SplashScreenActivity.this);
+            }
+        });
+
+        if(ValidationHelper.getInstance().alreadySetupEmail()){
+            handler.sendEmptyMessageDelayed(key_exit, 1000);
+            btnStartRecordingNow.setVisibility(View.GONE);
+        }else {
+            btnStartRecordingNow.setVisibility(View.VISIBLE);
+        }
 
 
 
@@ -66,7 +87,7 @@ public class SplashScreenActivity extends ParentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        handleFirstTimeRunning();
+//        handleFirstTimeRunning();
     }
 
     /**

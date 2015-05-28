@@ -22,11 +22,10 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
-import com.viewnine.nuttysnap.activity.R;
+import com.viewnine.nuttysnap.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by user on 4/20/15.
  */

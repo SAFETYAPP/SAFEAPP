@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.ulti.AlertHelper;
 import com.viewnine.nuttysnap.ulti.Constants;

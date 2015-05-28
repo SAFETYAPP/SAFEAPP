@@ -62,4 +62,6 @@
     <string name="privacy_link">http://safeapp.us/html/privacy.htm</string>
     <string name="storage_full">There is insufficient space on this device. Please delete some old videos on SafeApp.</string>
     <string name="enable_lock_screen">Enable Lock Screen</string>
+    <string name="start_recording_now">Start recording now!</string>
+    <string name="capture_and_automatically_store">Capture and automatically store\nyour important moments.</string>
 </resources>

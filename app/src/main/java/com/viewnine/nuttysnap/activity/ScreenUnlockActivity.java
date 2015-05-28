@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.viewnine.nuttysnap.lockPattern.LockPatternViewEx;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.ulti.Constants;
+import com.viewnine.nuttysnap.R;
 
 import java.util.List;
 

@@ -24,8 +24,8 @@ import android.view.SurfaceView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.activity.HistoryActivity;
-import com.viewnine.nuttysnap.activity.R;
 import com.viewnine.nuttysnap.manager.EmailManager;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
-
 /**
  * This class assumes the parent layout is RelativeLayout.LayoutParams.
  */

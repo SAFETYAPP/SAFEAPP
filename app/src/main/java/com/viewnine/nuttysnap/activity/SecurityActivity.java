@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;
-
+import com.viewnine.nuttysnap.R;
 /**
  * Created by user on 4/25/15.
  */

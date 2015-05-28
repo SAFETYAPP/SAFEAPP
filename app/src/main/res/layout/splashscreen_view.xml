@@ -10,12 +10,45 @@
     tools:context=".LockScreenAppActivity">
 
 
-    <ImageView
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/safeapp_text_logo"
+        android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:id="@+id/imageView" />
+        android:gravity="center"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/nuttysnap_text_logo"
+            android:layout_centerInParent="true"
+            android:id="@+id/imageView" />
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/White"
+            android:textSize="@dimen/safeapp_text_size"
+            android:text="@string/capture_and_automatically_store"/>
+
+    </LinearLayout>
 
 
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/safeapp_text_size"
+        android:background="@color/transparent"
+        android:id="@+id/button_start_recording_now"
+        android:textColor="@color/White"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:textStyle="bold"
+        android:text="@string/start_recording_now"/>
 </RelativeLayout>

@@ -16,6 +16,7 @@ import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
 import com.viewnine.nuttysnap.view.CameraPreview;
+import com.viewnine.nuttysnap.R;
 
 import java.util.TimerTask;
 
