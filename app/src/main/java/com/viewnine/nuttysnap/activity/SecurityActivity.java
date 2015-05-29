@@ -1,5 +1,6 @@
 package com.viewnine.nuttysnap.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,9 @@ public class SecurityActivity extends ParentActivity implements View.OnClickList
     private LinearLayout lnSecurity;
     private RelativeLayout rlEnableLockScreen;
     private Button btnEnableLockScreen;
+    public static final int ENABLE_LOCK_SCREEN_CODE = 1;
+    public static final int GENERAL_CODE = 2;
+    private boolean enableLockScreen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +48,6 @@ public class SecurityActivity extends ParentActivity implements View.OnClickList
         btnEnableLockScreen = (Button) findViewById(R.id.button_enable_lock_screen);
         btnEnableLockScreen.setOnClickListener(this);
 
-//        boolean isServiceRunning = Ulti.isServiceRunning(this, LockScreenService.class);
-//        if(isServiceRunning){
-//            stopService(new Intent(this, LockScreenService.class));
-//        }else {
-//            startService(new Intent(this, LockScreenService.class));
-//        }
-
         handleNotifyStatus(SharePreferenceManager.getInstance().isEnableLockScreen());
     }
 
@@ -60,7 +57,7 @@ public class SecurityActivity extends ParentActivity implements View.OnClickList
         super.onClick(v);
         switch (v.getId()){
             case R.id.button_screen_unlock:
-                SwitchViewManager.getInstance().gotoScreenUnlockScreen(this);
+                SwitchViewManager.getInstance().gotoScreenUnlockScreen(this, GENERAL_CODE, false);
                 break;
             case R.id.relativelayout_enable_lock_screen:
             case R.id.button_enable_lock_screen:
@@ -72,7 +69,16 @@ public class SecurityActivity extends ParentActivity implements View.OnClickList
     }
 
     private void handleClickOnEnableLockScreen(boolean status){
+        enableLockScreen = status;
 
+        if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty()){
+            startStopLockScreenService(enableLockScreen);
+        }else {
+            SwitchViewManager.getInstance().gotoScreenUnlockScreen(this, ENABLE_LOCK_SCREEN_CODE, true);
+        }
+    }
+
+    private void startStopLockScreenService(boolean status){
         handleNotifyStatus(status);
         if(status){
             startLockScreenService();
@@ -86,7 +92,6 @@ public class SecurityActivity extends ParentActivity implements View.OnClickList
             btnEnableLockScreen.setBackgroundResource(R.drawable.orange_selected);
             lnSecurity.setVisibility(View.VISIBLE);
 
-
         }else {
             btnEnableLockScreen.setBackgroundResource(R.drawable.orange_normal);
             lnSecurity.setVisibility(View.GONE);
@@ -94,5 +99,17 @@ public class SecurityActivity extends ParentActivity implements View.OnClickList
 
         }
         SharePreferenceManager.getInstance().setEnableLockScreen(status);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode != RESULT_OK){
+            return;
+        }
+
+        if(requestCode == ENABLE_LOCK_SCREEN_CODE){
+            startStopLockScreenService(enableLockScreen);
+        }
     }
 }

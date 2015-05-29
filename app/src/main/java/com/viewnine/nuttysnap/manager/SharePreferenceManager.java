@@ -20,6 +20,7 @@ public class SharePreferenceManager {
     private static final String IS_EXIT_APP_FROM_LOCK_SCREEN_ACTIVITY = "IS_EXIT_APP_FROM_LOCK_SCREEN_ACTIVITY";
     private static final String BACKGROUND_CAMERA_ID = "BACKGROUND_CAMERA_ID";
     private static final String ENABLE_LOCK_SCREEN = "ENABLE_LOCK_SCREEN";
+    private static final String ENABLE_PATTERN = "ENABLE_PATTERN";
 
     private static SharePreferenceManager instance;
     private static SharedPreferences preferences;
@@ -85,6 +86,16 @@ public class SharePreferenceManager {
 
     public boolean isEnableNotificationForEachBackup(){
         return preferences.getBoolean(ENABLE_NOTIFICATION_FOR_EACH_BACKUP, true);
+    }
+
+    public void setEnablePattern(boolean enable){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(ENABLE_PATTERN, enable);
+        editor.commit();
+    }
+
+    public boolean isEnablePattern(){
+        return preferences.getBoolean(ENABLE_PATTERN, true);
     }
 
     public void setIsExitAppFromLockScreenActivity(boolean isExitAppFromLockScreenActivity){

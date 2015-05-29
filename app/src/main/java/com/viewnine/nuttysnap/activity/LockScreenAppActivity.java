@@ -453,7 +453,7 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
         }
 
         if(Ulti.checkSDCardFreeSpaceToStartRecording()){
-            if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty()){
+            if(SharePreferenceManager.getInstance().getUnlockPattern().isEmpty() ){
                 startRecordVideobackground();
             }else {
                 txtWrongPattern.setVisibility(View.GONE);

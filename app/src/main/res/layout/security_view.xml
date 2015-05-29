@@ -18,7 +18,7 @@
                 android:id="@+id/relativelayout_enable_lock_screen"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:orientation="vertical">
+                >
 
                 <TextView
                     android:id="@+id/textview_enable_lock_screen"
@@ -35,11 +35,12 @@
 
                 <Button
                     android:id="@+id/button_enable_lock_screen"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
 
-                    android:layout_margin="20dp"
                     android:background="@drawable/orange_selected" />
 
 
@@ -63,7 +64,7 @@
                     android:layout_height="@dimen/hight_size_setting_item"
                     android:background="@color/transparent"
                     android:gravity="left|center_vertical"
-
+android:textAllCaps="false"
                     android:paddingLeft="@dimen/padding_setting"
                     android:text="@string/screen_unlock"
                     android:textSize="@dimen/safeapp_text_size" />

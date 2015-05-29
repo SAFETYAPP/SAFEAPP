@@ -90,5 +90,6 @@ public class Constants {
     public static List<String> s3ModelList = Arrays.asList(s3ModelNames);
 
     public static final String CAMERA_ID = "CAMERA_ID";
+    public static final String ENABLE_LOCK_SCREEN = "ENABLE_LOCK_SCREEN";
 
 }

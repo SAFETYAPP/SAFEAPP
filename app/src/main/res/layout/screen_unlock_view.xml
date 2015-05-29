@@ -4,21 +4,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/relativelayout_enable_pattern"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        >
 
-    <TextView
-        android:id="@+id/textview_wrong_pattern"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/lockpatternview_pattern"
-        android:layout_centerHorizontal="true"
-        android:text="@string/wrong_pattern"
-        android:textColor="@color/Gray"
-        android:textSize="@dimen/safeapp_text_size" />
+        <TextView
+            android:id="@+id/textview_enable_pattern"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/hight_size_setting_item"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@+id/button_notification"
+            android:background="@color/transparent"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="@dimen/padding_setting"
+            android:text="@string/enable_pattern"
+            android:textColor="@color/Black"
+            android:textSize="@dimen/safeapp_text_size" />
 
-    <com.viewnine.nuttysnap.lockPattern.LockPatternViewEx
-        android:id="@+id/lockpatternview_pattern"
+        <Button
+            android:id="@+id/button_enable_pattern"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+
+            android:background="@drawable/orange_selected" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_cancel_pattern"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:id="@+id/relativelayout_pattern">
+
+        <TextView
+            android:id="@+id/textview_wrong_pattern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/lockpatternview_pattern"
+            android:layout_centerHorizontal="true"
+            android:text="@string/wrong_pattern"
+            android:textColor="@color/Gray"
+            android:textSize="@dimen/safeapp_text_size" />
+
+        <com.viewnine.nuttysnap.lockPattern.LockPatternViewEx
+            android:id="@+id/lockpatternview_pattern"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_cancel_pattern"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+
 </RelativeLayout>

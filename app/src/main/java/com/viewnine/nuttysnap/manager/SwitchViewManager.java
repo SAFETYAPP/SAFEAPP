@@ -118,10 +118,11 @@ public class SwitchViewManager {
         startPushScreenIn(context);
     }
 
-    public void gotoScreenUnlockScreen(Context context){
+    public void gotoScreenUnlockScreen(Context context, int requestCode, boolean enableLockScreenChange){
         SafeAppIndexActivityManager.setCurrent(Constants.UNLOCK_PATTERN_ACTIIVTY);
         Intent intent = new Intent(context, ScreenUnlockActivity.class);
-        ((Activity)context).startActivity(intent);
+        intent.putExtra(Constants.ENABLE_LOCK_SCREEN, enableLockScreenChange);
+        ((Activity)context).startActivityForResult(intent, requestCode);
         startPushScreenIn(context);
     }
 
