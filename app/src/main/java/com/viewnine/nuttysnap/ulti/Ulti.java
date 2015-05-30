@@ -15,7 +15,10 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.hardware.Camera;
+import android.media.CamcorderProfile;
 import android.media.MediaMetadataRetriever;
+import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
@@ -25,12 +28,14 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.activity.LockScreenAppActivity;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
+import com.viewnine.nuttysnap.view.CameraPreview;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -407,6 +412,48 @@ public class Ulti {
         }
 
      }
+
+    public static void initRecorder(MediaRecorder mediaRecorder, SurfaceHolder surfaceHolder, Camera camera, int mCameraId, String fileName, Camera.Size sizeOfCamera){
+
+        camera.unlock();
+        try {
+            camera.enableShutterSound(false);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            LogUtils.logE(TAG, "Fail to enable shutter sound: " + e.toString());
+        }
+        mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
+        mediaRecorder.setCamera(camera);
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+        try {
+            mediaRecorder.setProfile(CamcorderProfile.get(Constants.CAMERA_QUALITY));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        int rotateVideo = Constants.POSITIVE_90_DEGREE;
+        int videoBitRate = 0;
+        if(mCameraId != CameraPreview.DEFAULT_CAMERA){
+            rotateVideo = Constants.DEGREE_270;
+            videoBitRate = Constants.FRONT_CAMERA_BIT_RATE;
+        }else {
+            videoBitRate = Constants.BACK_CAMERA_BIT_RATE;
+        }
+
+        mediaRecorder.setVideoEncodingBitRate(videoBitRate);
+        mediaRecorder.setOrientationHint(rotateVideo);
+        mediaRecorder.setMaxDuration(Constants.DEFAULT_TIME_TO_RECORDING);
+        LogUtils.logD(TAG, "File name: " + fileName);
+        mediaRecorder.setOutputFile(fileName);
+
+        if(sizeOfCamera != null){
+            LogUtils.logI(TAG, "Cam width: " + sizeOfCamera.width + ".Cam height: " + sizeOfCamera.height);
+            mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);
+        }
+
+    }
 
 
 }

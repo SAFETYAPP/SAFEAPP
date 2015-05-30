@@ -30,12 +30,12 @@ public class Constants {
     public final static String PREFIX_VIDEO_ID = "Video_";
     public final static String PREFIX_LOCAL_FILE_URL = "file://";
 
-    public static final int DEFAULT_TIME_TO_RECORDING = 60 * 1000;
+    public static final int DEFAULT_TIME_TO_RECORDING = 3 * 60 * 1000;
     public static final int TIME_TO_PENDING = 2000;
     public static final int TIME_DELAY = 500;
     public static final int BACK_CAMERA_BIT_RATE = 1 * 1000 * 1000;
-    public static final int FRONT_CAMERA_BIT_RATE = 2 * 1000 * 1000;
-    public static final String MAIL_SUBJECT = "[SafeApp] video";
+    public static final int FRONT_CAMERA_BIT_RATE = 1 * 1000 * 1000;
+    public static final String MAIL_SUBJECT = "[NuttySnap] video";
     public static final String MAIL_CONTENT = "MAIL CONTENT";
 
     public static final int OK = 0;
@@ -48,7 +48,9 @@ public class Constants {
     public static final int CAMERA_QUALITY = CamcorderProfile.QUALITY_480P;
     public static final String SLASH_CHARACTER = "/";
     public static final String ACTION_BROADCAST_RECIVER_VIDEO = "ACTION_BROADCAST_RECIVER_VIDEO";
-    public static final LinkedHashMap<String, Integer> TIME_INTERVAL_LIST = new LinkedHashMap<String, Integer>() {{put("1 min", DEFAULT_TIME_TO_RECORDING);
+    public static final LinkedHashMap<String, Integer> TIME_INTERVAL_LIST = new LinkedHashMap<String, Integer>() {{
+                                                                                                        put("3 min", DEFAULT_TIME_TO_RECORDING);
+                                                                                                        put("1 min", 60 * 1000);
                                                                                                         put("45 sec", 45 * 1000);
                                                                                                         put("30 sec", 30 * 1000);}};
 
@@ -91,5 +93,7 @@ public class Constants {
 
     public static final String CAMERA_ID = "CAMERA_ID";
     public static final String ENABLE_LOCK_SCREEN = "ENABLE_LOCK_SCREEN";
+    public static final int DEFAULT_WIDTH_RESOLUTION = 1280;
+    public static final int DEFAULT_HEIGH_RESOLUTION = 720;
 
 }

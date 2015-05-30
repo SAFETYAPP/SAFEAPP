@@ -12,7 +12,6 @@ import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
-import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -157,50 +156,58 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             long time = Calendar.getInstance().getTimeInMillis();
             fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
 
-            mediaRecorder = new MediaRecorder();  // Works well
-            camera.unlock();
-            try {
-//                Camera.CameraInfo info = new Camera.CameraInfo();
-//                info.canDisableShutterSound;
-                camera.enableShutterSound(false);
+            mediaRecorder = new MediaRecorder();
 
-            }catch (Exception e){
-                e.printStackTrace();
-                LogUtils.logE(TAG, "Fail to enable shutter sound: " + e.toString());
-            }
+//            camera.unlock();
+//            try {
+////                Camera.CameraInfo info = new Camera.CameraInfo();
+////                info.canDisableShutterSound;
+//                camera.enableShutterSound(false);
+//
+//            }catch (Exception e){
+//                e.printStackTrace();
+//                LogUtils.logE(TAG, "Fail to enable shutter sound: " + e.toString());
+//            }
+//
+//            mediaRecorder.setCamera(camera);
+//
+//            mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
+//            mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+//            if(enableRecordAudio){
+//                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+//            }
+//
+//            int rotateVideo = Constants.POSITIVE_90_DEGREE;
+//            int videoBitRate = 0;
+//            if(mCameraId != DEFAULT_CAMERA){
+//                rotateVideo = Constants.DEGREE_270;
+//                videoBitRate = Constants.FRONT_CAMERA_BIT_RATE;
+//            }else{
+//                videoBitRate = Constants.BACK_CAMERA_BIT_RATE;
+//            }
+//            mediaRecorder.setOrientationHint(rotateVideo);
+//            mediaRecorder.setVideoEncodingBitRate(videoBitRate);
+//
+//            CamcorderProfile profile = CamcorderProfile.get(Constants.CAMERA_QUALITY);
+//            try {
+//                mediaRecorder.setProfile(profile);
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+//            mediaRecorder.setMaxDuration(maxTime);
+//
+//            mediaRecorder.setOutputFile(fileName);
+//
+//
+//
+//            mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);
+//
+//            mediaRecorder.prepare();
+//            mediaRecorder.start();
 
-            mediaRecorder.setCamera(camera);
+            Ulti.initRecorder(mediaRecorder, surfaceHolder, camera, mCameraId, fileName, sizeOfCamera);
 
-            mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
-            mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-            if(enableRecordAudio){
-                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-            }
-
-            int rotateVideo = Constants.POSITIVE_90_DEGREE;
-            int videoBitRate = 0;
-            if(mCameraId != DEFAULT_CAMERA){
-                rotateVideo = Constants.DEGREE_270;
-                videoBitRate = Constants.FRONT_CAMERA_BIT_RATE;
-            }else{
-                videoBitRate = Constants.BACK_CAMERA_BIT_RATE;
-            }
-            mediaRecorder.setOrientationHint(rotateVideo);
-            mediaRecorder.setVideoEncodingBitRate(videoBitRate);
-
-            CamcorderProfile profile = CamcorderProfile.get(Constants.CAMERA_QUALITY);
-            try {
-                mediaRecorder.setProfile(profile);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            mediaRecorder.setMaxDuration(maxTime);
-
-            mediaRecorder.setOutputFile(fileName);
-
-
-
-            mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);
+//            mediaRecorder.setVideoSize();
 
             mediaRecorder.prepare();
             mediaRecorder.start();
@@ -674,6 +681,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
             if(foundEqualSize) break;
         }
+
+//        for (Camera.Size size : cameraParams.getSupportedPictureSizes()) {
+//            sizeOfCamera = size;
+//            Log.d(CameraPreview.class.getName(), "Support Picture size: " + sizeOfCamera.width + "x" + sizeOfCamera.height);
+//            if ((sizeOfCamera.width == Constants.DEFAULT_WIDTH_RESOLUTION && sizeOfCamera.height == Constants.DEFAULT_HEIGH_RESOLUTION) ||
+//                    (sizeOfCamera.width == Constants.DEFAULT_HEIGH_RESOLUTION && sizeOfCamera.height == Constants.DEFAULT_WIDTH_RESOLUTION)) {
+//                break;
+//            }
+//        }
 
         if(sizeOfCamera == null){
             for (int i = 0; i < cameraParams.getSupportedPictureSizes().size(); i++) {

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
-import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.IBinder;
@@ -100,7 +99,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                 cameraId = CameraPreview.DEFAULT_CAMERA;
             }
             camera = Camera.open(cameraId);
-            mediaRecorder = new MediaRecorder();
+
 
             Camera.Size sizeOfCamera = null;
             for (int i = 0; i < camera.getParameters().getSupportedPreviewSizes().size(); i++) {
@@ -117,54 +116,13 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
                 if(foundEqualSize) break;
             }
+            mediaRecorder = new MediaRecorder();
 
-            camera.unlock();
-            try {
-                camera.enableShutterSound(false);
-
-            }catch (Exception e){
-                e.printStackTrace();
-                LogUtils.logE(TAG, "Fail to enable shutter sound: " + e.toString());
-            }
-            mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
-            mediaRecorder.setCamera(camera);
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-            mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-            try {
-                mediaRecorder.setProfile(CamcorderProfile.get(Constants.CAMERA_QUALITY));
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            int rotateVideo = Constants.POSITIVE_90_DEGREE;
-            int videoBitRate = 0;
-            if(cameraId != CameraPreview.DEFAULT_CAMERA){
-                rotateVideo = Constants.DEGREE_270;
-                videoBitRate = Constants.FRONT_CAMERA_BIT_RATE;
-            }else {
-                videoBitRate = Constants.BACK_CAMERA_BIT_RATE;
-            }
-
-            mediaRecorder.setVideoEncodingBitRate(videoBitRate);
-            mediaRecorder.setOrientationHint(rotateVideo);
-            mediaRecorder.setMaxDuration(Constants.DEFAULT_TIME_TO_RECORDING);
-            LogUtils.logD(TAG, "File name: " + fileName);
-            mediaRecorder.setOutputFile(fileName);
-
-
-
-
-
-
-            if(sizeOfCamera != null){
-                LogUtils.logI(TAG, "Cam width: " + sizeOfCamera.width + ".Cam height: " + sizeOfCamera.height);
-                mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);
-            }
-
-//            mediaRecorder.setVideoSize();
+            Ulti.initRecorder(mediaRecorder, surfaceHolder, camera, cameraId, fileName, sizeOfCamera);
 
             mediaRecorder.prepare();
             mediaRecorder.start();
+
 
             videoObject = new VideoObject();
             videoObject.setId(Constants.PREFIX_VIDEO_ID + time);
