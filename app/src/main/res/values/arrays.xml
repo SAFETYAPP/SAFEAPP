@@ -9,9 +9,9 @@
     </array>-->
 
     <array name="snooze_dismiss_drawables">
-        <item>@drawable/ic_item_front_video_lock</item>
         <item>@drawable/ic_item_unlock</item>
         <item>@drawable/ic_item_video_lock</item>
+        <item>@drawable/ic_item_front_video_lock</item>
         <item>@null</item>
     </array>
 

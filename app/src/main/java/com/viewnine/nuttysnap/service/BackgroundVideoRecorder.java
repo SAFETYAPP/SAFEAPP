@@ -16,6 +16,7 @@ import android.view.WindowManager.LayoutParams;
 
 import com.viewnine.nuttysnap.manager.EmailManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
+import com.viewnine.nuttysnap.manager.base.LocationVideoManger;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.ulti.LogUtils;
@@ -87,7 +88,8 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Ulti.createFolder(Constants.VIDEO_FOLDER);
         long time = Calendar.getInstance().getTimeInMillis();
-        fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
+        String physicalAddress = LocationVideoManger.getPhysicalAddress();
+        fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + physicalAddress + Constants.VIDEO_TYPE;
         try {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
@@ -136,7 +138,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         } catch (Exception e) {
             videoObject = null;
             e.printStackTrace();
-            Ulti.deleteFile(fileName);
+            Ulti.deleteFile(fileName, getBaseContext());
             stopSelf(startId);
             LogUtils.logE(TAG, "Surface created error: " + e.toString());
         }
@@ -161,6 +163,13 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
                 if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
                     LogUtils.logD(TAG, "Save video starting...");
+                    if(Constants.ENABLE_WATER_MARK){
+                        String waterMarkVideoLink = Ulti.addWaterMark(getBaseContext(), fileName);
+                        if(!waterMarkVideoLink.isEmpty()){
+                            fileName = waterMarkVideoLink;
+                            videoObject.setVideoUrl(fileName);
+                        }
+                    }
                     String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
                     final VideoObject videoObjectDB = new VideoObject();
                     videoObjectDB.setId(videoObject.getId());
@@ -196,7 +205,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
         } catch (Exception e) {
             e.printStackTrace();
-            Ulti.deleteFile(fileName);
+            Ulti.deleteFile(fileName, getBaseContext());
             stopSelf(startId);
         }
 

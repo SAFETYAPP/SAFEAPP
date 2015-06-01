@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="set_up">Set Up</string>
     <string name="next">Next</string>
-    <string name="please_enter_and_email_setup_screen">Please enter an email address to allow Safe App to send you a copy of each of the videos you record via an email link.\n\nA secondary email may be used for an additional benefit of securing your videos.</string>
+    <string name="please_enter_and_email_setup_screen">Please enter an email address to allow NuttySnap to send you a copy of each of the videos you record via an email link.\n\nA secondary email may be used for an additional benefit of securing your videos.</string>
     <string name="primary_email">Primary Email</string>
     <string name="secondary_email">Secondary Email</string>
     <string name="please_enter_primary_email">Please enter primary email</string>

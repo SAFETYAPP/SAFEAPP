@@ -45,6 +45,8 @@ public class EmailManager {
     private static final String accP2 = "nuttysnap";
     private static EmailManager ourInstance = new EmailManager();
     private InternetAddress internetAddress;
+    private String TAG = EmailManager.class.getName();
+
     public static EmailManager getInstance() {
         return ourInstance;
     }
@@ -66,10 +68,16 @@ public class EmailManager {
 
                 new Thread(emailRunnable).start();
             } catch (AddressException e) {
+                LogUtils.logE(TAG, e.toString());
                 e.printStackTrace();
             } catch (MessagingException e) {
+                LogUtils.logE(TAG, e.toString());
                 e.printStackTrace();
             } catch (UnsupportedEncodingException e) {
+                LogUtils.logE(TAG, e.toString());
+                e.printStackTrace();
+            } catch (Exception e){
+                LogUtils.logE(TAG, e.toString());
                 e.printStackTrace();
             }
         }
@@ -140,6 +148,7 @@ public class EmailManager {
                 Transport.send(message);
                 LogUtils.logI(EmailManager.class.getName(), "End");
             } catch (MessagingException e) {
+                LogUtils.logI(EmailManager.class.getName(), "Sending email exception: " + e.toString());
                 e.printStackTrace();
             }
         }

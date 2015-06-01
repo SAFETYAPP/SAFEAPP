@@ -19,6 +19,7 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
@@ -31,6 +32,7 @@ import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
+import com.netcompss.loader.LoadJNI;
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.activity.LockScreenAppActivity;
@@ -178,10 +180,14 @@ public class Ulti {
         return false;
     }
 
-    public static boolean deleteFile(String filePath){
+    public static boolean deleteFile(String filePath, Context context){
         File file = new File(filePath);
         if(file.exists()){
             boolean isDeleted = file.delete();
+            // request scan
+            Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            scanIntent.setData(Uri.fromFile(new File(filePath)));
+            context.sendBroadcast(scanIntent);
             return isDeleted;
         }else {
             return true;
@@ -456,4 +462,29 @@ public class Ulti {
     }
 
 
+    public static String addWaterMark(Context context, String videoFilePath){
+        Log.i(TAG, "ffmpeg4android adding watermark");
+        long time = Calendar.getInstance().getTimeInMillis();
+        String videoOut = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
+        String[] commandStr = {"ffmpeg","-y" ,"-i", videoFilePath,"-strict","experimental",
+                "-vf", "movie=/sdcard/watermark.png [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]",
+                "-s", "320x240","-r", "30", "-b", "15496k", "-vcodec", "mpeg4","-ab", "48000", "-ac", "2", "-ar", "22050",
+                videoOut};
+        LoadJNI vk = new LoadJNI();
+        try {
+            String workFolder = context.getApplicationContext().getFilesDir().getAbsolutePath();
+            String[] complexCommand = {"ffmpeg","-i", "/sdcard/videokit/in.mp4"};
+//            vk.run(GeneralUtils.utilConvertToComplex(commandStr), workFolder, getContext());
+            vk.run(commandStr, workFolder, context);
+            Log.i(TAG, "ffmpeg4android finished successfully");
+
+            Ulti.deleteFile(videoFilePath, context);
+            return videoOut;
+        } catch (Throwable e) {
+            Log.e(TAG, "vk run exception.", e);
+        }
+
+        return Constants.EMPTY_STRING;
+
+    }
 }

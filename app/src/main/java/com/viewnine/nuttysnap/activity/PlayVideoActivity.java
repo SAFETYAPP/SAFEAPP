@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.facebook.AccessToken;
@@ -29,12 +30,12 @@ import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareVideo;
 import com.facebook.share.model.ShareVideoContent;
 import com.facebook.share.widget.ShareDialog;
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
 import com.viewnine.nuttysnap.manager.VideoManager;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.AlertHelper;
 import com.viewnine.nuttysnap.ulti.Constants;
-import com.viewnine.nuttysnap.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,6 +63,8 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
     private ShareDialog shareDialog;
+    private String locationName = Constants.EMPTY_STRING;
+    private TextView lblLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +140,16 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             videoObject = bundle.getParcelable(Constants.VIDEO_LINK);
+
+            try{
+                String videoLink = videoObject.getVideoUrl();
+                String fileName = videoLink.substring(videoLink.lastIndexOf("/"));
+                locationName = fileName.substring(fileName.indexOf("("));
+                locationName = locationName.substring(1, locationName.lastIndexOf(".") - 1);
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -151,6 +164,8 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
         rlShare = (RelativeLayout) findViewById(R.id.relativelayout_share);
         btnDeleteVideo = (Button) findViewById(R.id.button_delete_video);
         rlDelete = (RelativeLayout) findViewById(R.id.relativelayout_delete);
+        lblLocation = (TextView) findViewById(R.id.textview_location);
+        lblLocation.setText(locationName);
         btnBack.setOnClickListener(this);
         btnShare.setOnClickListener(this);
         btnDeleteVideo.setOnClickListener(this);
@@ -277,7 +292,10 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener{
                 deleteVideo();
             }
         });
+
+//        EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObject.getVideoUrl());
     }
+
 
 
 

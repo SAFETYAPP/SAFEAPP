@@ -28,6 +28,7 @@ import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.manager.EmailManager;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
+import com.viewnine.nuttysnap.manager.base.LocationVideoManger;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.ulti.LogUtils;
@@ -128,6 +129,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
             mPreviewSizeList = cameraParams.getSupportedPreviewSizes();
             mPictureSizeList = cameraParams.getSupportedPictureSizes();
+
+            getCurrentLocation(activity);
         }catch (Exception e){
             e.printStackTrace();
             activity.finish();
@@ -154,7 +157,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             Ulti.createFolder(Constants.VIDEO_FOLDER);
             long time = Calendar.getInstance().getTimeInMillis();
-            fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
+            String physicalAddress = LocationVideoManger.getPhysicalAddress();
+            fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + physicalAddress + Constants.VIDEO_TYPE;
 
             mediaRecorder = new MediaRecorder();
 
@@ -227,7 +231,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         }catch (Exception e){
             e.printStackTrace();
-            Ulti.deleteFile(fileName);
+            Ulti.deleteFile(fileName, getContext());
             if(recordListener != null){
                 recordListener.notifyStopRecording();
             }
@@ -245,8 +249,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             camera.lock();           // lock camera for later use
 
             if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
-
                 LogUtils.logD(TAG, "Save video starting...");
+                if(Constants.ENABLE_WATER_MARK){
+                    String waterMarkVideoLink = Ulti.addWaterMark(getContext(), fileName);
+                    if(!waterMarkVideoLink.isEmpty()){
+                        fileName = waterMarkVideoLink;
+                        videoObject.setVideoUrl(fileName);
+                    }
+                }
                 String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
                 final VideoObject videoObjectDB = new VideoObject();
                 videoObjectDB.setId(videoObject.getId());
@@ -270,6 +280,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 });
 
 
+
+
             }else {
                 LogUtils.logD(TAG, "Fail to save video");
             }
@@ -279,6 +291,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             recordListener.notifyStopRecording();
         }
     }
+
+
 
     private void initNotificaiton(){
         if(SharePreferenceManager.getInstance().isEnableNotificationForEachBackup()){
@@ -860,5 +874,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         }
 
+    }
+
+    private void getCurrentLocation(Context context){
+        new LocationVideoManger(context);
     }
 }

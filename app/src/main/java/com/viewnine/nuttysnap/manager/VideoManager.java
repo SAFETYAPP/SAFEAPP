@@ -158,8 +158,8 @@ public class VideoManager {
             VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
             boolean isDelete = videoDBAdapter.deleteVideoById(videoObject.getId());
             if(isDelete){
-                Ulti.deleteFile(videoObject.getImageLink()); //Delete Video
-                Ulti.deleteFile(videoObject.getVideoUrl()); //Delete Image
+                Ulti.deleteFile(videoObject.getImageLink(), context); //Delete Video
+                Ulti.deleteFile(videoObject.getVideoUrl(), context); //Delete Image
                 return Constants.OK;
             }
 
@@ -206,7 +206,7 @@ public class VideoManager {
         protected Integer doInBackground(Void... params) {
 
 
-            return deleteListVideos(listVideoObject);
+            return deleteListVideos(context, listVideoObject);
 
         }
 
@@ -227,14 +227,14 @@ public class VideoManager {
         }
     }
 
-    private int deleteListVideos(ArrayList<VideoObject> listVideoObject){
+    private int deleteListVideos(Context context, ArrayList<VideoObject> listVideoObject){
         VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
         int numberVideoDeleted = videoDBAdapter.deleteListVideos(listVideoObject);
         if(numberVideoDeleted > 0){
 
             for(VideoObject videoObject : listVideoObject){
-                Ulti.deleteFile(videoObject.getImageLink()); //Delete Video
-                Ulti.deleteFile(videoObject.getVideoUrl()); //Delete Image
+                Ulti.deleteFile(videoObject.getImageLink(), context); //Delete Video
+                Ulti.deleteFile(videoObject.getVideoUrl(), context); //Delete Image
             }
 
             return Constants.OK;
@@ -259,7 +259,7 @@ public class VideoManager {
             calendar.set(Calendar.DAY_OF_MONTH, currentDay - Constants.VIDEO_EXPIRED_DAY);
             VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context.getApplicationContext());
             ArrayList<VideoObject> listVideos = videoDBAdapter.getListVideosBaseOnTime(calendar.getTimeInMillis());
-            deleteListVideos(listVideos);
+            deleteListVideos(context.getApplicationContext(), listVideos);
         }
     }
 }
