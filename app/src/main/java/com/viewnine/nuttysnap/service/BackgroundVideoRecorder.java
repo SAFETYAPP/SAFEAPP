@@ -23,6 +23,7 @@ import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
 import com.viewnine.nuttysnap.view.CameraPreview;
 
+import java.io.File;
 import java.util.Calendar;
 
 public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Callback {
@@ -170,6 +171,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                             videoObject.setVideoUrl(fileName);
                         }
                     }
+                    Ulti.addVideoToMediaStore(getBaseContext(), new File(videoObject.getVideoUrl()));
                     String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
                     final VideoObject videoObjectDB = new VideoObject();
                     videoObjectDB.setId(videoObject.getId());

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -13,7 +14,9 @@ import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Display;
@@ -34,6 +37,7 @@ import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
@@ -257,6 +261,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                         videoObject.setVideoUrl(fileName);
                     }
                 }
+
+                addVideo(new File(videoObject.getVideoUrl()));
                 String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
                 final VideoObject videoObjectDB = new VideoObject();
                 videoObjectDB.setId(videoObject.getId());
@@ -290,6 +296,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if(recordListener != null){
             recordListener.notifyStopRecording();
         }
+    }
+
+    public Uri addVideo(File videoFile) {
+        ContentValues values = new ContentValues(3);
+        values.put(MediaStore.Video.Media.TITLE, "My video title");
+        values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+        values.put(MediaStore.Video.Media.DATA, videoFile.getAbsolutePath());
+        return getContext().getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
     }
 
 

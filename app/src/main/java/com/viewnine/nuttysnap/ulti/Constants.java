@@ -98,4 +98,17 @@ public class Constants {
     public static final int DEFAULT_WIDTH_RESOLUTION = 1280;
     public static final int DEFAULT_HEIGH_RESOLUTION = 720;
 
+    //Youtube value
+    public static final int MAX_KEYWORD_LENGTH = 30;
+    public static final String DEFAULT_KEYWORD = "ytdl";
+    // A playlist ID is a string that begins with PL. You must replace this string with the correct
+    // playlist ID for the app to work
+    public static final String UPLOAD_PLAYLIST = "pl1";
+    public static final String ACCOUNT_KEY = "accountName";
+    public static final String MESSAGE_KEY = "message";
+    public static final String YOUTUBE_ID = "youtubeId";
+    public static final String YOUTUBE_WATCH_URL_PREFIX = "http://www.youtube.com/watch?v=";
+    public static final String REQUEST_AUTHORIZATION_INTENT = "com.google.example.yt.RequestAuth";
+    public static final String REQUEST_AUTHORIZATION_INTENT_PARAM = "com.google.example.yt.RequestAuth.param";
+
 }
