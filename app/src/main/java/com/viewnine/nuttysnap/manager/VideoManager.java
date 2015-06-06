@@ -53,8 +53,8 @@ public class VideoManager {
 
     // Add message in queue to insert into DB, if thread is running -> just add
     // video in queue else start new thread to insert DB
-    public void addVideoInQueue(VideoObject videoObject,
-                                  boolean doNotification, ISavingVideoListener savingVideoListener) {
+    public void addVideoInQueueToInsertDB(VideoObject videoObject,
+                                          boolean doNotification, ISavingVideoListener savingVideoListener) {
 
         this.savingVideoListener = savingVideoListener;
         Log.d(TAG, "Do notification: " + doNotification);

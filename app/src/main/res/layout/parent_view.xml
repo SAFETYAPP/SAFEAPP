@@ -52,12 +52,12 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/set_up"
+            android:text="Privacy Policy and Terms"
             android:textColor="@color/White"
             android:textSize="@dimen/title_safeapp_text_size"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <RelativeLayout
             android:id="@+id/relativelayout_setting"

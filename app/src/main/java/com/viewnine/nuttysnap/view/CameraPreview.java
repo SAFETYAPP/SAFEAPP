@@ -254,15 +254,20 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
             if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
                 LogUtils.logD(TAG, "Save video starting...");
+
                 if(Constants.ENABLE_WATER_MARK){
+                    LogUtils.logD(TAG, "Adding watermark...");
                     String waterMarkVideoLink = Ulti.addWaterMark(getContext(), fileName);
                     if(!waterMarkVideoLink.isEmpty()){
                         fileName = waterMarkVideoLink;
                         videoObject.setVideoUrl(fileName);
+                        LogUtils.logD(TAG, "Watermark is added");
+                    }else {
+                        LogUtils.logD(TAG, "Failed to add watermark");
                     }
                 }
 
-                addVideo(new File(videoObject.getVideoUrl()));
+                addVideoToMediaContent(new File(videoObject.getVideoUrl()));
                 String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
                 final VideoObject videoObjectDB = new VideoObject();
                 videoObjectDB.setId(videoObject.getId());
@@ -270,7 +275,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
                 videoObjectDB.setTime(videoObject.getTime());
                 videoObject = null;
-                VideoManager.getInstance(mActivity).addVideoInQueue(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
+                VideoManager.getInstance(mActivity).addVideoInQueueToInsertDB(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
                     @Override
                     public void successful(VideoObject videoObject) {
 //                        Ulti.showNotificationForEachBackup(getContext());
@@ -298,7 +303,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    public Uri addVideo(File videoFile) {
+    public Uri addVideoToMediaContent(File videoFile) {
         ContentValues values = new ContentValues(3);
         values.put(MediaStore.Video.Media.TITLE, "My video title");
         values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");

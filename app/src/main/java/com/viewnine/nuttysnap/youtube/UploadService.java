@@ -18,8 +18,11 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -140,10 +143,11 @@ public class UploadService extends IntentService {
         String videoId = tryUpload(fileUri, youtube, filePath);
         if (videoId != null) {
             Log.i(TAG, String.format("Uploaded video with ID: %s", videoId));
+            Toast.makeText(getApplicationContext(), "Video is uploaded", Toast.LENGTH_SHORT).show();
             tryShowSelectableNotification(videoId, youtube);
         } else {
             Log.e(TAG, String.format("Failed to upload %s", fileUri.toString()));
-
+            Toast.makeText(getBaseContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -165,6 +169,13 @@ public class UploadService extends IntentService {
                     return;
                 }
             } else {
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Upload completed", Toast.LENGTH_LONG).show();
+                    }
+                });
                 ResumableUpload.showSelectableNotification(videoId, getApplicationContext());
                 return;
             }

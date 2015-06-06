@@ -468,10 +468,32 @@ public class Ulti {
         Log.i(TAG, "ffmpeg4android adding watermark");
         long time = Calendar.getInstance().getTimeInMillis();
         String videoOut = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
-        String[] commandStr = {"ffmpeg","-y" ,"-i", videoFilePath,"-strict","experimental",
-                "-vf", "movie=/sdcard/watermark.png [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]",
-                "-s", "320x240","-r", "30", "-b", "15496k", "-vcodec", "mpeg4","-ab", "48000", "-ac", "2", "-ar", "22050",
+//        String[] commandStr = {"ffmpeg","-y" ,"-i", videoFilePath,"-strict","experimental",
+//                "-vf", "movie=/sdcard/watermark.png [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]",
+//                "-s", "320x240","-r", "30", "-b", "15496k", "-vcodec", "mpeg4","-ab", "48000", "-ac", "2", "-ar", "22050",
+//                videoOut};
+
+//        Draw the overlay at 10 pixels from the bottom left corner of the main video:
+        String leftBottom = "overlay=x=main_w-overlay_w-10:y=main_h-overlay_h-10";
+        String rightBottom = "overlay=main_w-overlay_w-200:100"; //padding bottom: 200, padding right: 100
+        String leftTop = "overlay=10:10";
+        String rightTop = "overlay=overlay_w-overlay_w";
+        String center = "overlay=x=(main_w-overlay_w)/2:y=(main_h-overlay_h)/2";
+        String customPosition = "overlay=overlay_w-overlay_w-100:100";
+        String[] commandStr = {"ffmpeg","-y" ,
+                "-i", videoFilePath,
+                "-strict","experimental",
+                "-vf", "movie=/sdcard/watermark.png [watermark]; [in][watermark] " + center + " [out]",
+//                "-s", "480x240",
+                "-r", "30",
+                "-b", "15496k",
+                "-vcodec", "mpeg4",
+                "-ab", "48000",
+                "-ac", "2",
+                "-ar", "22050",
                 videoOut};
+
+
         LoadJNI vk = new LoadJNI();
         try {
             String workFolder = context.getApplicationContext().getFilesDir().getAbsolutePath();

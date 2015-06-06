@@ -20,12 +20,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore.Video.Thumbnails;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
@@ -38,7 +40,7 @@ import com.google.api.services.youtube.model.VideoListResponse;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.viewnine.nuttysnap.R;
-import com.viewnine.nuttysnap.activity.PlayVideoActivity;
+import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.youtube.ulti.Upload;
 
@@ -66,7 +68,7 @@ public class ResumableUpload {
      * Indicates that the video is fully processed, see https://www.googleapis.com/discovery/v1/apis/youtube/v3/rpc
      */
     private static final String SUCCEEDED = "succeeded";
-    private static final String TAG = "UploadingActivity";
+    private static final String TAG = "ResumableUpload";
     private static int UPLOAD_NOTIFICATION_ID = 1001;
     private static int PLAYBACK_NOTIFICATION_ID = 1002;
     /*
@@ -86,17 +88,22 @@ public class ResumableUpload {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
+        if(Constants.ENABLE_NOTIFICATION_YOUTUBE){
 //        Intent notificationIntent = new Intent(context, ReviewActivity.class);
-        Intent notificationIntent = new Intent(context, PlayVideoActivity.class);
-        notificationIntent.setData(mFileUri);
-        notificationIntent.setAction(Intent.ACTION_VIEW);
-        Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(path, Thumbnails.MICRO_KIND);
-        PendingIntent contentIntent = PendingIntent.getActivity(context,
-                0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        builder.setContentTitle(context.getString(R.string.youtube_upload))
-                .setContentText(context.getString(R.string.youtube_upload_started))
-                .setSmallIcon(R.drawable.safeapp_system_tray_icon).setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
-        notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
+            Intent notificationIntent = new Intent(context, HistoryActivity.class);
+            notificationIntent.setData(mFileUri);
+            notificationIntent.setAction(Intent.ACTION_VIEW);
+            Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(path, Thumbnails.MICRO_KIND);
+            PendingIntent contentIntent = PendingIntent.getActivity(context,
+                    0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            builder.setContentTitle(context.getString(R.string.youtube_upload))
+                    .setContentText(context.getString(R.string.youtube_upload_started))
+                    .setSmallIcon(R.drawable.safeapp_system_tray_icon)
+                    .setLargeIcon(((BitmapDrawable)context.getResources().getDrawable(R.drawable.ic_launcher)).getBitmap())
+                    .setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
+            notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
+        }
+
 
         String videoId = null;
         try {
@@ -121,7 +128,7 @@ public class ResumableUpload {
        * and use your own standard names.
        */
             Calendar cal = Calendar.getInstance();
-            snippet.setTitle("Test Upload via Java on " + cal.getTime());
+            snippet.setTitle("Upload via " + context.getString(R.string.app_name) + " on " + cal.getTime());
             snippet.setDescription("Video uploaded via YouTube Data API V3 using the Java library "
                     + "on " + cal.getTime());
 
@@ -191,10 +198,12 @@ public class ResumableUpload {
             // Execute upload.
             Video returnedVideo = videoInsert.execute();
             Log.d(TAG, "Video upload completed");
+
             videoId = returnedVideo.getId();
             Log.d(TAG, String.format("videoId = [%s]", videoId));
         } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
             Log.e(TAG, "GooglePlayServicesAvailabilityIOException", availabilityException);
+//            Toast.makeText(context, "Upload failed", Toast.LENGTH_SHORT).show();
             notifyFailedUpload(context, context.getString(R.string.cant_access_play), notifyManager, builder);
         } catch (UserRecoverableAuthIOException userRecoverableException) {
             Log.i(TAG, String.format("UserRecoverableAuthIOException: %s",
@@ -229,29 +238,37 @@ public class ResumableUpload {
     //DUC
     public static void showSelectableNotification(String videoId, Context context) {
         Log.d(TAG, String.format("Posting selectable notification for video ID [%s]", videoId));
-        final NotificationManager notifyManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        if(Constants.ENABLE_NOTIFICATION_YOUTUBE){
+            final NotificationManager notifyManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 //        Intent notificationIntent = new Intent(context, PlayActivity.class);
-        Intent notificationIntent = new Intent(context, PlayVideoActivity.class);
-        notificationIntent.putExtra(Constants.YOUTUBE_ID, videoId);
-        notificationIntent.setAction(Intent.ACTION_VIEW);
+            Intent notificationIntent = new Intent(context, HistoryActivity.class);
+            notificationIntent.putExtra(Constants.YOUTUBE_ID, videoId);
+            notificationIntent.setAction(Intent.ACTION_VIEW);
 
-        URL url;
-        try {
-            url = new URL("https://i1.ytimg.com/vi/" + videoId + "/mqdefault.jpg");
-            Bitmap thumbnail = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            PendingIntent contentIntent = PendingIntent.getActivity(context,
-                    0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-            builder.setContentTitle(context.getString(R.string.watch_your_video))
-                    .setContentText(context.getString(R.string.see_the_newly_uploaded_video)).setContentIntent(contentIntent).setSmallIcon(R.drawable.safeapp_system_tray_icon).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
-            notifyManager.notify(PLAYBACK_NOTIFICATION_ID, builder.build());
-            Log.d(TAG, String.format("Selectable notification for video ID [%s] posted", videoId));
-        } catch (MalformedURLException e) {
-            Log.e(TAG, e.getMessage());
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
+            URL url;
+            try {
+                url = new URL("https://i1.ytimg.com/vi/" + videoId + "/mqdefault.jpg");
+                Bitmap thumbnail = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                PendingIntent contentIntent = PendingIntent.getActivity(context,
+                        0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                builder.setContentTitle(context.getString(R.string.watch_your_video))
+                        .setContentText(context.getString(R.string.see_the_newly_uploaded_video))
+                        .setContentIntent(contentIntent)
+                        .setSmallIcon(R.drawable.safeapp_system_tray_icon)
+                        .setLargeIcon(((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_launcher)).getBitmap())
+                        .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
+                notifyManager.notify(PLAYBACK_NOTIFICATION_ID, builder.build());
+                Log.d(TAG, String.format("Selectable notification for video ID [%s] posted", videoId));
+                Toast.makeText(context, "Video is uploaded", Toast.LENGTH_SHORT).show();
+            } catch (MalformedURLException e) {
+                Log.e(TAG, e.getMessage());
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
+
     }
 
 

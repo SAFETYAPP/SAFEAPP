@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.view.DurationVideoTimeView;
@@ -58,6 +59,40 @@ public class DialogUlti {
             @Override
             public void onClick(View v) {
 
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    public void showShareOption(Context context, final View.OnClickListener facebookListener, final View.OnClickListener youtubeListener){
+        final Dialog dialog = new Dialog(context, R.style.ThemeDialogCustom);
+        dialog.setContentView(R.layout.popup_share_layout);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        Button facebook = (Button) dialog.findViewById(R.id.button_share_facebook);
+        facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                facebookListener.onClick(v);
+            }
+        });
+
+        Button youtube = (Button) dialog.findViewById(R.id.button_share_youtube);
+        youtube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                youtubeListener.onClick(v);
+            }
+        });
+
+        RelativeLayout rlPopup = (RelativeLayout) dialog.findViewById(R.id.popup);
+        rlPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dialog.dismiss();
             }
         });

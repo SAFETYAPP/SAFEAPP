@@ -58,6 +58,8 @@ import com.viewnine.nuttysnap.manager.VideoManager;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.AlertHelper;
 import com.viewnine.nuttysnap.ulti.Constants;
+import com.viewnine.nuttysnap.ulti.DialogUlti;
+import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.youtube.Auth;
 import com.viewnine.nuttysnap.youtube.UploadService;
 import com.viewnine.nuttysnap.youtube.ulti.VideoData;
@@ -381,7 +383,20 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
 
     private void handleClickOnShareButton() {
 //        startShareFacebook();
-        startShareYoutube();
+//        startShareYoutube();
+
+        DialogUlti.getInstance().showShareOption(this,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startShareFacebook();
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startShareYoutube();
+                    }
+                });
 
     }
 
@@ -424,6 +439,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
                         credential.setSelectedAccountName(accountName);
                         saveAccount();
                     }
+                    startShareYoutube();
                 }
                 break;
 
@@ -584,7 +600,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
     @Override
     public void onConnected(Bundle bundle) {
         mChosenAccountName = mPlusClient.getAccountName();
-        Toast.makeText(this, "Connected youtube account: " + mPlusClient.getAccountName(), Toast.LENGTH_LONG ).show();
+        LogUtils.logI(TAG, "Connected youtube account: " + mPlusClient.getAccountName());
         uploadVideo();
 //        mUploadsListFragment.updateInforAfterConnectedYoutube(mPlusClient);
     }
@@ -597,9 +613,9 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
-            Toast.makeText(this,
-                    R.string.connection_to_google_play_failed, Toast.LENGTH_SHORT)
-                    .show();
+//            Toast.makeText(this,
+//                    R.string.connection_to_google_play_failed, Toast.LENGTH_SHORT)
+//                    .show();
 
             Log.e(TAG,
                     String.format(

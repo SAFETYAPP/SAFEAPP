@@ -49,8 +49,8 @@ import java.util.TimerTask;
 public class LockScreenAppActivity extends Activity implements View.OnClickListener{
 
     private static final int HOME_TYPE = 0;
-    private static final int BACK_VIDEO_TYPE = 1;
-    private static final int FRONT_VIDEO_TYPE = 2;
+    private static final int FRONT_VIDEO_TYPE = 1;
+    private static final int BACK_VIDEO_TYPE = 2;
     private static final int PATTERN_TYPE = 3;
     private GlowPadView glowPadView;
     private TextView lblTime, lblDate;
@@ -63,7 +63,7 @@ public class LockScreenAppActivity extends Activity implements View.OnClickListe
     private String TAG = LockScreenAppActivity.class.getName();
     private TextView lblTimeAMPM;
     private String patternStringSetting;
-    private int cameraId = 0;
+    public static int cameraId = 0;
     private enum GLOWPAD_TYPE{
         PROFILE, BACK_VIDEO, HOME, FRONT_VIDEO
     }

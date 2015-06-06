@@ -19,6 +19,7 @@ public class Constants {
     public static final boolean DISABLE_SYSTEM_LOCK_SCREEN = true;
     public static final boolean ENABLE_WATER_MARK = false;
     public static final boolean ENABLE_VIDEO_COORDINATE = false;
+    public static final boolean ENABLE_NOTIFICATION_YOUTUBE = false;
     public static final String ZERODAY = "0000-00-00";
     public static final String EMPTY_STRING = "";
     public static final int ZERO_NUMBER = 0;

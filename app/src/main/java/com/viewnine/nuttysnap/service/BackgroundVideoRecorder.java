@@ -14,6 +14,7 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
+import com.viewnine.nuttysnap.activity.LockScreenAppActivity;
 import com.viewnine.nuttysnap.manager.EmailManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
 import com.viewnine.nuttysnap.manager.base.LocationVideoManger;
@@ -78,7 +79,13 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         super.onStartCommand(intent, flags, startId);
 
         this.startId = startId;
-        cameraId = intent.getIntExtra(Constants.CAMERA_ID, BACK_CAMERA_ID);
+        try{
+            cameraId = intent.getIntExtra(Constants.CAMERA_ID, BACK_CAMERA_ID);
+        }catch (Exception e){
+            e.printStackTrace();
+            //Hardcode here if can not get camera id from intent
+            cameraId = LockScreenAppActivity.cameraId;
+        }
         initSurface();
 
         return START_STICKY;
@@ -162,6 +169,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
                 windowManager.removeView(surfaceView);
 
+
                 if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
                     LogUtils.logD(TAG, "Save video starting...");
                     if(Constants.ENABLE_WATER_MARK){
@@ -179,7 +187,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                     videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
                     videoObjectDB.setTime(videoObject.getTime());
                     videoObject = null;
-                    VideoManager.getInstance(getBaseContext()).addVideoInQueue(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
+                    VideoManager.getInstance(getBaseContext()).addVideoInQueueToInsertDB(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
                         @Override
                         public void successful(VideoObject videoObject) {
                             Intent intent = new Intent();
