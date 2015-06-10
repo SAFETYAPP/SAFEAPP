@@ -21,6 +21,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.viewnine.nuttysnap.Adapter.VideoAdapter;
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
+import com.viewnine.nuttysnap.manager.EmailManager;
 import com.viewnine.nuttysnap.manager.HistoryManager;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
@@ -187,6 +188,46 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
             mFooterListView.setVisibility(View.VISIBLE);
             mFooterViewGridView.setVisibility(View.INVISIBLE);
         }
+
+        //Add watermark
+        for(VideoObject videoObject : listVideosTmp){
+            if(videoObject.isAddedWatermark() < 1){
+                addWatermark(videoObject);
+            }
+        }
+    }
+
+    private void addWatermark(final VideoObject videoObject){
+        VideoManager.getInstance(this.getApplicationContext()).addWatermarkInQueue(videoObject, new VideoManager.IAddWatermarkListener() {
+            @Override
+            public void successful(final VideoObject videoObject) {
+
+                LogUtils.logI(TAG, "Video is added watermark: " + videoObject.getId());
+                //Send email
+                EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObject.getVideoUrl());
+
+                HistoryActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(VideoObject videoObjectTmp : listVideos){
+                            if(videoObjectTmp.getId().equalsIgnoreCase(videoObject.getId())){
+                                videoObjectTmp.setIsAddedWatermark(videoObject.isAddedWatermark());
+                                videoObjectTmp.setVideoUrl(videoObject.getVideoUrl());
+                                LogUtils.logI(TAG, "Refresh listview: " + videoObject.getId());
+                                break;
+                            }
+                        }
+
+                        videoAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void fail() {
+
+            }
+        });
     }
 
     @Override

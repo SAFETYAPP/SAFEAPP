@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,6 +40,7 @@ import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.activity.LockScreenAppActivity;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
+import com.viewnine.nuttysnap.manager.base.LocationVideoManger;
 import com.viewnine.nuttysnap.view.CameraPreview;
 
 import java.io.File;
@@ -116,7 +118,21 @@ public class Ulti {
         }
     }
 
+    public static void saveDrawableToSdCard(Context context, int resourceId, String fileName){
+        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), resourceId);
+        String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+        File file = new File(extStorageDirectory, fileName);
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        releaseBitmap(bm);
+    }
 
     public static int[] getScreenSize(Context context){
         int[] sizeOfScreen = new int[2];
@@ -464,26 +480,35 @@ public class Ulti {
     }
 
 
-    public static String addWaterMark(Context context, String videoFilePath){
+    public static String addWaterMark(Context context, String videoFilePath, int cameraMode){
         Log.i(TAG, "ffmpeg4android adding watermark");
+
+        String physicalAddress = LocationVideoManger.getPhysicalAddress();
         long time = Calendar.getInstance().getTimeInMillis();
-        String videoOut = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
-//        String[] commandStr = {"ffmpeg","-y" ,"-i", videoFilePath,"-strict","experimental",
-//                "-vf", "movie=/sdcard/watermark.png [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]",
-//                "-s", "320x240","-r", "30", "-b", "15496k", "-vcodec", "mpeg4","-ab", "48000", "-ac", "2", "-ar", "22050",
-//                videoOut};
+        String videoOut = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + physicalAddress + Constants.VIDEO_TYPE;
 
 //        Draw the overlay at 10 pixels from the bottom left corner of the main video:
         String leftBottom = "overlay=x=main_w-overlay_w-10:y=main_h-overlay_h-10";
-        String rightBottom = "overlay=main_w-overlay_w-200:100"; //padding bottom: 200, padding right: 100
+        String rightBottom = "overlay=main_w-overlay_w-10:10"; //padding bottom: 200, padding right: 100
         String leftTop = "overlay=10:10";
         String rightTop = "overlay=overlay_w-overlay_w";
         String center = "overlay=x=(main_w-overlay_w)/2:y=(main_h-overlay_h)/2";
-        String customPosition = "overlay=overlay_w-overlay_w-100:100";
+        String customPosition = "overlay=overlay_w-overlay_w-overlay_w";
+
+
+        String watermarkPosition = leftBottom;
+        String watermarkLink = Constants.WATERMARK_BACK_CAMERA;
+        if(cameraMode > CameraPreview.DEFAULT_CAMERA){
+            watermarkPosition = rightTop;
+            watermarkLink = Constants.WATERMARK_FRONT_CAMERA;
+        }
+
+
+
         String[] commandStr = {"ffmpeg","-y" ,
                 "-i", videoFilePath,
                 "-strict","experimental",
-                "-vf", "movie=/sdcard/watermark.png [watermark]; [in][watermark] " + center + " [out]",
+                "-vf", "movie=" + watermarkLink + " [watermark]; [in][watermark] " + watermarkPosition + " [out]",
 //                "-s", "480x240",
                 "-r", "30",
                 "-b", "15496k",
@@ -492,13 +517,16 @@ public class Ulti {
                 "-ac", "2",
                 "-ar", "22050",
                 videoOut};
-
+        String test = "ffmpeg -i " + videoFilePath + " -i /sdcard/watermark.png -filter_complex overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2 "
+                + "-r 30 -b 15496k -vcodec mpeg4 -ab 48000 -ac 2 -ar 22050"
+                + videoOut;
+        String test2 = "ffmpeg –i " + videoFilePath + " -vf \"movie=/sdcard/watermark.png [watermark]; [in][watermark] overlay=10:10 [out]\" " + videoOut;
 
         LoadJNI vk = new LoadJNI();
         try {
             String workFolder = context.getApplicationContext().getFilesDir().getAbsolutePath();
             String[] complexCommand = {"ffmpeg","-i", "/sdcard/videokit/in.mp4"};
-//            vk.run(GeneralUtils.utilConvertToComplex(commandStr), workFolder, getContext());
+//            vk.run(GeneralUtils.utilConvertToComplex(test2), workFolder, context);
             vk.run(commandStr, workFolder, context);
             Log.i(TAG, "ffmpeg4android finished successfully");
 

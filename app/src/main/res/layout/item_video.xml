@@ -17,4 +17,32 @@
         android:scaleType="centerCrop"
         android:background="@drawable/item_select_highlight"/>
 
+    <com.viewnine.nuttysnap.customView.SquareRelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/gradient_shape_90"
+        android:id="@+id/relativelayout_adding_watermark">
+
+
+
+
+    </com.viewnine.nuttysnap.customView.SquareRelativeLayout>
+
+
+
+
+    <TextView
+
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+
+        android:id="@+id/textview_adding_watermark"
+        android:text="Watermarking..."
+        android:textColor="@color/White"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        />
+
 </RelativeLayout>

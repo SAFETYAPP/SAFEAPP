@@ -11,6 +11,8 @@ import com.crashlytics.android.Crashlytics;
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
+import com.viewnine.nuttysnap.ulti.Constants;
+import com.viewnine.nuttysnap.ulti.Ulti;
 import com.viewnine.nuttysnap.ulti.ValidationHelper;
 
 import io.fabric.sdk.android.Fabric;
@@ -30,6 +32,8 @@ public class SplashScreenActivity extends ParentActivity {
 
         mContext = SplashScreenActivity.this;
 
+        Ulti.saveDrawableToSdCard(this, R.drawable.watermark, Constants.WATERMARK_NAME_BACK_CAMERA);
+        Ulti.saveDrawableToSdCard(this, R.drawable.watermark2, Constants.WATERMARK_NAME_FRONT_CAMERA);
         handleFirstTimeRunning();
     }
 

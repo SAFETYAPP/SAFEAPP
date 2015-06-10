@@ -6,13 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.R;
+import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.customView.SquareImageView;
+import com.viewnine.nuttysnap.customView.SquareRelativeLayout;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.Constants;
@@ -66,8 +69,8 @@ public class VideoAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_video, null);
             holder.videoImageView = (SquareImageView) convertView.findViewById(R.id.image_video);
             holder.imageHighlight = (SquareImageView) convertView.findViewById(R.id.image_highlight);
-
-
+            holder.lblAddingWatermark = (TextView) convertView.findViewById(R.id.textview_adding_watermark);
+            holder.rlAddingWatermark = (SquareRelativeLayout) convertView.findViewById(R.id.relativelayout_adding_watermark);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -79,6 +82,18 @@ public class VideoAdapter extends BaseAdapter {
     }
 
     private void setupItemPost(ViewHolder holder, final VideoObject videoObject, int position) {
+
+        final boolean isAddedWatermark = videoObject.isAddedWatermark() > 0 ? true : false;
+        if(isAddedWatermark){
+            holder.lblAddingWatermark.setVisibility(View.GONE);
+            holder.rlAddingWatermark.setVisibility(View.GONE);
+
+        }else {
+            holder.lblAddingWatermark.setVisibility(View.VISIBLE);
+            holder.rlAddingWatermark.setVisibility(View.VISIBLE);
+
+        }
+
         String videoLink = Constants.PREFIX_LOCAL_FILE_URL + videoObject.getImageLink();
 //        ImageLoader.getInstance().displayImage(videoLink, holder.videoImageView);
 
@@ -117,15 +132,21 @@ public class VideoAdapter extends BaseAdapter {
                     videoObject.setIsSelected(!videoObject.isSelected());
                     notifyDataSetChanged();
                 }else {
-                    SwitchViewManager.getInstance().gotoVideoScreen(mContext, videoObject);
+                    if(isAddedWatermark){
+                        SwitchViewManager.getInstance().gotoVideoScreen(mContext, videoObject);
+                    }
                 }
             }
         });
+
+
     }
 
     private class ViewHolder{
         SquareImageView videoImageView;
         SquareImageView imageHighlight;
+        TextView lblAddingWatermark;
+        SquareRelativeLayout rlAddingWatermark;
     }
 
 }

@@ -42,6 +42,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                         + DbDefines.VIDEO_ID + " TEXT, "
                         + DbDefines.Video_URL + " TEXT, "
                         + DbDefines.Image_Link + " TEXT, "
+                        + DbDefines.IsAddedWatermark + " INTEGER, "
+                        + DbDefines.CameraMode + " INTEGER, "
                         + DbDefines.Time + " LONG )"
         );
     }
@@ -49,5 +51,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        if(newVersion == 2){
+            db.execSQL("ALTER TABLE " + DbDefines.TABLE_VIDEOS + " ADD COLUMN " + DbDefines.IsAddedWatermark + " INTEGER DEFAULT 0");
+            db.execSQL("ALTER TABLE " + DbDefines.TABLE_VIDEOS + " ADD COLUMN " + DbDefines.CameraMode + " INTEGER DEFAULT 0");
+        }
     }
 }

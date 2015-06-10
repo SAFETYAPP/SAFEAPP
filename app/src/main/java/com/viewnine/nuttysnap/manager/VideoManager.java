@@ -21,9 +21,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class VideoManager {
 
     public static ConcurrentLinkedQueue<VideoObject> listVideoNeedInsertToDB;
+    public static ConcurrentLinkedQueue<VideoObject> listVideoNeedAddWatermark;
 
     private String TAG = VideoManager.class.getName();
     boolean insertMsgThreadIsRunning = false;
+    boolean addingWatermarkThreadIsRunning = false;
 
     private static VideoManager ourInstance = new VideoManager();
     private static Context context;
@@ -32,7 +34,13 @@ public class VideoManager {
         public void successful(VideoObject videoObject);
         public void fail();
     }
+
+    public interface IAddWatermarkListener{
+        public void successful(VideoObject videoObject);
+        public void fail();
+    }
     private ISavingVideoListener savingVideoListener;
+    private IAddWatermarkListener addWatermarkListener;
 
     public interface IDeleteVideoListener{
         public void deleteSpecificVideoSuccessful(VideoObject videoObject);
@@ -131,6 +139,11 @@ public class VideoManager {
     public boolean insertVideoIntoDB(VideoObject videoObject){
         VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
         return videoDBAdapter.insertVideo(videoObject);
+    }
+
+    public boolean updateVideoDB(VideoObject videoObject){
+        VideoDBAdapter videoAdapter = new VideoDBAdapter(context);
+        return videoAdapter.updateVideo(videoObject);
     }
 
 
@@ -262,4 +275,76 @@ public class VideoManager {
             deleteListVideos(context.getApplicationContext(), listVideos);
         }
     }
+
+
+    public void addWatermarkInQueue(VideoObject videoObject, IAddWatermarkListener addWatermarkListener) {
+
+        this.addWatermarkListener = addWatermarkListener;
+
+        if (listVideoNeedAddWatermark == null)
+            listVideoNeedAddWatermark = new ConcurrentLinkedQueue<VideoObject>();
+
+
+        LogUtils.logI(TAG, "Thread is running: " + addingWatermarkThreadIsRunning);
+
+        if(videoObject != null){
+            if (!addingWatermarkThreadIsRunning) {
+                listVideoNeedAddWatermark.add(videoObject);
+
+                new Thread(addingWatermarkRunnable).start();
+            } else {
+                listVideoNeedAddWatermark.add(videoObject);
+
+            }
+        }
+
+    }
+
+    Runnable addingWatermarkRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            addingWatermarkThreadIsRunning = true;
+            LogUtils.logD("HANDLERTEST", "is listVideoAddingWatermark null: " + (listVideoNeedAddWatermark == null));
+            LogUtils.logD("HANDLERTEST", "Size of the list: " + listVideoNeedAddWatermark.size());
+
+            if (listVideoNeedAddWatermark != null
+                    && listVideoNeedAddWatermark.size() > 0) {
+                while (listVideoNeedAddWatermark.size() > 0) {
+                    try {
+                        VideoObject videoObject = listVideoNeedAddWatermark.poll();
+
+                        LogUtils.logD(TAG, "Adding watermark...");
+                        String waterMarkVideoLink = Ulti.addWaterMark(VideoManager.context.getApplicationContext(), videoObject.getVideoUrl(), videoObject.getCameraMode());
+                        if(!waterMarkVideoLink.isEmpty()){
+                            videoObject.setVideoUrl(waterMarkVideoLink);
+                            videoObject.setIsAddedWatermark(1);
+                            LogUtils.logD(TAG, "Watermark is added");
+                            boolean result = updateVideoDB(videoObject);
+                            if(addWatermarkListener != null){
+                                if(result){
+                                    addWatermarkListener.successful(videoObject);
+                                }else {
+                                    addWatermarkListener.fail();
+                                }
+                            }
+                        }else {
+                            LogUtils.logD(TAG, "Failed to add watermark");
+                            if(addWatermarkListener != null){
+                                addWatermarkListener.fail();
+                            }
+                        }
+                    } catch (NoSuchElementException e) {
+                        e.printStackTrace();
+                        if(addWatermarkListener != null){
+                            addWatermarkListener.fail();
+                        }
+                    }
+
+                }
+            }
+            addingWatermarkThreadIsRunning = false;
+        }
+    };
+
 }

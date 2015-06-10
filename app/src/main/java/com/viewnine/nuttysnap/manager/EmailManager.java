@@ -35,14 +35,14 @@ import javax.mail.internet.MimeMultipart;
  * Disable security: https://www.google.com/settings/security/lesssecureapps
  */
 public class EmailManager {
-//    private static final String accName1 = "safeappmail1@gmail.com";
-//    private static final String accP1 = "safeappmail";
-//    private static final String accName2 = "safeappmail2@gmail.com";
-//    private static final String accP2 = "safeappmail";
-    private static final String accName1 = "nuttysnap1@gmail.com";
-    private static final String accP1 = "nuttysnap";
-    private static final String accName2 = "nuttysnap2@gmail.com";
-    private static final String accP2 = "nuttysnap";
+    private static final String accName1 = "safeappmail1@gmail.com";
+    private static final String accP1 = "safeappmail";
+    private static final String accName2 = "safeappmail2@gmail.com";
+    private static final String accP2 = "safeappmail";
+//    private static final String accName1 = "nuttysnap1@gmail.com";
+//    private static final String accP1 = "nuttysnap";
+//    private static final String accName2 = "nuttysnap2@gmail.com";
+//    private static final String accP2 = "nuttysnap";
     private static EmailManager ourInstance = new EmailManager();
     private InternetAddress internetAddress;
     private String TAG = EmailManager.class.getName();

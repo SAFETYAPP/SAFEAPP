@@ -228,6 +228,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             videoObject.setId(Constants.PREFIX_VIDEO_ID + time);
             videoObject.setVideoUrl(fileName);
             videoObject.setTime(time);
+            videoObject.setCameraMode(mCameraId);
 
 
 
@@ -257,7 +258,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
                 if(Constants.ENABLE_WATER_MARK){
                     LogUtils.logD(TAG, "Adding watermark...");
-                    String waterMarkVideoLink = Ulti.addWaterMark(getContext(), fileName);
+                    String waterMarkVideoLink = Ulti.addWaterMark(getContext(), fileName, videoObject.getCameraMode());
                     if(!waterMarkVideoLink.isEmpty()){
                         fileName = waterMarkVideoLink;
                         videoObject.setVideoUrl(fileName);
@@ -274,6 +275,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 videoObjectDB.setImageLink(imageLink);
                 videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
                 videoObjectDB.setTime(videoObject.getTime());
+                videoObjectDB.setCameraMode(videoObject.getCameraMode());
                 videoObject = null;
                 VideoManager.getInstance(mActivity).addVideoInQueueToInsertDB(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
                     @Override
@@ -281,7 +283,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 //                        Ulti.showNotificationForEachBackup(getContext());
 
                         //Send email
-                        EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObjectDB.getVideoUrl());
+//                        EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObject.getVideoUrl());
+
+//                        //Add watermark
+                        addWatermark(videoObject);
                     }
 
                     @Override
@@ -301,6 +306,22 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if(recordListener != null){
             recordListener.notifyStopRecording();
         }
+    }
+
+    private void addWatermark(VideoObject videoObject){
+        VideoManager.getInstance(mActivity.getApplicationContext()).addWatermarkInQueue(videoObject, new VideoManager.IAddWatermarkListener() {
+            @Override
+            public void successful(VideoObject videoObject) {
+
+                //Send email
+                EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObject.getVideoUrl());
+            }
+
+            @Override
+            public void fail() {
+
+            }
+        });
     }
 
     public Uri addVideoToMediaContent(File videoFile) {

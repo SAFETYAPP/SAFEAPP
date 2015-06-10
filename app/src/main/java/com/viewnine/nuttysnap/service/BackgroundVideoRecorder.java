@@ -138,6 +138,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             videoObject.setId(Constants.PREFIX_VIDEO_ID + time);
             videoObject.setVideoUrl(fileName);
             videoObject.setTime(time);
+            videoObject.setCameraMode(cameraId);
 
             initNotificaiton();
 
@@ -173,7 +174,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                 if(videoObject != null && !videoObject.getVideoUrl().isEmpty()){
                     LogUtils.logD(TAG, "Save video starting...");
                     if(Constants.ENABLE_WATER_MARK){
-                        String waterMarkVideoLink = Ulti.addWaterMark(getBaseContext(), fileName);
+                        String waterMarkVideoLink = Ulti.addWaterMark(getBaseContext(), fileName, videoObject.getCameraMode());
                         if(!waterMarkVideoLink.isEmpty()){
                             fileName = waterMarkVideoLink;
                             videoObject.setVideoUrl(fileName);
@@ -186,6 +187,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                     videoObjectDB.setImageLink(imageLink);
                     videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
                     videoObjectDB.setTime(videoObject.getTime());
+                    videoObjectDB.setCameraMode(videoObject.getCameraMode());
                     videoObject = null;
                     VideoManager.getInstance(getBaseContext()).addVideoInQueueToInsertDB(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
                         @Override
@@ -197,7 +199,9 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
                             Ulti.showNotificationForEachBackup(getBaseContext());
 
                             //Send email
-                            EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObjectDB.getVideoUrl());
+//                            EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObjectDB.getVideoUrl());
+
+                            addWatermark(videoObject);
                         }
 
                         @Override
@@ -224,6 +228,22 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         super.onDestroy();
 
 
+    }
+
+    private void addWatermark(VideoObject videoObject){
+        VideoManager.getInstance(getBaseContext()).addWatermarkInQueue(videoObject, new VideoManager.IAddWatermarkListener() {
+            @Override
+            public void successful(VideoObject videoObject) {
+
+                //Send email
+                EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObject.getVideoUrl());
+            }
+
+            @Override
+            public void fail() {
+
+            }
+        });
     }
 
     @Override

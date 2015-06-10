@@ -18,7 +18,7 @@ public class Constants {
     public static final boolean ENABLE_CHECK_VIDEO_EXPIRED = true;
     public static final boolean DISABLE_SYSTEM_LOCK_SCREEN = true;
     public static final boolean ENABLE_WATER_MARK = false;
-    public static final boolean ENABLE_VIDEO_COORDINATE = false;
+    public static final boolean ENABLE_VIDEO_COORDINATE = true;
     public static final boolean ENABLE_NOTIFICATION_YOUTUBE = false;
     public static final String ZERODAY = "0000-00-00";
     public static final String EMPTY_STRING = "";
@@ -55,7 +55,8 @@ public class Constants {
                                                                                                         put("3 min", DEFAULT_TIME_TO_RECORDING);
                                                                                                         put("1 min", 60 * 1000);
                                                                                                         put("45 sec", 45 * 1000);
-                                                                                                        put("30 sec", 30 * 1000);}};
+                                                                                                        put("30 sec", 30 * 1000);
+                                                                                                        }};
 
     public static final int CHILD_ACTIVITY = 100;
     public static final int LOCK_SCREEN_ACTIVITY = 1;
@@ -111,5 +112,8 @@ public class Constants {
     public static final String YOUTUBE_WATCH_URL_PREFIX = "http://www.youtube.com/watch?v=";
     public static final String REQUEST_AUTHORIZATION_INTENT = "com.google.example.yt.RequestAuth";
     public static final String REQUEST_AUTHORIZATION_INTENT_PARAM = "com.google.example.yt.RequestAuth.param";
-
+    public static final String WATERMARK_NAME_BACK_CAMERA = "watermark1.png";
+    public static final String WATERMARK_NAME_FRONT_CAMERA = "watermark2.png";
+    public static final String WATERMARK_BACK_CAMERA = "/sdcard/" + WATERMARK_NAME_BACK_CAMERA;
+    public static final String WATERMARK_FRONT_CAMERA = "/sdcard/" + WATERMARK_NAME_FRONT_CAMERA;
 }

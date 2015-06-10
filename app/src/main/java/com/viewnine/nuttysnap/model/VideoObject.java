@@ -13,6 +13,8 @@ public class VideoObject implements  Parcelable{
     String imageLink;
     long time;
     boolean isSelected;
+    int isAddedWatermark;
+    int cameraMode;
 
     public boolean isSelected() {
         return isSelected;
@@ -54,6 +56,21 @@ public class VideoObject implements  Parcelable{
         this.time = time;
     }
 
+    public int isAddedWatermark() {
+        return isAddedWatermark;
+    }
+
+    public void setIsAddedWatermark(int isAddedWatermark) {
+        this.isAddedWatermark = isAddedWatermark;
+    }
+
+    public int getCameraMode() {
+        return cameraMode;
+    }
+
+    public void setCameraMode(int cameraMode) {
+        this.cameraMode = cameraMode;
+    }
 
     public static final Parcelable.Creator<VideoObject> CREATOR = new Creator<VideoObject>() {
         @Override
@@ -63,6 +80,8 @@ public class VideoObject implements  Parcelable{
             videoObject.videoUrl = source.readString();
             videoObject.imageLink = source.readString();
             videoObject.time = source.readLong();
+            videoObject.isAddedWatermark = source.readInt();
+            videoObject.cameraMode = source.readInt();
 
 //            source.readTypedList(user.Tags, Tag.CREATOR);
 //            source.readTypedList(user.listMajor, MajorObject.CREATOR);
@@ -87,6 +106,8 @@ public class VideoObject implements  Parcelable{
         parcel.writeString(videoUrl);
         parcel.writeString(imageLink);
         parcel.writeLong(time);
+        parcel.writeInt(isAddedWatermark);
+        parcel.writeInt(cameraMode);
 //        parcel.writeTypedList(Tags);
 //        parcel.writeTypedList(listMajor);
     }

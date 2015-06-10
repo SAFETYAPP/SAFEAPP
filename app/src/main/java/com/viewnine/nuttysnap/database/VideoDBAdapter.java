@@ -47,6 +47,25 @@ public class VideoDBAdapter extends BaseAdapter{
         return result > 0 ? true : false;
     }
 
+    public boolean updateVideo(VideoObject videoObject){
+        openDatabase();
+        int result = -1;
+        try {
+            ContentValues value = mapContentValues(videoObject);
+            result = mDb.update(
+                    DbDefines.TABLE_VIDEOS,
+                    value,
+                    DbDefines.VIDEO_ID + " = '" + videoObject.getId() + "'",
+                    null);
+        } catch (SQLiteException e) {
+            LogUtils.logI(TAG, e.toString());
+            result = -1;
+        } finally {
+            this.close();
+        }
+        return (result > 0);
+    }
+
     public boolean deleteVideoById(String videoId) {
         String where = DbDefines.VIDEO_ID + " = '" + videoId + "'";
         boolean result = false;
@@ -272,6 +291,8 @@ public class VideoDBAdapter extends BaseAdapter{
         value.put(DbDefines.Image_Link, videoObject.getImageLink());
         value.put(DbDefines.Time, videoObject.getTime());
         value.put(DbDefines.VIDEO_ID, videoObject.getId());
+        value.put(DbDefines.IsAddedWatermark, videoObject.isAddedWatermark());
+        value.put(DbDefines.CameraMode, videoObject.getCameraMode());
         return value;
     }
 
@@ -282,7 +303,8 @@ public class VideoDBAdapter extends BaseAdapter{
         msg.setVideoUrl(results.getString(results.getColumnIndex(DbDefines.Video_URL)));
         msg.setImageLink(results.getString(results.getColumnIndex(DbDefines.Image_Link)));
         msg.setTime((results.getLong(results.getColumnIndex(DbDefines.Time))));
-
+        msg.setIsAddedWatermark(results.getInt(results.getColumnIndex(DbDefines.IsAddedWatermark)));
+        msg.setCameraMode(results.getInt(results.getColumnIndex(DbDefines.CameraMode)));
         return msg;
     }
 
