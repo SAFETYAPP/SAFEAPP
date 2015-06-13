@@ -91,4 +91,8 @@
     <string name="share_youtube">Youtube</string>
     <string name="share_option">Share option</string>
     <string name="condition_to_upload_video_to_youtube">To upload video to youtube, make sure your youtube account has channel already.</string>
+    <string name="howto_1">NuttySnap lets you record videos discretely from your lock screen.</string>
+    <string name="howto_2"><![CDATA[<b>Swipe left</b> on the lock screen to record videos with the back camera.]]></string>
+    <string name="howto_3"><![CDATA[<b>Swipe up</b> to use the selfie camera to record videos.]]></string>
+    <string name="howto_4">Videos record in the background.\nUse the notification drawer to stop them at anytime.</string>
 </resources>

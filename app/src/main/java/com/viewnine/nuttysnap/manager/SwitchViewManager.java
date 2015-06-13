@@ -9,6 +9,7 @@ import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.activity.BackupActivity;
 import com.viewnine.nuttysnap.activity.HistoryActivity;
 import com.viewnine.nuttysnap.activity.InAppBrowserActivity;
+import com.viewnine.nuttysnap.activity.IntroduceActivity;
 import com.viewnine.nuttysnap.activity.LockScreenAppActivity;
 import com.viewnine.nuttysnap.activity.NotificationsActivity;
 import com.viewnine.nuttysnap.activity.PlayVideoActivity;
@@ -54,6 +55,13 @@ public class SwitchViewManager {
     public void gotoRecordSetupScreen(Context context){
         SafeAppIndexActivityManager.setCurrent(Constants.SETUP_ACTIVITY);
         Intent intent = new Intent(context, SetupActivity.class);
+        ((Activity)context).startActivity(intent);
+        ((Activity)context).finish();
+    }
+
+    public void gotoIntroduceScreen(Context context){
+        SafeAppIndexActivityManager.setCurrent(Constants.INTRODUCE_ACTIVITY);
+        Intent intent = new Intent(context, IntroduceActivity.class);
         ((Activity)context).startActivity(intent);
         ((Activity)context).finish();
     }

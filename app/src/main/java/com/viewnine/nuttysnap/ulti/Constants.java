@@ -69,6 +69,7 @@ public class Constants {
     public static final int BACKUP_ACTIVITY = 8;
     public static final int UNLOCK_PATTERN_ACTIIVTY = 9;
     public static final int BROWSER_SCREEN = 10;
+    public static final int INTRODUCE_ACTIVITY = 11;
 
     public static final int VIDEO_EXPIRED_DAY = 7;
     public static final String CONTACT_EMAIL = "gro4tech@gmail.com";
@@ -93,6 +94,7 @@ public class Constants {
             "SPH-L710", // Sprint
             "GT-I9300"  // International
     };
+
     public static List<String> s3ModelList = Arrays.asList(s3ModelNames);
 
     public static final String CAMERA_ID = "CAMERA_ID";
