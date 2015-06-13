@@ -18,8 +18,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
@@ -52,7 +50,7 @@ public class UploadService extends IntentService {
     /**
      * controls how often to poll for video processing status
      */
-    private static final int PROCESSING_POLL_INTERVAL_SEC = 60;
+    private static final int PROCESSING_POLL_INTERVAL_SEC = 20;
     /**
      * how long to wait before re-trying the upload
      */
@@ -144,7 +142,7 @@ public class UploadService extends IntentService {
         if (videoId != null) {
             Log.i(TAG, String.format("Uploaded video with ID: %s", videoId));
             Toast.makeText(getApplicationContext(), "Video is uploaded", Toast.LENGTH_SHORT).show();
-            tryShowSelectableNotification(videoId, youtube);
+//            tryShowSelectableNotification(videoId, youtube);
         } else {
             Log.e(TAG, String.format("Failed to upload %s", fileUri.toString()));
             Toast.makeText(getBaseContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
@@ -169,13 +167,6 @@ public class UploadService extends IntentService {
                     return;
                 }
             } else {
-
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), "Upload completed", Toast.LENGTH_LONG).show();
-                    }
-                });
                 ResumableUpload.showSelectableNotification(videoId, getApplicationContext());
                 return;
             }
@@ -246,6 +237,7 @@ public class UploadService extends IntentService {
             Log.d(TAG,"Video ID is " + videoId);
             cursor.close();
         }catch (Exception e){
+            Log.d(TAG, "Fail to upload video: " + e.toString());
             e.printStackTrace();
         }
 

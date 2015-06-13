@@ -23,6 +23,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore.Video.Thumbnails;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -201,6 +203,12 @@ public class ResumableUpload {
 
             videoId = returnedVideo.getId();
             Log.d(TAG, String.format("videoId = [%s]", videoId));
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context.getApplicationContext(), "Video uploaded", Toast.LENGTH_LONG).show();
+                }
+            });
         } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
             Log.e(TAG, "GooglePlayServicesAvailabilityIOException", availabilityException);
 //            Toast.makeText(context, "Upload failed", Toast.LENGTH_SHORT).show();
@@ -226,12 +234,20 @@ public class ResumableUpload {
         Log.d(TAG, String.format("Sent broadcast %s", Constants.REQUEST_AUTHORIZATION_INTENT));
     }
 
-    private static void notifyFailedUpload(Context context, String message, NotificationManager notifyManager,
+    private static void notifyFailedUpload(final Context context, String message, NotificationManager notifyManager,
                                            NotificationCompat.Builder builder) {
         builder.setContentTitle(context.getString(R.string.yt_upload_failed))
                 .setContentText(message);
         notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
         Log.e(ResumableUpload.class.getSimpleName(), message);
+
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context.getApplicationContext(), "Upload failed", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 

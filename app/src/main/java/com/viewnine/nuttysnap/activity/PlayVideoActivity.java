@@ -54,6 +54,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
+import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.manager.VideoManager;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.AlertHelper;
@@ -110,6 +111,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
     private UploadBroadcastReceiver broadcastReceiver;
 
     private PlusClient mPlusClient;
+    private Uri mFileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,11 +192,14 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
 
             try{
                 String videoLink = videoObject.getVideoUrl();
+
+                mFileUri = addVideoToMediaStore(new File(videoLink));
+
                 String fileName = videoLink.substring(videoLink.lastIndexOf("/"));
                 locationName = fileName.substring(fileName.indexOf("("));
                 locationName = locationName.substring(1, locationName.lastIndexOf(".") - 1);
 
-                addVideoToMediaStore(new File(videoLink));
+
             }catch (IndexOutOfBoundsException e){
                 e.printStackTrace();
             }
@@ -394,7 +399,8 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
                 }, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startShareYoutube();
+//                        startShareYoutube();
+                        promptUserCreateYoutubeChannalFirst();
                     }
                 });
 
@@ -470,6 +476,20 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
         }
 
 
+    }
+
+    private void promptUserCreateYoutubeChannalFirst(){
+        if(SharePreferenceManager.getInstance().isFirstViewPromptYoutubeChannel()){
+            SharePreferenceManager.getInstance().setFirstViewPromptYoutubeChannel(false);
+            AlertHelper.getInstance().showMessageAlert(this, getString(R.string.condition_to_upload_video_to_youtube), true, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startShareYoutube();
+                }
+            });
+        }else {
+            startShareYoutube();
+        }
     }
 
     private void startShareYoutube(){
@@ -632,7 +652,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
 
     public Uri addVideoToMediaStore(File videoFile) {
         ContentValues values = new ContentValues(3);
-        values.put(MediaStore.Video.Media.TITLE, "My video title");
+        values.put(MediaStore.Video.Media.TITLE, videoFile.toString());
         values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
         values.put(MediaStore.Video.Media.DATA, videoFile.getAbsolutePath());
         return getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);

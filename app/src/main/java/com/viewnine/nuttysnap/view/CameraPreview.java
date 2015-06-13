@@ -268,7 +268,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     }
                 }
 
-                addVideoToMediaContent(new File(videoObject.getVideoUrl()));
+//                Ulti.addVideoToMediaStore(getContext(), new File(videoObject.getVideoUrl()));
                 String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
                 final VideoObject videoObjectDB = new VideoObject();
                 videoObjectDB.setId(videoObject.getId());

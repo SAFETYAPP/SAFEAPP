@@ -10,6 +10,7 @@ import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.NoSuchElementException;
@@ -323,6 +324,7 @@ public class VideoManager {
                             boolean result = updateVideoDB(videoObject);
                             if(addWatermarkListener != null){
                                 if(result){
+                                    Ulti.addVideoToMediaStore(VideoManager.context, new File(videoObject.getVideoUrl()));
                                     addWatermarkListener.successful(videoObject);
                                 }else {
                                     addWatermarkListener.fail();

@@ -542,7 +542,7 @@ public class Ulti {
 
     public static Uri addVideoToMediaStore(Context context, File videoFile) {
         ContentValues values = new ContentValues(3);
-        values.put(MediaStore.Video.Media.TITLE, "My video title");
+        values.put(MediaStore.Video.Media.TITLE, videoFile.toString());
         values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
         values.put(MediaStore.Video.Media.DATA, videoFile.getAbsolutePath());
         return context.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);

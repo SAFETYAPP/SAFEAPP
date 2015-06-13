@@ -21,6 +21,7 @@ public class SharePreferenceManager {
     private static final String BACKGROUND_CAMERA_ID = "BACKGROUND_CAMERA_ID";
     private static final String ENABLE_LOCK_SCREEN = "ENABLE_LOCK_SCREEN";
     private static final String ENABLE_PATTERN = "ENABLE_PATTERN";
+    private static final String FIRST_TIME_PROMPT_YOUTUBE_CHANNEL = "FIRST_TIME_PROMPT_YOUTUBE_CHANNEL";
 
     private static SharePreferenceManager instance;
     private static SharedPreferences preferences;
@@ -129,4 +130,13 @@ public class SharePreferenceManager {
     }
 
 
+    public boolean isFirstViewPromptYoutubeChannel(){
+        return preferences.getBoolean(FIRST_TIME_PROMPT_YOUTUBE_CHANNEL, true);
+    }
+
+    public void setFirstViewPromptYoutubeChannel(boolean isFirstTimePromptYoutubeChannel){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(FIRST_TIME_PROMPT_YOUTUBE_CHANNEL, isFirstTimePromptYoutubeChannel);
+        editor.commit();
+    }
 }

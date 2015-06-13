@@ -72,4 +72,18 @@ public class AlertHelper {
 
         }
     }
+
+    public void showMessageAlert(Context context, String message,
+                                 DialogInterface.OnClickListener listener) {
+
+        if(context != null && !((Activity)context).isFinishing()){
+            final AlertDialog.Builder alertbox = new AlertDialog.Builder(context);
+            // alertbox.setTitle("Message");
+            alertbox.setMessage(message);
+            alertbox.setPositiveButton(R.string.OK, listener);
+
+            alertbox.show();
+
+        }
+    }
 }
