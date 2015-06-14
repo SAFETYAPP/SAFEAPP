@@ -72,14 +72,15 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         surfaceView.getHolder().addCallback(this);
     }
 
-    int startId;
+//    int startId;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        this.startId = startId;
+
         try{
             cameraId = intent.getIntExtra(Constants.CAMERA_ID, BACK_CAMERA_ID);
+//            this.startId = startId;
         }catch (Exception e){
             e.printStackTrace();
             //Hardcode here if can not get camera id from intent
@@ -147,7 +148,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
             videoObject = null;
             e.printStackTrace();
             Ulti.deleteFile(fileName, getBaseContext());
-            stopSelf(startId);
+//            stopSelf(startId);
             LogUtils.logE(TAG, "Surface created error: " + e.toString());
         }
 
@@ -219,7 +220,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         } catch (Exception e) {
             e.printStackTrace();
             Ulti.deleteFile(fileName, getBaseContext());
-            stopSelf(startId);
+//            stopSelf(startId);
         }
 
 

@@ -97,17 +97,22 @@ public class Ulti {
         // get the info from the currently running task
 
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        if(taskInfo.size() > 0){
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
 
-        // get the name of the package:
-        String packageName = componentInfo.getPackageName();
+            // get the name of the package:
+            String packageName = componentInfo.getPackageName();
 
-        LogUtils.logI(TAG , "Current packageName: " + packageName + ". Current Activity name: " + componentInfo.getShortClassName());
-        if(context.getApplicationContext().getPackageName().equalsIgnoreCase(packageName) && componentInfo.getShortClassName().contains(LockScreenAppActivity.class.getSimpleName())){
-            return true;
+            LogUtils.logI(TAG , "Current packageName: " + packageName + ". Current Activity name: " + componentInfo.getShortClassName());
+            if(context.getApplicationContext().getPackageName().equalsIgnoreCase(packageName) && componentInfo.getShortClassName().contains(LockScreenAppActivity.class.getSimpleName())){
+                return true;
+            }else {
+                return false;
+            }
         }else {
             return false;
         }
+
 
     }
 
