@@ -2,7 +2,6 @@ package com.viewnine.nuttysnap.activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,11 +9,11 @@ import android.widget.LinearLayout.LayoutParams;
 
 import com.viewnine.nuttysnap.Adapter.ViewPagerIntroduceAdapter;
 import com.viewnine.nuttysnap.R;
-import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.view.Intro1View;
 import com.viewnine.nuttysnap.view.Intro2View;
 import com.viewnine.nuttysnap.view.Intro3View;
 import com.viewnine.nuttysnap.view.Intro4View;
+import com.viewnine.nuttysnap.view.Intro5View;
 
 import java.util.ArrayList;
 
@@ -47,11 +46,13 @@ public class IntroduceActivity extends ParentActivity{
         Intro2View intro2View = new Intro2View(this);
         Intro3View intro3View = new Intro3View(this);
         Intro4View intro4View = new Intro4View(this);
+        Intro5View intro5View = new Intro5View(this);
         listWorkthoughtView = new ArrayList<ViewGroup>();
         listWorkthoughtView.add(intro1View);
         listWorkthoughtView.add(intro2View);
         listWorkthoughtView.add(intro3View);
         listWorkthoughtView.add(intro4View);
+        listWorkthoughtView.add(intro5View);
         viewPagerRegisterWorkthoughtAdapter = new ViewPagerIntroduceAdapter(this, listWorkthoughtView);
         bannerPager.setAdapter(viewPagerRegisterWorkthoughtAdapter);
         bannerPager.setOnPageChangeListener(bannerChangeListener);

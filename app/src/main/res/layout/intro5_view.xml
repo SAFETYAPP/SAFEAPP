@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/intro_text_size"
+        android:padding="10dp"
+        android:id="@+id/text_intro"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/White"
+        android:textStyle="bold"
+        android:text="@string/now_you_are_all_set"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/intro_text_size"
+        android:padding="10dp"
+        android:id="@+id/text_intro_2"
+        android:layout_below="@+id/text_intro"
+        android:gravity="center"
+
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/White"
+        android:text="@string/nuttysnap_is_ready_when_your_are"/>
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_below="@+id/text_intro_2"
+        android:background="@drawable/howto5"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:id="@+id/button_ok_i_got_it"
+        android:text="@string/ok_i_got_it"
+        android:textColor="@color/White"
+        android:textSize="@dimen/safeapp_text_size"
+       android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_blue"/>
+
+
+
+</RelativeLayout>

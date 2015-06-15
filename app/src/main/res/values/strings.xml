@@ -88,11 +88,14 @@
     <string name="see_the_newly_uploaded_video">See the newly uploaded video</string>
     <string name="error_format">[Error] %s</string>
     <string name="share_facebook">Facebook</string>
-    <string name="share_youtube">Youtube</string>
+    <string name="share_youtube">YouTube</string>
     <string name="share_option">Share option</string>
-    <string name="condition_to_upload_video_to_youtube">To upload video to youtube, make sure your youtube account has channel already.</string>
+    <string name="condition_to_upload_video_to_youtube">In order to upload videos to YouTube, please make sure you\'ve already created a channel on your YouTube account.</string>
     <string name="howto_1">NuttySnap lets you record videos discretely from your lock screen.</string>
-    <string name="howto_2"><![CDATA[<b>Swipe left</b> on the lock screen to record videos with the back camera.]]></string>
-    <string name="howto_3"><![CDATA[<b>Swipe up</b> to use the selfie camera to record videos.]]></string>
-    <string name="howto_4">Videos record in the background.\nUse the notification drawer to stop them at anytime.</string>
+    <string name="howto_2"><![CDATA[<b>Swipe left</b> on the lock screen to record videos with the back camera and <b>swipe up</b> to use the front.]]></string>
+    <string name="howto_4"><![CDATA[Use NuttySnap from the lock screen or as a standalone camera. Take control with your options under the <b>Settings</b>.]]></string>
+    <string name="howto_3">Videos record in the background.\nUse the notification drawer to stop them at anytime.</string>
+    <string name="now_you_are_all_set">Now you\'re all set!</string>
+    <string name="nuttysnap_is_ready_when_your_are">NuttySnap is ready when your are. Use it for all of the crazy times or important and crucial moments. Every second counts, so use them wisely.</string>
+    <string name="ok_i_got_it">Ok, I got it.</string>
 </resources>

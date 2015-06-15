@@ -44,4 +44,6 @@
     <dimen name="delete_height_size">24dp</dimen>
     <dimen name="intro_text_size">20sp</dimen>
 
+    <dimen name="hight_introduct2">450dp</dimen>
+
 </resources>

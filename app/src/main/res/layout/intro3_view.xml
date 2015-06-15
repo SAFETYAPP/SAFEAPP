@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
 
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_width="fill_parent"
-            android:layout_height="480dp"
-            android:background="@drawable/howto3"/>
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:layout_width="300dp"
+        android:layout_height="384dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/howto3"/>
 
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:textSize="@dimen/intro_text_size"
+        android:padding="5dp"
         android:id="@+id/text_intro"
         android:gravity="center"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="10dp"
         android:textColor="@color/White"
-        android:text="@string/howto_1"/>
+        android:text="@string/howto_3"/>
 
-    <ImageView
-        android:id="@+id/close"
-        android:layout_margin="15dp"
-        android:layout_alignParentRight="true"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/close_icon"/>
+
 </RelativeLayout>
