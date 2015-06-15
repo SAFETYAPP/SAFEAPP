@@ -5,8 +5,8 @@ package com.viewnine.nuttysnap.database;
  */
 public class DbDefines {
 
-    public static final String DB_NAME = "SafeApp.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final String DB_NAME = "NuttySnap.db";
+    public static final int DATABASE_VERSION = 1;
 
     // Table Names
     public static final String TABLE_VIDEOS = "VIDEOS";

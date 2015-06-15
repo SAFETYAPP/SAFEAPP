@@ -3,7 +3,7 @@ package com.viewnine.nuttysnap.manager;
 import android.content.Context;
 import android.util.Log;
 
-import com.viewnine.nuttysnap.database.VideoDBAdapter;
+import com.viewnine.nuttysnap.database.VideoDBHelper;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.BaseAsyncTaskV2;
 import com.viewnine.nuttysnap.ulti.Constants;
@@ -13,6 +13,7 @@ import com.viewnine.nuttysnap.ulti.Ulti;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -138,12 +139,12 @@ public class VideoManager {
     }
 
     public boolean insertVideoIntoDB(VideoObject videoObject){
-        VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
+        VideoDBHelper videoDBAdapter = new VideoDBHelper();
         return videoDBAdapter.insertVideo(videoObject);
     }
 
     public boolean updateVideoDB(VideoObject videoObject){
-        VideoDBAdapter videoAdapter = new VideoDBAdapter(context);
+        VideoDBHelper videoAdapter = new VideoDBHelper();
         return videoAdapter.updateVideo(videoObject);
     }
 
@@ -169,8 +170,8 @@ public class VideoManager {
         protected Integer doInBackground(Void... params) {
 
 
-            VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
-            boolean isDelete = videoDBAdapter.deleteVideoById(videoObject.getId());
+            VideoDBHelper videoDBAdapter = new VideoDBHelper();
+            boolean isDelete = videoDBAdapter.deleteVideoById(videoObject.getVideoId());
             if(isDelete){
                 Ulti.deleteFile(videoObject.getImageLink(), context); //Delete Video
                 Ulti.deleteFile(videoObject.getVideoUrl(), context); //Delete Image
@@ -241,8 +242,8 @@ public class VideoManager {
         }
     }
 
-    private int deleteListVideos(Context context, ArrayList<VideoObject> listVideoObject){
-        VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
+    private int deleteListVideos(Context context, List<VideoObject> listVideoObject){
+        VideoDBHelper videoDBAdapter = new VideoDBHelper();
         int numberVideoDeleted = videoDBAdapter.deleteListVideos(listVideoObject);
         if(numberVideoDeleted > 0){
 
@@ -271,8 +272,8 @@ public class VideoManager {
             Calendar calendar = Calendar.getInstance();
             int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
             calendar.set(Calendar.DAY_OF_MONTH, currentDay - Constants.VIDEO_EXPIRED_DAY);
-            VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context.getApplicationContext());
-            ArrayList<VideoObject> listVideos = videoDBAdapter.getListVideosBaseOnTime(calendar.getTimeInMillis());
+            VideoDBHelper videoDBAdapter = new VideoDBHelper();
+            List<VideoObject> listVideos = videoDBAdapter.getListVideosBaseOnTime(calendar.getTimeInMillis());
             deleteListVideos(context.getApplicationContext(), listVideos);
         }
     }

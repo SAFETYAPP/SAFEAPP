@@ -49,6 +49,7 @@ android {
 repositories {
     mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {
@@ -73,4 +74,5 @@ dependencies {
     compile files('libs/YouTubeAndroidPlayerApi.jar')
 
     compile 'com.android.support:multidex:1.0.0'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }

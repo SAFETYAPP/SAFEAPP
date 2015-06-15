@@ -97,7 +97,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         Ulti.createFolder(Constants.VIDEO_FOLDER);
         long time = Calendar.getInstance().getTimeInMillis();
         String physicalAddress = LocationVideoManger.getPhysicalAddress();
-        fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + physicalAddress + Constants.VIDEO_TYPE;
+        fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
         try {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
@@ -135,9 +135,10 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
 
             videoObject = new VideoObject();
-            videoObject.setId(Constants.PREFIX_VIDEO_ID + time);
+            videoObject.setVideoId(Constants.PREFIX_VIDEO_ID + time);
             videoObject.setVideoUrl(fileName);
             videoObject.setTime(time);
+            videoObject.setPhysicalAddress(physicalAddress);
             videoObject.setCameraMode(cameraId);
 
             initNotificaiton();
@@ -183,11 +184,12 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 //                    Ulti.addVideoToMediaStore(getBaseContext(), new File(videoObject.getVideoUrl()));
                     String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
                     final VideoObject videoObjectDB = new VideoObject();
-                    videoObjectDB.setId(videoObject.getId());
+                    videoObjectDB.setVideoId(videoObject.getVideoId());
                     videoObjectDB.setImageLink(imageLink);
                     videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
                     videoObjectDB.setTime(videoObject.getTime());
                     videoObjectDB.setCameraMode(videoObject.getCameraMode());
+                    videoObjectDB.setPhysicalAddress(videoObject.getPhysicalAddress());
                     videoObject = null;
                     VideoManager.getInstance(getBaseContext()).addVideoInQueueToInsertDB(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
                         @Override

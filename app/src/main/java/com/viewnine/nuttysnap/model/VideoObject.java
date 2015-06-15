@@ -3,17 +3,34 @@ package com.viewnine.nuttysnap.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 /**
  * Created by user on 4/21/15.
  */
-public class VideoObject implements  Parcelable{
+@Table(name = "VIDEOS")
+public class VideoObject extends Model implements  Parcelable{
 
-    String id;
+    @Column(name = "videoId")
+    String videoId;
+    @Column(name = "videoUrl")
     String videoUrl;
+    @Column(name = "imageLink")
     String imageLink;
+    @Column(name = "time")
     long time;
+
+    @Column(name = "physicalAddress")
+    String physicalAddress;
+
     boolean isSelected;
+
+    @Column(name = "isAddedWatermark")
     int isAddedWatermark;
+
+    @Column(name = "cameraMode")
     int cameraMode;
 
     public boolean isSelected() {
@@ -32,12 +49,12 @@ public class VideoObject implements  Parcelable{
         return imageLink;
     }
 
-    public String getId() {
-        return id;
+    public String getVideoId() {
+        return videoId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setVideoId(String id) {
+        this.videoId = id;
     }
 
     public void setVideoUrl(String videoUrl) {
@@ -64,6 +81,14 @@ public class VideoObject implements  Parcelable{
         this.isAddedWatermark = isAddedWatermark;
     }
 
+    public String getPhysicalAddress() {
+        return physicalAddress;
+    }
+
+    public void setPhysicalAddress(String physicalAddress) {
+        this.physicalAddress = physicalAddress;
+    }
+
     public int getCameraMode() {
         return cameraMode;
     }
@@ -76,12 +101,13 @@ public class VideoObject implements  Parcelable{
         @Override
         public VideoObject createFromParcel(Parcel source) {
             VideoObject videoObject = new VideoObject();
-            videoObject.id = source.readString();
+            videoObject.videoId = source.readString();
             videoObject.videoUrl = source.readString();
             videoObject.imageLink = source.readString();
             videoObject.time = source.readLong();
             videoObject.isAddedWatermark = source.readInt();
             videoObject.cameraMode = source.readInt();
+            videoObject.physicalAddress = source.readString();
 
 //            source.readTypedList(user.Tags, Tag.CREATOR);
 //            source.readTypedList(user.listMajor, MajorObject.CREATOR);
@@ -102,12 +128,13 @@ public class VideoObject implements  Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(id);
+        parcel.writeString(videoId);
         parcel.writeString(videoUrl);
         parcel.writeString(imageLink);
         parcel.writeLong(time);
         parcel.writeInt(isAddedWatermark);
         parcel.writeInt(cameraMode);
+        parcel.writeString(physicalAddress);
 //        parcel.writeTypedList(Tags);
 //        parcel.writeTypedList(listMajor);
     }

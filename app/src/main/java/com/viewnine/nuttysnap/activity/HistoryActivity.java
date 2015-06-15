@@ -33,6 +33,7 @@ import com.viewnine.nuttysnap.ulti.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -157,7 +158,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
 
         HistoryManager.getInstance().getListVideos(this, time, isShowLoadingPopup, new HistoryManager.IGetVideoListener() {
             @Override
-            public void listVideos(ArrayList<VideoObject> listVideo, int totalVideos) {
+            public void listVideos(List<VideoObject> listVideo, int totalVideos) {
 
                 handleDataAfterGetListVideo(listVideo, totalVideos);
             }
@@ -169,7 +170,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
         });
     }
 
-    private void handleDataAfterGetListVideo(ArrayList<VideoObject> listVideosTmp, int totalVideos){
+    private void handleDataAfterGetListVideo(List<VideoObject> listVideosTmp, int totalVideos){
         if (listVideosTmp != null && listVideosTmp.size() > 0) {
             if(videoAdapter.isEmpty()){
                 listVideos.clear();
@@ -202,7 +203,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
             @Override
             public void successful(final VideoObject videoObject) {
 
-                LogUtils.logI(TAG, "Video is added watermark: " + videoObject.getId());
+                LogUtils.logI(TAG, "Video is added watermark: " + videoObject.getVideoId());
                 //Send email
                 EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObject.getVideoUrl());
 
@@ -210,10 +211,10 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
                     @Override
                     public void run() {
                         for(VideoObject videoObjectTmp : listVideos){
-                            if(videoObjectTmp.getId().equalsIgnoreCase(videoObject.getId())){
+                            if(videoObjectTmp.getVideoId().equalsIgnoreCase(videoObject.getVideoId())){
                                 videoObjectTmp.setIsAddedWatermark(videoObject.isAddedWatermark());
                                 videoObjectTmp.setVideoUrl(videoObject.getVideoUrl());
-                                LogUtils.logI(TAG, "Refresh listview: " + videoObject.getId());
+                                LogUtils.logI(TAG, "Refresh listview: " + videoObject.getVideoId());
                                 break;
                             }
                         }
@@ -454,7 +455,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
             VideoObject videoObjectDeleted = listVideosDeleted.get(i);
             for (int j = 0; j < listVideos.size(); j++) {
                 VideoObject videoObject = listVideos.get(j);
-                if(videoObject.getId().equalsIgnoreCase(videoObjectDeleted.getId())){
+                if(videoObject.getVideoId().equalsIgnoreCase(videoObjectDeleted.getVideoId())){
                     listVideos.remove(j);
                     totalVideos --;
                     addVideoNumber(totalVideos, isInDeletetMode);

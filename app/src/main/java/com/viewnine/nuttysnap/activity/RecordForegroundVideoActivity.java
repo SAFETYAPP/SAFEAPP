@@ -91,7 +91,7 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
     private void setupViews() {
         addChidlView(R.layout.record_foreground_video_view);
 
-//        VideoDBAdapter videoDBAdapter = new VideoDBAdapter(this);
+//        VideoDBHelper videoDBAdapter = new VideoDBHelper(this);
 //        List<VideoObject> listVideos = videoDBAdapter.getAllVideos();
 
         showHideHeader(false);

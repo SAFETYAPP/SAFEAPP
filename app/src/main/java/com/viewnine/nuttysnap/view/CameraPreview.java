@@ -162,7 +162,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Ulti.createFolder(Constants.VIDEO_FOLDER);
             long time = Calendar.getInstance().getTimeInMillis();
             String physicalAddress = LocationVideoManger.getPhysicalAddress();
-            fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + physicalAddress + Constants.VIDEO_TYPE;
+            fileName = Constants.VIDEO_FOLDER + Constants.PREFIX_VIDEO_NAME + time + Constants.VIDEO_TYPE;
 
             mediaRecorder = new MediaRecorder();
 
@@ -225,9 +225,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
 
             videoObject = new VideoObject();
-            videoObject.setId(Constants.PREFIX_VIDEO_ID + time);
+            videoObject.setVideoId(Constants.PREFIX_VIDEO_ID + time);
             videoObject.setVideoUrl(fileName);
             videoObject.setTime(time);
+            videoObject.setPhysicalAddress(physicalAddress);
             videoObject.setCameraMode(mCameraId);
 
 
@@ -271,11 +272,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 //                Ulti.addVideoToMediaStore(getContext(), new File(videoObject.getVideoUrl()));
                 String imageLink = Ulti.extractImageFromVideo(videoObject.getVideoUrl());
                 final VideoObject videoObjectDB = new VideoObject();
-                videoObjectDB.setId(videoObject.getId());
+                videoObjectDB.setVideoId(videoObject.getVideoId());
                 videoObjectDB.setImageLink(imageLink);
                 videoObjectDB.setVideoUrl(videoObject.getVideoUrl());
                 videoObjectDB.setTime(videoObject.getTime());
                 videoObjectDB.setCameraMode(videoObject.getCameraMode());
+                videoObjectDB.setPhysicalAddress(videoObject.getPhysicalAddress());
                 videoObject = null;
                 VideoManager.getInstance(mActivity).addVideoInQueueToInsertDB(videoObjectDB, true, new VideoManager.ISavingVideoListener() {
                     @Override

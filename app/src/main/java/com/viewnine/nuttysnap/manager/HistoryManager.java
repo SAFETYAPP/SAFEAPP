@@ -2,12 +2,12 @@ package com.viewnine.nuttysnap.manager;
 
 import android.content.Context;
 
-import com.viewnine.nuttysnap.database.VideoDBAdapter;
+import com.viewnine.nuttysnap.database.VideoDBHelper;
 import com.viewnine.nuttysnap.model.VideoObject;
 import com.viewnine.nuttysnap.ulti.BaseAsyncTaskV2;
 import com.viewnine.nuttysnap.ulti.Constants;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by user on 4/24/15.
@@ -23,7 +23,7 @@ public class HistoryManager {
     }
 
     public interface IGetVideoListener{
-        public void listVideos(ArrayList<VideoObject> listVideo, int totalVideos);
+        public void listVideos(List<VideoObject> listVideo, int totalVideos);
         public void error(int errorCode);
     }
 
@@ -35,7 +35,7 @@ public class HistoryManager {
         Context context;
         long latestVideoTime;
         IGetVideoListener iGetVideoListener;
-        ArrayList<VideoObject> listVideos;
+        List<VideoObject> listVideos;
         int totalVideo;
         public GetVideoAsync(Context context, long latestVideoTime, boolean isShowLoadingPopup, IGetVideoListener iGetVideoListener){
             super(context);
@@ -52,7 +52,7 @@ public class HistoryManager {
         @Override
         protected Integer doInBackground(Void... params) {
 
-            VideoDBAdapter videoDBAdapter = new VideoDBAdapter(context);
+            VideoDBHelper videoDBAdapter = new VideoDBHelper();
             listVideos = videoDBAdapter.getListVideosBaseOnTime(latestVideoTime);
             totalVideo = videoDBAdapter.getTotalVideos();
             if(listVideos != null){

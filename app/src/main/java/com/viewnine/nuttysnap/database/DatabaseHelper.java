@@ -51,9 +51,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        if(newVersion == 2){
-            db.execSQL("ALTER TABLE " + DbDefines.TABLE_VIDEOS + " ADD COLUMN " + DbDefines.IsAddedWatermark + " INTEGER DEFAULT 0");
-            db.execSQL("ALTER TABLE " + DbDefines.TABLE_VIDEOS + " ADD COLUMN " + DbDefines.CameraMode + " INTEGER DEFAULT 0");
-        }
+//        if(newVersion == 2){
+//            db.execSQL("ALTER TABLE " + DbDefines.TABLE_VIDEOS + " ADD COLUMN " + DbDefines.IsAddedWatermark + " INTEGER DEFAULT 0");
+//            db.execSQL("ALTER TABLE " + DbDefines.TABLE_VIDEOS + " ADD COLUMN " + DbDefines.CameraMode + " INTEGER DEFAULT 0");
+//        }
     }
 }

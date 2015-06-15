@@ -195,9 +195,10 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
 
                 mFileUri = addVideoToMediaStore(new File(videoLink));
 
-                String fileName = videoLink.substring(videoLink.lastIndexOf("/"));
-                locationName = fileName.substring(fileName.indexOf("("));
-                locationName = locationName.substring(1, locationName.lastIndexOf(".") - 1);
+                locationName = videoObject.getPhysicalAddress();
+//                String fileName = videoLink.substring(videoLink.lastIndexOf("/"));
+//                locationName = fileName.substring(fileName.indexOf("("));
+//                locationName = locationName.substring(1, locationName.lastIndexOf(".") - 1);
 
 
             }catch (IndexOutOfBoundsException e){
