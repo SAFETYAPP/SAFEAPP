@@ -3,7 +3,7 @@
      android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/text_intro">
@@ -13,17 +13,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/howto1"/>
-    </RelativeLayout>
+    </RelativeLayout>-->
+    <ImageView
+        android:layout_marginTop="40dp"
+        android:layout_width="@dimen/width_intro1"
+        android:layout_height="@dimen/height_intro1"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageview"
+        android:background="@drawable/howto1"/>
 
 
-    <TextView
+
+    <ImageView
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:src="@drawable/howto_1_text"
+        android:layout_below="@+id/imageview"/>
+    <TextView
+        android:layout_below="@+id/imageview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:textSize="@dimen/intro_text_size"
+        android:visibility="gone"
         android:id="@+id/text_intro"
         android:gravity="center"
-        android:layout_marginBottom="10dp"
+        android:padding="@dimen/introduction_text_padding"
         android:textColor="@color/White"
         android:text="@string/howto_1"/>
 

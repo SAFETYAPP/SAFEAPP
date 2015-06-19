@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="hight_introduct2">380dp</dimen>
+    <dimen name="hight_introduct2">350dp</dimen>
+    <dimen name="width_introduct2">251dp</dimen>
+    <dimen name="height_intro_4">330dp</dimen>
+    <dimen name="width_intro_4">240dp</dimen>
+    <dimen name="size_of_happy_face">120dp</dimen>
+    <dimen name="width_intro1">174dp</dimen>
+    <dimen name="height_intro1">350dp</dimen>
 
 </resources>

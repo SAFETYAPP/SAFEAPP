@@ -45,5 +45,6 @@
     <dimen name="intro_text_size">20sp</dimen>
 
     <dimen name="hight_introduct2">450dp</dimen>
+    <dimen name="introduction_text_padding">20dp</dimen>
 
 </resources>
