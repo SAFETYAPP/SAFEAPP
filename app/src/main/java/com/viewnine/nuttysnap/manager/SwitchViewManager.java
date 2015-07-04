@@ -82,6 +82,7 @@ public class SwitchViewManager {
     }
 
     public void gotoVideoScreen(Context context, VideoObject videoObject){
+        SafeAppIndexActivityManager.setCurrent(Constants.VIDEO_ACTIVITY);
         Intent intent = new Intent(context, PlayVideoActivity.class);
 //        intent.putExtra(Constants.VIDEO_LINK, videoUrl);
         intent.putExtra(Constants.VIDEO_LINK, videoObject);

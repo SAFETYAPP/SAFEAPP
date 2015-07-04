@@ -46,11 +46,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.plus.PlusClient;
-import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
@@ -63,7 +59,6 @@ import com.viewnine.nuttysnap.ulti.DialogUlti;
 import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.youtube.Auth;
 import com.viewnine.nuttysnap.youtube.UploadService;
-import com.viewnine.nuttysnap.youtube.ulti.VideoData;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,7 +67,7 @@ import java.util.Arrays;
 /**
  * Created by user on 4/25/15.
  */
-public class PlayVideoActivity extends Activity implements View.OnClickListener, GooglePlayServicesClient.ConnectionCallbacks,
+public class PlayVideoActivity extends ParentActivity implements View.OnClickListener, GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener{
     private static final String TAG = PlayVideoActivity.class.getName();
     VideoView myVideoView;
@@ -99,19 +94,11 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
     private static final int REQUEST_GMS_ERROR_DIALOG = 1;
     private static final int REQUEST_ACCOUNT_PICKER = 2;
     private static final int REQUEST_AUTHORIZATION = 3;
-    private static final int RESULT_PICK_IMAGE_CROP = 4;
-    private static final int RESULT_VIDEO_CAP = 5;
-    private static final int REQUEST_DIRECT_TAG = 6;
-    final HttpTransport transport = AndroidHttp.newCompatibleTransport();
-    final JsonFactory jsonFactory = new GsonFactory();
     GoogleAccountCredential credential;
     private String mChosenAccountName;
-    private Uri mFileURI = null;
-    private VideoData mVideoData;
     private UploadBroadcastReceiver broadcastReceiver;
 
     private PlusClient mPlusClient;
-    private Uri mFileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,16 +178,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
             videoObject = bundle.getParcelable(Constants.VIDEO_LINK);
 
             try{
-                String videoLink = videoObject.getVideoUrl();
-
-                mFileUri = addVideoToMediaStore(new File(videoLink));
-
                 locationName = videoObject.getPhysicalAddress();
-//                String fileName = videoLink.substring(videoLink.lastIndexOf("/"));
-//                locationName = fileName.substring(fileName.indexOf("("));
-//                locationName = locationName.substring(1, locationName.lastIndexOf(".") - 1);
-
-
             }catch (IndexOutOfBoundsException e){
                 e.printStackTrace();
             }
@@ -250,13 +228,14 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
             Uri uri=Uri.parse(videoObject.getVideoUrl());
             myVideoView.setVideoURI(uri);
 
+
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
         }
 
 
-        myVideoView.requestFocus();
+//        myVideoView.requestFocus();
         //we also set an setOnPreparedListener in order to know when the video file is ready for playback
         myVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
@@ -269,6 +248,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
                     //if we come from a resumed activity, video playback will be paused
                     myVideoView.pause();
                 }
+//                myVideoView.start();
             }
         });
     }
@@ -277,27 +257,39 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         //we use onSaveInstanceState in order to store the video playback position for orientation change
-        savedInstanceState.putInt("Position", myVideoView.getCurrentPosition());
-        myVideoView.pause();
+//        savedInstanceState.putInt("Position", myVideoView.getCurrentPosition());
+//        myVideoView.pause();
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         //we use onRestoreInstanceState in order to play the video playback from the stored position
-        position = savedInstanceState.getInt("Position");
-        myVideoView.seekTo(position);
+//        position = savedInstanceState.getInt("Position");
+//        myVideoView.seekTo(position);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+//        if(myVideoView != null){
+//            myVideoView.setVideoPath(videoObject.getVideoUrl());
+//        }
         if (broadcastReceiver == null)
             broadcastReceiver = new UploadBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(
                 Constants.REQUEST_AUTHORIZATION_INTENT);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(myVideoView != null){
+            position = myVideoView.getCurrentPosition();
+            myVideoView.pause();
+        }
     }
 
     @Override
@@ -346,14 +338,6 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
 
     private void handleClickOnDeleteButton() {
 
-//        DialogUlti.getInstance().showDeleteVideoConfirmationDialog(this, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                deleteVideo();
-//            }
-//        });
-
         AlertHelper.getInstance().showMessageAlert(this, getString(R.string.delete_confirmation), true, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -361,7 +345,6 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
             }
         });
 
-//        EmailManager.getInstance().sendMail(Constants.MAIL_SUBJECT, Constants.MAIL_CONTENT, videoObject.getVideoUrl());
     }
 
 
@@ -388,8 +371,7 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
     }
 
     private void handleClickOnShareButton() {
-//        startShareFacebook();
-//        startShareYoutube();
+
 
         DialogUlti.getInstance().showShareOption(this,
                 new View.OnClickListener() {
@@ -400,7 +382,6 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
                 }, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        startShareYoutube();
                         promptUserCreateYoutubeChannalFirst();
                     }
                 });
@@ -415,7 +396,6 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        simpleFacebook.onActivityResult(this, requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
@@ -623,7 +603,6 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
         mChosenAccountName = mPlusClient.getAccountName();
         LogUtils.logI(TAG, "Connected youtube account: " + mPlusClient.getAccountName());
         uploadVideo();
-//        mUploadsListFragment.updateInforAfterConnectedYoutube(mPlusClient);
     }
 
     @Override
@@ -634,10 +613,6 @@ public class PlayVideoActivity extends Activity implements View.OnClickListener,
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
-//            Toast.makeText(this,
-//                    R.string.connection_to_google_play_failed, Toast.LENGTH_SHORT)
-//                    .show();
-
             Log.e(TAG,
                     String.format(
                             "Connection to Play Services Failed, error: %d, reason: %s",

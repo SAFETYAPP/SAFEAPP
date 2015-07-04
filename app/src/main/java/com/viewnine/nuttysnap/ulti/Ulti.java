@@ -203,6 +203,20 @@ public class Ulti {
         return false;
     }
 
+    public static void deleteFilesInFolder(String folderPath){
+        File folder = new File(folderPath);
+        try {
+            File[] files = folder.listFiles();
+            for (File file : files){
+                file.delete();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
     public static boolean deleteFile(String filePath, Context context){
         File file = new File(filePath);
         if(file.exists()){
@@ -529,7 +543,14 @@ public class Ulti {
 
         LoadJNI vk = new LoadJNI();
         try {
-            String workFolder = context.getApplicationContext().getFilesDir().getAbsolutePath();
+            String workFolder = context.getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + ".ffmpeg";
+            File folder = new File(workFolder);
+            if(!folder.exists()){
+                folder.mkdirs();
+            }
+
+            deleteFilesInFolder(folder.toString());
+
             String[] complexCommand = {"ffmpeg","-i", "/sdcard/videokit/in.mp4"};
 //            vk.run(GeneralUtils.utilConvertToComplex(test2), workFolder, context);
             vk.run(commandStr, workFolder, context);

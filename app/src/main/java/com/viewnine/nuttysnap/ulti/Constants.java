@@ -70,6 +70,7 @@ public class Constants {
     public static final int UNLOCK_PATTERN_ACTIIVTY = 9;
     public static final int BROWSER_SCREEN = 10;
     public static final int INTRODUCE_ACTIVITY = 11;
+    public static final int VIDEO_ACTIVITY = 12;
 
     public static final int VIDEO_EXPIRED_DAY = 7;
     public static final String CONTACT_EMAIL = "gro4tech@gmail.com";
