@@ -68,6 +68,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
     private SafeAppApplication safeAppApplication;
     private int totalVideos = 0;
     private boolean isInDeletetMode = false;
+    private boolean isVideoReceiverRegistered;
 
 
     public boolean getInDeleteModeStatus(){
@@ -137,6 +138,7 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
     }
 
     private void registerVideoReceiver(){
+        isVideoReceiverRegistered = true;
         saveVideoReceiver = new SaveVideoReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.ACTION_BROADCAST_RECIVER_VIDEO);
@@ -144,7 +146,11 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
     }
 
     private void unregisterVideoReceiver(){
-        unregisterReceiver(saveVideoReceiver);
+        if(saveVideoReceiver != null && isVideoReceiverRegistered){
+            unregisterReceiver(saveVideoReceiver);
+            isVideoReceiverRegistered = false;
+        }
+
     }
 
     private void initData(){
@@ -419,8 +425,14 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause() {
         unregisterVideoReceiver();
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+
         super.onStop();
     }
 
