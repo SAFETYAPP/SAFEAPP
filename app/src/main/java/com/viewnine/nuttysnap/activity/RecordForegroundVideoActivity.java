@@ -3,12 +3,15 @@ package com.viewnine.nuttysnap.activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;
 import com.viewnine.nuttysnap.ulti.AlertHelper;
@@ -16,7 +19,6 @@ import com.viewnine.nuttysnap.ulti.Constants;
 import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
 import com.viewnine.nuttysnap.view.CameraPreview;
-import com.viewnine.nuttysnap.R;
 
 import java.util.TimerTask;
 
@@ -42,6 +44,9 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
 
     CountDownTimer countTime;
     int second = -1;
+
+    int currentZoomLevel;
+    float beginZoom = 0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,9 +132,6 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
             @Override
             public void onFinish() {            }
         };
-
-
-
     }
 
     private void getWidthHeightScreen(){
@@ -152,6 +154,43 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
         rlCameraTakePicture.removeAllViews();
         rlCameraTakePicture.addView(mPreviewTakePicture, 0, previewLayoutParams);
         mPreviewTakePicture.surfaceChanged(null, 0, sizeOfScreen[0], sizeOfScreen[1]);
+
+        final ScaleGestureDetector scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.OnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                float mScaleFactor = detector.getCurrentSpan();
+                if(beginZoom < mScaleFactor && currentZoomLevel < mPreviewTakePicture.getMaxZoomLevel()){
+                    currentZoomLevel += 2;
+                    beginZoom = mScaleFactor;
+                    LogUtils.logD(TAG, "Zoom In " + currentZoomLevel);
+                    mPreviewTakePicture.zoomLevel(currentZoomLevel);
+                }else if (beginZoom > mScaleFactor && currentZoomLevel > 0) {
+                    currentZoomLevel -= 2;
+                    beginZoom = mScaleFactor;
+                    LogUtils.logD(TAG, "Zoom Out " + currentZoomLevel);
+                    mPreviewTakePicture.zoomLevel(currentZoomLevel);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector detector) {
+                return true;
+            }
+
+            @Override
+            public void onScaleEnd(ScaleGestureDetector detector) {
+
+            }
+        });
+
+        mPreviewTakePicture.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                scaleGestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
     }
 
     private void handleFlashButtonUI(){
@@ -344,4 +383,7 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
         recording = false;
 
     }
+
+
+
 }

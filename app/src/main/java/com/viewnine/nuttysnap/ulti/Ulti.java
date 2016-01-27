@@ -473,6 +473,7 @@ public class Ulti {
         try {
             mediaRecorder.setProfile(CamcorderProfile.get(Constants.CAMERA_QUALITY));
         }catch (Exception e){
+            LogUtils.logE(TAG, "Set camera profile exception: " + e.toString());
             e.printStackTrace();
         }
 
@@ -493,7 +494,7 @@ public class Ulti {
 
         if(sizeOfCamera != null){
             LogUtils.logI(TAG, "Cam width: " + sizeOfCamera.width + ".Cam height: " + sizeOfCamera.height);
-            mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);
+//            mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);
         }
 
     }

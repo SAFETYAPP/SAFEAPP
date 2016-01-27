@@ -20,7 +20,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.util.FloatMath;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -151,8 +150,8 @@ public class PointCloud {
             float eta = PI/2.0f;
             float dEta = 2.0f * PI / pointsInBand;
             for (int i = 0; i < pointsInBand; i++) {
-                float x = r * FloatMath.cos(eta);
-                float y = r * FloatMath.sin(eta);
+                float x = r * (float)Math.cos(eta);
+                float y = r * (float)Math.sin(eta);
                 eta += dEta;
                 mPointCloud.add(new Point(x, y, r));
             }
@@ -168,7 +167,7 @@ public class PointCloud {
     }
 
     private static float hypot(float x, float y) {
-        return FloatMath.sqrt(x*x + y*y);
+        return (float)Math.sqrt(x*x + y*y);
     }
 
     private static float max(float a, float b) {
@@ -181,7 +180,7 @@ public class PointCloud {
         float glowAlpha = 0.0f;
 
         if (glowDistance < glowManager.radius) {
-            float cosf = FloatMath.cos(PI * 0.25f * glowDistance / glowManager.radius);
+            float cosf = (float)Math.cos(PI * 0.25f * glowDistance / glowManager.radius);
             glowAlpha = glowManager.alpha * max(0.0f, (float) Math.pow(cosf, 10.0f));
         }
 
@@ -190,7 +189,7 @@ public class PointCloud {
         float distanceToWaveRing = (radius - waveManager.radius);
         float waveAlpha = 0.0f;
         if (distanceToWaveRing < waveManager.width * 0.5f && distanceToWaveRing < 0.0f) {
-            float cosf = FloatMath.cos(PI * 0.25f * distanceToWaveRing / waveManager.width);
+            float cosf = (float)Math.cos(PI * 0.25f * distanceToWaveRing / waveManager.width);
             waveAlpha = waveManager.alpha * max(0.0f, (float) Math.pow(cosf, 20.0f));
         }
 

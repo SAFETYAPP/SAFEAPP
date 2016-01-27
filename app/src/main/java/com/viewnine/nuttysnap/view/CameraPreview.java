@@ -166,56 +166,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
             mediaRecorder = new MediaRecorder();
 
-//            camera.unlock();
-//            try {
-////                Camera.CameraInfo info = new Camera.CameraInfo();
-////                info.canDisableShutterSound;
-//                camera.enableShutterSound(false);
-//
-//            }catch (Exception e){
-//                e.printStackTrace();
-//                LogUtils.logE(TAG, "Fail to enable shutter sound: " + e.toString());
-//            }
-//
-//            mediaRecorder.setCamera(camera);
-//
-//            mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
-//            mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-//            if(enableRecordAudio){
-//                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-//            }
-//
-//            int rotateVideo = Constants.POSITIVE_90_DEGREE;
-//            int videoBitRate = 0;
-//            if(mCameraId != DEFAULT_CAMERA){
-//                rotateVideo = Constants.DEGREE_270;
-//                videoBitRate = Constants.FRONT_CAMERA_BIT_RATE;
-//            }else{
-//                videoBitRate = Constants.BACK_CAMERA_BIT_RATE;
-//            }
-//            mediaRecorder.setOrientationHint(rotateVideo);
-//            mediaRecorder.setVideoEncodingBitRate(videoBitRate);
-//
-//            CamcorderProfile profile = CamcorderProfile.get(Constants.CAMERA_QUALITY);
-//            try {
-//                mediaRecorder.setProfile(profile);
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
-//            mediaRecorder.setMaxDuration(maxTime);
-//
-//            mediaRecorder.setOutputFile(fileName);
-//
-//
-//
-//            mediaRecorder.setVideoSize(sizeOfCamera.width, sizeOfCamera.height);
-//
-//            mediaRecorder.prepare();
-//            mediaRecorder.start();
-
             Ulti.initRecorder(mediaRecorder, surfaceHolder, camera, mCameraId, fileName, sizeOfCamera);
-
-//            mediaRecorder.setVideoSize();
 
             mediaRecorder.prepare();
             mediaRecorder.start();
@@ -713,7 +664,34 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             cameraParams.setFlashMode(flashModeStr);
         }
 
+        if(cameraParams.isZoomSupported()){
+            cameraParams.setZoom(0);
+        }
+
         camera.setParameters(cameraParams);
+    }
+
+
+    private static Integer indexOfClosestZoom(Camera.Parameters parameters, double targetZoomRatio) {
+        List<Integer> ratios = parameters.getZoomRatios();
+        Log.i(CameraPreview.class.getSimpleName(), "Zoom ratios: " + ratios);
+        int maxZoom = parameters.getMaxZoom();
+        if (ratios == null || ratios.isEmpty() || ratios.size() != maxZoom + 1) {
+            Log.w(CameraPreview.class.getSimpleName(), "Invalid zoom ratios!");
+            return null;
+        }
+        double target100 = 100.0 * targetZoomRatio;
+        double smallestDiff = Double.POSITIVE_INFINITY;
+        int closestIndex = 0;
+        for (int i = 0; i < ratios.size(); i++) {
+            double diff = Math.abs(ratios.get(i) - target100);
+            if (diff < smallestDiff) {
+                smallestDiff = diff;
+                closestIndex = i;
+            }
+        }
+        Log.i(CameraPreview.class.getSimpleName(), "Chose zoom ratio of " + (ratios.get(closestIndex) / 100.0));
+        return closestIndex;
     }
 
     Size sizeOfCamera = null;
@@ -921,4 +899,51 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private void getCurrentLocation(Context context){
         new LocationVideoManger(context);
     }
+
+
+    public void zoomIn()
+    {
+        Parameters params=camera.getParameters();
+        if(params.isZoomSupported()){
+            params.setZoom(params.getMaxZoom());
+            camera.setParameters(params);
+        }
+    }
+
+    public void unzoom()
+    {
+        Parameters params=camera.getParameters();
+        if(params.isZoomSupported()){
+            params.setZoom(0);
+            camera.setParameters(params);
+        }
+    }
+
+    public void zoomLevel(int zoomLevel)
+    {
+        try {
+            Parameters params=camera.getParameters();
+            params.setZoom(params.getMaxZoom());
+            if (params.isSmoothZoomSupported()){
+                camera.startSmoothZoom(zoomLevel);
+            }else {
+                params.setZoom(zoomLevel);
+                camera.setParameters(params);
+
+            }
+
+        }catch (RuntimeException e){
+            e.printStackTrace();
+        }
+    }
+
+    public int getMaxZoomLevel(){
+        if(camera.getParameters().isZoomSupported()){
+            return camera.getParameters().getMaxZoom();
+        }else {
+            return 0;
+        }
+    }
+
+
 }
