@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.viewnine.nuttysnap.Adapter.VideoAdapter;
+import com.viewnine.nuttysnap.Presenter.FeedPresenter;
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
 import com.viewnine.nuttysnap.manager.EmailManager;
@@ -134,6 +135,8 @@ public class HistoryActivity extends ParentActivity implements AbsListView.OnScr
         videoAdapter = new VideoAdapter(this);
         gridviewVideos.setAdapter(videoAdapter);
         listviewVideos.setAdapter(videoAdapter);
+
+        FeedPresenter.getInstance().getPostJson();
 
     }
 

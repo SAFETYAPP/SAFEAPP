@@ -119,4 +119,16 @@ public class Constants {
     public static final String WATERMARK_NAME_FRONT_CAMERA = "watermark2.png";
     public static final String WATERMARK_BACK_CAMERA = "/sdcard/" + WATERMARK_NAME_BACK_CAMERA;
     public static final String WATERMARK_FRONT_CAMERA = "/sdcard/" + WATERMARK_NAME_FRONT_CAMERA;
+
+    public static final String PARSE_FEED_NAME = "FeedName";
+    public static final String PARSE_FeedType = "feedType";
+    public static final String PARSE_Like_NUMBER = "likeNumber";
+    public static final String PARSE_IMAGE_FILE = "imageFile";
+    public static final String PARSE_VIDEO_FILE = "videoFile";
+    public static final String PARSE_THUMBNAIL = "thumbnail";
+    public static final String PARSE_OWNER_ID = "ownerId";
+
+    public static final String PARSE_GET_POST_JSON_FUNCTION = "getPosts_json";
+    public static final String PARSE_GET_POST_ARRAY_FUNCTION = "getPosts_array";
+
 }

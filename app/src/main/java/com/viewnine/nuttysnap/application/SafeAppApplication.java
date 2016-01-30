@@ -12,8 +12,12 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.parse.Parse;
+import com.parse.ParseObject;
+import com.viewnine.nuttysnap.BuildConfig;
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.manager.SafeAppIndexActivityManager;
+import com.viewnine.nuttysnap.model.PostObject;
 import com.viewnine.nuttysnap.model.SafeAppDataObject;
 import com.viewnine.nuttysnap.ulti.Constants;
 
@@ -35,12 +39,14 @@ public class SafeAppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-
+        initParse();
         mStackActivity = new Stack<Activity>();
         safeAppDataObject = new SafeAppDataObject();
         initImageLoader(getApplicationContext());
 
-        Fabric.with(this, new Crashlytics());
+        if(!BuildConfig.DEBUG){
+            Fabric.with(this, new Crashlytics());
+        }
 //        FacebookSdk.sdkInitialize(getApplicationContext());
 
         ActiveAndroid.initialize(this);
@@ -50,6 +56,12 @@ public class SafeAppApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    private void initParse(){
+//        Parse.initialize(this, BuildConfig.APPLICATION_ID, BuildConfig.PARSE_CLIENT_KEY);
+        ParseObject.registerSubclass(PostObject.class);
+        Parse.initialize(this);
     }
 
     public static Context getInstance(){

@@ -43,6 +43,13 @@
         <meta-data android:name="AA_DB_VERSION" android:value="1" />
 
         <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="KppRcfBWrkNp6cs3WNCIRSG2Ka6dcCczM3risIxX" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="vZ1NO2744KuvaIoyb43ULX6WbRSzHzdvr82uSwVV" />
+
+        <meta-data
             android:name="AA_MODELS"
             android:value="com.viewnine.nuttysnap.model.VideoObject" />
 

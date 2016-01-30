@@ -18,7 +18,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "21.1.2"
     defaultConfig {
-        applicationId "com.viewnine.nuttysnap"
+//        applicationId "com.viewnine.nuttysnap"
         minSdkVersion 17
         targetSdkVersion 21
         versionCode 4
@@ -33,17 +33,41 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-//    productFlavors{
-//        safeAppDev{
-//            applicationId "com.viewnine.safeapp.dev"
+    productFlavors{
+        safeAppDev{
+            applicationId "com.viewnine.nuttysnap.dev"
 //            resValue("string", "app_name", "Safe App Dev")
-//        }
-//
-//        safeAppRelease{
-//            applicationId "com.viewnine.safeapp.release"
+            buildConfigField("String", "PARSE_APP_ID", '"KppRcfBWrkNp6cs3WNCIRSG2Ka6dcCczM3risIxX"')
+            buildConfigField("String", "PARSE_CLIENT_KEY", '"vZ1NO2744KuvaIoyb43ULX6WbRSzHzdvr82uSwVV"')
+        }
+
+        safeAppRelease{
+            applicationId "com.viewnine.nuttysnap"
 //            resValue("string", "app_name", "Safe App Release")
-//        }
-//    }
+            buildConfigField("String", "PARSE_APP_ID", '"KppRcfBWrkNp6cs3WNCIRSG2Ka6dcCczM3risIxX"')
+            buildConfigField("String", "PARSE_CLIENT_KEY", '"vZ1NO2744KuvaIoyb43ULX6WbRSzHzdvr82uSwVV"')
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+
+    //Increase memory to prevent issue: java.lang.OutOfMemoryError: GC overhead limit exceeded
+    //jdk1.7.0_79.jdk/Contents/Home/bin/java'' finished with non-zero exit value 3
+    dexOptions {
+        incremental false
+        javaMaxHeapSize "4g"
+    }
 }
 
 repositories {
@@ -51,6 +75,8 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -75,4 +101,9 @@ dependencies {
 
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+
+//    compile 'com.parse.bolts:bolts-android:1.+'
+//    compile 'com.parse:parse-android:1.+'
+
+    compile 'com.parse:parse-android:1.10.3'
 }
