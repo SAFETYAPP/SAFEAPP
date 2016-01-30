@@ -18,11 +18,10 @@ android {
     compileSdkVersion 23
     buildToolsVersion "21.1.2"
     defaultConfig {
-        applicationId "com.viewnine.nuttysnap"
+//        applicationId "com.viewnine.nuttysnap.paid"
         minSdkVersion 17
         targetSdkVersion 21
-        versionCode 4
-        versionName "1.3"
+
 
         // Enabling multidex support.
         multiDexEnabled true
@@ -33,17 +32,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-//    productFlavors{
-//        safeAppDev{
-//            applicationId "com.viewnine.safeapp.dev"
+    productFlavors{
+        safeAppDev{
+            applicationId "com.viewnine.nuttysnap"
 //            resValue("string", "app_name", "Safe App Dev")
-//        }
-//
-//        safeAppRelease{
-//            applicationId "com.viewnine.safeapp.release"
+            versionCode 4
+            versionName "1.3"
+        }
+
+        safeAppPaid{
+            applicationId "com.viewnine.nuttysnap.paid"
 //            resValue("string", "app_name", "Safe App Release")
-//        }
-//    }
+            versionCode 1
+            versionName "1.0"
+        }
+    }
 }
 
 repositories {

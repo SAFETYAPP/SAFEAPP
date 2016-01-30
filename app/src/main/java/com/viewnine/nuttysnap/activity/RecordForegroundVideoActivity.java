@@ -155,42 +155,45 @@ public class RecordForegroundVideoActivity extends ParentActivity implements Cam
         rlCameraTakePicture.addView(mPreviewTakePicture, 0, previewLayoutParams);
         mPreviewTakePicture.surfaceChanged(null, 0, sizeOfScreen[0], sizeOfScreen[1]);
 
-        final ScaleGestureDetector scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.OnScaleGestureListener() {
-            @Override
-            public boolean onScale(ScaleGestureDetector detector) {
-                float mScaleFactor = detector.getCurrentSpan();
-                if(beginZoom < mScaleFactor && currentZoomLevel < mPreviewTakePicture.getMaxZoomLevel()){
-                    currentZoomLevel += 2;
-                    beginZoom = mScaleFactor;
-                    LogUtils.logD(TAG, "Zoom In " + currentZoomLevel);
-                    mPreviewTakePicture.zoomLevel(currentZoomLevel);
-                }else if (beginZoom > mScaleFactor && currentZoomLevel > 0) {
-                    currentZoomLevel -= 2;
-                    beginZoom = mScaleFactor;
-                    LogUtils.logD(TAG, "Zoom Out " + currentZoomLevel);
-                    mPreviewTakePicture.zoomLevel(currentZoomLevel);
+        if(Constants.ENABLE_ZOOM_FEATURE){
+            final ScaleGestureDetector scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.OnScaleGestureListener() {
+                @Override
+                public boolean onScale(ScaleGestureDetector detector) {
+                    float mScaleFactor = detector.getCurrentSpan();
+                    if(beginZoom < mScaleFactor && currentZoomLevel < mPreviewTakePicture.getMaxZoomLevel()){
+                        currentZoomLevel += 2;
+                        beginZoom = mScaleFactor;
+                        LogUtils.logD(TAG, "Zoom In " + currentZoomLevel);
+                        mPreviewTakePicture.zoomLevel(currentZoomLevel);
+                    }else if (beginZoom > mScaleFactor && currentZoomLevel > 0) {
+                        currentZoomLevel -= 2;
+                        beginZoom = mScaleFactor;
+                        LogUtils.logD(TAG, "Zoom Out " + currentZoomLevel);
+                        mPreviewTakePicture.zoomLevel(currentZoomLevel);
+                    }
+                    return true;
                 }
-                return true;
-            }
 
-            @Override
-            public boolean onScaleBegin(ScaleGestureDetector detector) {
-                return true;
-            }
+                @Override
+                public boolean onScaleBegin(ScaleGestureDetector detector) {
+                    return true;
+                }
 
-            @Override
-            public void onScaleEnd(ScaleGestureDetector detector) {
+                @Override
+                public void onScaleEnd(ScaleGestureDetector detector) {
 
-            }
-        });
+                }
+            });
 
-        mPreviewTakePicture.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                scaleGestureDetector.onTouchEvent(event);
-                return true;
-            }
-        });
+            mPreviewTakePicture.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    scaleGestureDetector.onTouchEvent(event);
+                    return true;
+                }
+            });
+        }
+
     }
 
     private void handleFlashButtonUI(){

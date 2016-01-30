@@ -169,7 +169,11 @@
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facbeook_app_id"/>
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider823989157654749"
+        <!--<provider android:authorities="com.facebook.app.FacebookContentProvider823989157654749"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />-->
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1619021364980291"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true" />
 
