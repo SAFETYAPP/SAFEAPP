@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.viewnine.nuttysnap.R;
 
+import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.application.SafeAppApplication;
 import com.viewnine.nuttysnap.manager.SharePreferenceManager;
 import com.viewnine.nuttysnap.manager.SwitchViewManager;
@@ -27,6 +27,8 @@ import com.viewnine.nuttysnap.ulti.LogUtils;
 import com.viewnine.nuttysnap.ulti.Ulti;
 
 import java.util.TimerTask;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by user on 4/19/15.
@@ -57,6 +59,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SafeAppApplication.pushToSStackActivity(this);
         checkToStartLockScreenService();
         getTimeToRecord();
@@ -129,6 +132,7 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
     private void setupParentViews() {
 
         setContentView(R.layout.parent_view);
+        ButterKnife.bind(this);
         rlHeader = (RelativeLayout) findViewById(R.id.relativelayout_header);
         lnVideoNumber = (LinearLayout) findViewById(R.id.linearlayout_video_title);
         txtTitle = (TextView) findViewById(R.id.textview_title);
@@ -362,5 +366,9 @@ public abstract class ParentActivity extends Activity implements View.OnClickLis
         super.onPause();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 }

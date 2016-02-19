@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.viewnine.nuttysnap.BuildConfig;
 import com.viewnine.nuttysnap.R;
 import com.viewnine.nuttysnap.manager.SafeAppIndexActivityManager;
 import com.viewnine.nuttysnap.model.SafeAppDataObject;
@@ -40,7 +41,9 @@ public class SafeAppApplication extends Application {
         safeAppDataObject = new SafeAppDataObject();
         initImageLoader(getApplicationContext());
 
-        Fabric.with(this, new Crashlytics());
+        if(!BuildConfig.DEBUG){
+            Fabric.with(this, new Crashlytics());
+        }
 //        FacebookSdk.sdkInitialize(getApplicationContext());
 
         ActiveAndroid.initialize(this);

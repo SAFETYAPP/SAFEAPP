@@ -13,7 +13,7 @@ import com.viewnine.nuttysnap.activity.IntroduceActivity;
 import com.viewnine.nuttysnap.activity.LockScreenAppActivity;
 import com.viewnine.nuttysnap.activity.NotificationsActivity;
 import com.viewnine.nuttysnap.activity.PlayVideoActivity;
-import com.viewnine.nuttysnap.activity.RecordForegroundVideoActivity;
+import com.viewnine.nuttysnap.activity.RecordForegroundVideoActivityV2;
 import com.viewnine.nuttysnap.activity.ScreenUnlockActivity;
 import com.viewnine.nuttysnap.activity.SecurityActivity;
 import com.viewnine.nuttysnap.activity.SettingsActivity;
@@ -47,7 +47,7 @@ public class SwitchViewManager {
 
     public void gotoRecordForegroundVideoScreen(Context context){
         SafeAppIndexActivityManager.setCurrent(Constants.RECORD_FOREGROUND_ACTIVITY);
-        Intent intent = new Intent(context, RecordForegroundVideoActivity.class);
+        Intent intent = new Intent(context, RecordForegroundVideoActivityV2.class);
         ((Activity)context).startActivity(intent);
         ((Activity)context).finish();
     }

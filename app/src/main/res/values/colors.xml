@@ -302,5 +302,9 @@
     <!-- END -->
 
     <color name="color_set_duration">#e6e6e6</color>
+    <color name="bg_record_button_inactive">#ffbd00</color>
+    <color name="bg_record_stroke_inactive">#f6931e</color>
+    <color name="bg_record_button_activated">#ec1c24</color>
+    <color name="bg_record_stroke_activated">#be1e2d</color>
 
 </resources>
